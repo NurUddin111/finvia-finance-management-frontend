@@ -1,26 +1,63 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+/* --------------------------------------------------
+   Finvia Noir — Dark-First Theme Tokens
+   -------------------------------------------------- */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --radius: 0.625rem;
+
+  /* Backgrounds */
+  --background: 222 30% 7%;
+  --foreground: 220 20% 96%;
+
+  --card: 222 28% 8%;
+  --card-foreground: 220 20% 96%;
+
+  --popover: 222 28% 8%;
+  --popover-foreground: 220 20% 96%;
+
+  /* Brand Accent */
+  --primary: 248 86% 70%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 222 20% 12%;
+  --secondary-foreground: 220 20% 96%;
+
+  --muted: 222 20% 14%;
+  --muted-foreground: 215 15% 65%;
+
+  --accent: 248 86% 70%;
+  --accent-foreground: 0 0% 100%;
+
+  /* Borders & Focus */
+  --border: 222 20% 18%;
+  --input: 222 20% 18%;
+  --ring: 248 86% 70%;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* --------------------------------------------------
+   Glow Utility (use sparingly)
+   -------------------------------------------------- */
+
+.glow-primary {
+  box-shadow: 0 0 0 1px rgba(124, 106, 242, 0.2),
+    0 10px 40px rgba(124, 106, 242, 0.15);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* --------------------------------------------------
+   Base Styles (Tailwind v4 compatible)
+   -------------------------------------------------- */
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+    outline-color: hsl(var(--ring) / 0.5);
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
 }
