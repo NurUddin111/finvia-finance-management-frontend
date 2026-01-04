@@ -2,10 +2,10 @@ import { ShieldCheck, Lock, BadgeCheck, Server } from "lucide-react";
 
 export default function TrustSection() {
   return (
-    <section className="w-full py-28">
+    <section className="w-full py-20 sm:py-28">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="mx-auto mb-20 max-w-2xl text-center">
+        <div className="mx-auto mb-14 sm:mb-20 max-w-2xl text-center">
           <p className="mb-3 text-xs uppercase tracking-wider text-primary">
             Trusted & secure
           </p>
@@ -19,7 +19,7 @@ export default function TrustSection() {
         </div>
 
         {/* Trust Items */}
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <TrustItem
             icon={ShieldCheck}
             title="Data encryption"
@@ -58,12 +58,12 @@ function TrustItem({
   description: string;
 }) {
   return (
-    <div className="text-center">
+    <div className="text-center max-w-xs mx-auto">
       <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/15">
         <Icon className="h-6 w-6 text-primary" />
       </div>
 
-      <h3 className="text-base font-semibold">{title}</h3>
+      <h3 className="text-base font-semibold leading-tight">{title}</h3>
 
       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
         {description}

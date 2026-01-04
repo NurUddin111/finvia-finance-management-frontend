@@ -6,7 +6,7 @@ import ProblemSolutionSection from "@/components/modules/Home/problem-solution";
 import TrustSection from "@/components/modules/Home/Trust";
 import WhySection from "@/components/modules/Home/WhyUs";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <div>
       <Hero />

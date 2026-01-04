@@ -10,10 +10,10 @@ import {
 
 export default function FeaturesSection() {
   return (
-    <section className="w-full py-20">
+    <section className="w-full py-16 sm:py-20">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="mx-auto mb-14 max-w-2xl text-center">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
           <p className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">
             Core features
           </p>
@@ -27,7 +27,7 @@ export default function FeaturesSection() {
         </div>
 
         {/* Features Grid */}
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <FeatureCard
             icon={FileText}
             title="Smart Invoicing"
@@ -83,10 +83,10 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <Card className="h-full border border-muted bg-background/50 transition-shadow hover:shadow-lg">
-      <CardHeader>
-        <Icon className="mb-3 h-6 w-6 text-primary" />
-        <CardTitle className="text-lg">{title}</CardTitle>
+    <Card className=" h-full border border-muted bg-background/60 transition-shadow hover:shadow-md">
+      <CardHeader className="space-y-2">
+        <Icon className="h-6 w-6 text-primary" />
+        <CardTitle className="text-lg leading-tight">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <p className="text-sm leading-relaxed text-muted-foreground">

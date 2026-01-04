@@ -2,16 +2,16 @@ import { Clock, Zap, ShieldCheck, LineChart } from "lucide-react";
 
 export default function WhyFinviaSection() {
   return (
-    <section className="w-full py-28">
+    <section className="w-full py-20 sm:py-28">
       <div className="container mx-auto px-4">
-        <div className="grid gap-20 lg:grid-cols-2 lg:items-center">
-          {/* LEFT — TEXT (UNCHANGED STRUCTURE) */}
+        <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
+          {/* LEFT — TEXT */}
           <div>
             <p className="mb-3 text-xs uppercase tracking-wider text-primary">
               Why Finvia?
             </p>
 
-            <h2 className="text-4xl font-bold tracking-tight">
+            <h2 className="text-4xl font-bold tracking-tight leading-tight">
               Focus on growth, not paperwork
             </h2>
 
@@ -21,7 +21,7 @@ export default function WhyFinviaSection() {
               workload.
             </p>
 
-            <div className="mt-14 grid gap-10 sm:grid-cols-2">
+            <div className="mt-12 grid gap-8 sm:grid-cols-2">
               <Benefit
                 icon={Clock}
                 title="Save 10+ hours per week"
@@ -45,26 +45,22 @@ export default function WhyFinviaSection() {
             </div>
           </div>
 
-          {/* RIGHT — MAGIC PATTERNS STYLE SKELETON (FLAT, SOFT) */}
-          <div className="relative rounded-2xl bg-white/2 p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)]">
-            <div className="space-y-8">
+          {/* RIGHT — VISUAL CARD */}
+          <div className="relative rounded-2xl bg-white/2 p-6 sm:p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)]">
+            <div className="space-y-6 sm:space-y-8">
               {[1, 2, 3].map((i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between rounded-xl bg-white/3 px-6 py-5"
+                  className="flex items-center justify-between rounded-xl bg-white/3 px-5 sm:px-6 py-4 sm:py-5"
                 >
                   <div className="flex items-center gap-4">
-                    {/* avatar skeleton */}
                     <div className="h-11 w-11 rounded-full bg-white/8" />
-
-                    {/* text skeleton */}
                     <div className="space-y-2">
                       <div className="h-3 w-36 rounded bg-white/8" />
                       <div className="h-3 w-24 rounded bg-white/6" />
                     </div>
                   </div>
 
-                  {/* subtle status */}
                   <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-400">
                     Paid
                   </span>
@@ -102,7 +98,7 @@ function Benefit({
         <Icon className="h-5 w-5 text-primary" />
       </div>
       <div>
-        <h3 className="text-base font-semibold">{title}</h3>
+        <h3 className="text-base font-semibold leading-tight">{title}</h3>
         <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
           {description}
         </p>
