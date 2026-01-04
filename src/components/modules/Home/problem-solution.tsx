@@ -3,8 +3,9 @@ import { XCircle, CheckCircle } from "lucide-react";
 
 export default function ProblemSolutionSection() {
   return (
-    <section className="w-full py-20">
+    <section className="w-full py-16 sm:py-20">
       <div className="container mx-auto px-4">
+        {/* Header */}
         <div className="mx-auto mb-12 max-w-2xl text-center">
           <p className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">
             The problem & the fix
@@ -17,7 +18,9 @@ export default function ProblemSolutionSection() {
           </p>
         </div>
 
-        <div className="grid gap-10 md:grid-cols-2">
+        {/* Cards */}
+        <div className="grid gap-8 md:grid-cols-2">
+          {/* Problems */}
           <Card className="border border-muted bg-background/40">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
@@ -26,7 +29,7 @@ export default function ProblemSolutionSection() {
               </CardTitle>
             </CardHeader>
 
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3">
               <ProblemItem text="Invoices scattered across WhatsApp, Excel, and PDFs" />
               <ProblemItem text="No clear idea who has paid and who hasn’t" />
               <ProblemItem text="Clients repeatedly asking for invoice copies" />
@@ -34,7 +37,8 @@ export default function ProblemSolutionSection() {
             </CardContent>
           </Card>
 
-          <Card className="border border-primary/20 bg-background/60 shadow-[0_0_40px_-15px_rgba(124,106,242,0.35)]">
+          {/* Solution */}
+          <Card className="border border-primary/20 bg-background/60 shadow-[0_0_40px_-18px_rgba(124,106,242,0.35)]">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <CheckCircle className="h-5 w-5 text-primary" />
@@ -42,7 +46,7 @@ export default function ProblemSolutionSection() {
               </CardTitle>
             </CardHeader>
 
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3">
               <SolutionItem text="All invoices organized in one clean dashboard" />
               <SolutionItem text="Real-time payment status at a glance" />
               <SolutionItem text="Auto-generated, shareable invoices for clients" />
@@ -51,7 +55,8 @@ export default function ProblemSolutionSection() {
           </Card>
         </div>
 
-        <div className="mt-12 text-center">
+        {/* CTA */}
+        <div className="mt-10 text-center">
           <button className="text-sm font-medium text-primary hover:underline underline-offset-4">
             See how it works →
           </button>
@@ -61,13 +66,13 @@ export default function ProblemSolutionSection() {
   );
 }
 
+/* ---------- Helpers ---------- */
+
 function ProblemItem({ text }: { text: string }) {
   return (
     <div className="flex items-start gap-3">
-      <XCircle className="mt-0.5 h-4 w-4 text-destructive" />
-      <p className="max-w-[95%] text-sm leading-relaxed text-muted-foreground">
-        {text}
-      </p>
+      <XCircle className="mt-0.5 h-4 w-4 text-destructive shrink-0" />
+      <p className="text-sm leading-relaxed text-muted-foreground">{text}</p>
     </div>
   );
 }
@@ -75,10 +80,8 @@ function ProblemItem({ text }: { text: string }) {
 function SolutionItem({ text }: { text: string }) {
   return (
     <div className="flex items-start gap-3">
-      <CheckCircle className="mt-0.5 h-4 w-4 text-primary" />
-      <p className="max-w-[95%] text-sm leading-relaxed text-muted-foreground">
-        {text}
-      </p>
+      <CheckCircle className="mt-0.5 h-4 w-4 text-primary shrink-0" />
+      <p className="text-sm leading-relaxed text-muted-foreground">{text}</p>
     </div>
   );
 }
