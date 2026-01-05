@@ -45,7 +45,6 @@ export default function InvoiceActionModal({
             className="w-full sm:w-auto"
             onClick={() => {
               onClose();
-              router.refresh();
             }}
           >
             Save as Draft
@@ -56,7 +55,6 @@ export default function InvoiceActionModal({
             onClick={async () => {
               await sendInvoice(invoiceId);
               onClose();
-              router.refresh();
             }}
           >
             Send Invoice

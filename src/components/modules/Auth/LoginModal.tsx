@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { login } from "@/services/auth/login";
+import { toast } from "sonner";
 
 export default function LoginModal() {
   const router = useRouter();
@@ -17,8 +18,15 @@ export default function LoginModal() {
   const [state, formAction, isPending] = useActionState(login, null);
 
   useEffect(() => {
-    if (state?.success) {
-      router.refresh();
+    if (state) {
+      if (state?.success) {
+        toast.success("Logged in successfully!");
+        router.refresh();
+      }
+      if (!state?.success) {
+        toast.error("Failed to login!");
+        router.refresh();
+      }
     }
   }, [state, router]);
 

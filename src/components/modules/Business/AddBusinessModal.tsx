@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { createBusiness } from "@/services/business/createBusiness";
+import { toast } from "sonner";
 
 export default function AddBusinessModal({
   open,
@@ -33,9 +34,16 @@ export default function AddBusinessModal({
   const [state, formAction, isPending] = useActionState(createBusiness, null);
 
   useEffect(() => {
-    if (state?.success) {
-      onClose();
-      router.push("/dashboard", { scroll: false });
+    if (state) {
+      if (state?.success) {
+        onClose();
+        toast.success("Business details added successfully!");
+        router.push("/dashboard", { scroll: false });
+      }
+      if (!state?.success) {
+        onClose();
+        toast.error("Failed to add business details!");
+      }
     }
   }, [state, router, onClose]);
 

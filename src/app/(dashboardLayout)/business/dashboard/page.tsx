@@ -7,8 +7,6 @@ import { getMe } from "@/services/auth/getMe";
 export default async function DashboardPage() {
   const myProfile: any = await getMe();
 
-  console.log(myProfile);
-
   if (!myProfile) return null;
 
   const { name, role, avatar } = myProfile?.data;

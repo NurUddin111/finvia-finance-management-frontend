@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { signupPassword } from "@/services/auth/signupPassword";
+import { toast } from "sonner";
 
 export default function SignUpPasswordModal() {
   const router = useRouter();
@@ -17,8 +18,14 @@ export default function SignUpPasswordModal() {
   const [state, formAction, isPending] = useActionState(signupPassword, null);
 
   useEffect(() => {
-    if (state?.success) {
-      router.push("/login", { scroll: false });
+    if (state) {
+      if (state?.success) {
+        toast.success("Registered account successfully!");
+        router.push("/login", { scroll: false });
+      }
+      if (!state?.success) {
+        toast.error("Account creation failed!");
+      }
     }
   }, [state, router]);
 

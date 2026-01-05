@@ -22,7 +22,7 @@ export function SidebarItem({
   href: string;
 }) {
   const pathname = usePathname();
-  const isActive = pathname === href || pathname.startsWith(`${href}/`);
+  const isActive = pathname === href ;
   const Icon = iconMap[icon];
 
   return (

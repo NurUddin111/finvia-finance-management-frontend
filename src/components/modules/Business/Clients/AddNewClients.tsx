@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { addClient } from "@/services/business/clients/addClient";
+import { toast } from "sonner";
 
 export default function AddNewClientModal({
   open,
@@ -26,9 +27,16 @@ export default function AddNewClientModal({
   const [state, formAction, isPending] = useActionState(addClient, null);
 
   useEffect(() => {
-    if (state?.success) {
-      onClose();
-      router.refresh();
+    if (state) {
+      if (state?.success) {
+        onClose();
+        toast.success("Client added successfully!");
+        router.refresh();
+      }
+      if (!state?.success) {
+        onClose();
+        toast.error("Failed to add client details");
+      }
     }
   }, [state, onClose, router]);
 

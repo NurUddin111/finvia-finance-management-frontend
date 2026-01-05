@@ -15,12 +15,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Trash } from "lucide-react";
 import { createInvoice } from "@/services/business/invoices/createInv";
 import InvoiceActionModal from "./InvActions";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+/* ================= TYPES ================= */
 
 type Item = {
   name: string;
   pricePerUnit: number;
   quantity: number;
 };
+
+/* ================= COMPONENT ================= */
 
 export default function CreateInvoiceModal({
   open,
@@ -29,10 +35,11 @@ export default function CreateInvoiceModal({
   open: boolean;
   onClose: () => void;
 }) {
+  const router = useRouter();
+
   const [state, formAction, isPending] = useActionState(createInvoice, null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [invoiceId, setInvoiceId] = useState<string | null>(null);
-
   const [email, setEmail] = useState("");
   const [dueDays, setDueDays] = useState(3);
   const [taxRate, setTaxRate] = useState(0);
@@ -51,12 +58,22 @@ export default function CreateInvoiceModal({
     setShowConfirm(false);
   };
 
+  /* ================= EFFECT ================= */
+
   useEffect(() => {
-    if (state?.success) {
-      setInvoiceId(state.data.id);
-      setShowConfirm(true);
+    if (state) {
+      if (state?.success) {
+        setInvoiceId(state?.data.id);
+        setShowConfirm(true);
+        toast.success("Invoice created successfully!");
+      }
+      if (!state?.success) {
+        toast.error("Failed to create invoice!");
+      }
     }
   }, [state]);
+
+  /* ================= CALCULATIONS ================= */
 
   const subtotal = items.reduce(
     (sum, i) => sum + i.pricePerUnit * i.quantity,
@@ -64,6 +81,8 @@ export default function CreateInvoiceModal({
   );
   const taxAmount = (subtotal * taxRate) / 100;
   const total = subtotal + taxAmount;
+
+  /* ================= ITEM HELPERS ================= */
 
   const updateItem = <K extends keyof Item>(
     index: number,
@@ -83,25 +102,30 @@ export default function CreateInvoiceModal({
     setItems(items.filter((_, i) => i !== index));
   };
 
+  /* ================= UI ================= */
+
   return (
     <>
       <Dialog open={open} onOpenChange={onClose}>
         <DialogContent
-          className=" w-[95vw] max-w-6xl max-h-[90vh] flex flex-col bg-black"
+          className="w-[95vw] max-w-[95vw] sm:max-w-6xl h-[90vh] flex flex-col bg-black"
           onInteractOutside={(e) => e.preventDefault()}
         >
+          {/* HEADER */}
           <DialogHeader className="shrink-0 border-b pb-4">
             <DialogTitle className="text-xl font-semibold">
               New Invoice
             </DialogTitle>
           </DialogHeader>
 
+          {/* FORM */}
           <form
             action={formAction}
             className="flex-1 overflow-y-auto py-6 space-y-6"
           >
             <input type="hidden" name="items" value={JSON.stringify(items)} />
 
+            {/* Bill To */}
             <div className="space-y-1 max-w-md">
               <label className="text-sm font-medium">Client Email</label>
               <Input
@@ -114,8 +138,9 @@ export default function CreateInvoiceModal({
 
             {/* Line Items */}
             <div className="border rounded-lg">
+              {/* 👇 horizontal scroll ONLY here */}
               <div className="overflow-x-auto">
-                <table className="min-w-225 w-full text-sm">
+                <table className="w-225 text-sm">
                   <thead className="bg-muted/50">
                     <tr>
                       <th className="p-3 text-left">Description</th>
@@ -192,6 +217,7 @@ export default function CreateInvoiceModal({
               </Button>
             </div>
 
+            {/* Bottom Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4 max-w-md">
                 <div>
@@ -238,24 +264,24 @@ export default function CreateInvoiceModal({
               </div>
             </div>
 
+            {/* Error */}
             {!isPending && state?.success === false && (
               <p className="text-sm text-red-500 text-center">{state.error}</p>
             )}
-          </form>
 
-          {/* FOOTER (STICKY) */}
-          <div className="shrink-0 border-t pt-4 flex justify-end gap-3">
-            <Button
-              type="submit"
-              disabled={isPending}
-              className=" w-full md:w-auto h-11 rounded-full bg-primary px-6 text-primary-foreground transition-all duration-300 shadow-[0_0_0_1px_rgba(124,106,242,0.25)] md:hover:-translate-y-0.5 md:hover:shadow-[0_0_0_1px_rgba(124,106,242,0.4),0_18px_60px_rgba(124,106,242,0.4)]"
-            >
-              {isPending ? "Creating..." : "Create"}
-            </Button>
-          </div>
+            {/* Footer */}
+            <div className="shrink-0 border-t pt-4 flex justify-end gap-3 bg-background">
+              <Button
+                type="submit"
+                disabled={isPending}
+                className=" w-full md:w-auto h-11 rounded-full bg-primary px-6 text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 shadow-[0_0_0_1px_rgba(124,106,242,0.25),0_12px_45px_rgba(124,106,242,0.3)] hover:shadow-[0_0_0_1px_rgba(124,106,242,0.4),0_18px_60px_rgba(124,106,242,0.4)]"
+              >
+                {isPending ? "Creating invoice..." : "Create Invoice"}
+              </Button>
+            </div>
+          </form>
         </DialogContent>
       </Dialog>
-
       {invoiceId && (
         <InvoiceActionModal
           open={showConfirm}
@@ -264,6 +290,7 @@ export default function CreateInvoiceModal({
             setShowConfirm(false);
             onClose();
             resetForm();
+            router.refresh();
           }}
         />
       )}

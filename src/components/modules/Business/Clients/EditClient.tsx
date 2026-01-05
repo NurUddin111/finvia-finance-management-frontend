@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { updateClient } from "@/services/business/clients/updateClient";
+import { toast } from "sonner";
 
 export default function UpdateClientModal({
   open,
@@ -38,9 +39,16 @@ export default function UpdateClientModal({
   );
 
   useEffect(() => {
-    if (state?.success) {
-      onClose();
-      router.refresh();
+    if (state) {
+      if (state?.success) {
+        onClose();
+        router.refresh();
+        toast.success("Client details updated successfully!");
+      }
+      if (!state?.success) {
+        onClose();
+        toast.error("Failed to update client details!");
+      }
     }
   }, [state, onClose, router]);
 
