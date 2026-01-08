@@ -2,6 +2,8 @@ import BusinessBottomNav from "@/components/modules/Business/BottomNav";
 import BusinessSideBar from "@/components/modules/Business/SideBar";
 import type { ReactNode } from "react";
 
+export const dynamic = "force-dynamic";
+
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen w-full">

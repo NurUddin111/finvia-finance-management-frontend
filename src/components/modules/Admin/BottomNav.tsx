@@ -2,16 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Users, FileText, Settings } from "lucide-react";
+import { Home, Users, Settings } from "lucide-react";
 
 const navItems = [
-  { label: "Dashboard", href: "/business/dashboard", icon: Home },
-  { label: "Clients", href: "/business/dashboard/clients", icon: Users },
-  { label: "Invoices", href: "/business/dashboard/invoices", icon: FileText },
-  { label: "Settings", href: "/business/dashboard/settings", icon: Settings },
+  { label: "Dashboard", href: "/admin/dashboard", icon: Home },
+  { label: "Clients", href: "/admin/dashboard/clients", icon: Users },
+  { label: "Settings", href: "/admin/dashboard/settings", icon: Settings },
 ];
 
-export default function BusinessBottomNav() {
+export default function AdminBottomNav() {
   const pathname = usePathname();
 
   return (

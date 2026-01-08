@@ -1,6 +1,8 @@
+import AdminBottomNav from "@/components/modules/Admin/BottomNav";
 import FinviaAdminSideBar from "@/components/modules/Admin/SideBar";
-import BusinessBottomNav from "@/components/modules/Business/BottomNav";
 import type { ReactNode } from "react";
+
+export const dynamic = "force-dynamic";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
@@ -11,7 +13,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         <main className="flex-1 p-4 pb-20 md:p-6 md:pb-6">{children}</main>
       </div>
 
-      {/* <BusinessBottomNav /> */}
+      <AdminBottomNav />
     </div>
   );
 }
