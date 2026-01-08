@@ -44,7 +44,7 @@ export const addClient = async (currentState: any, formData: FormData) => {
 
     console.log(cookieHeader)
 
-    const res = await fetch("http://localhost:1126/api/v1/client/add", {
+    const res = await fetch("https://finvia-dusky.vercel.app/api/v1/client/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

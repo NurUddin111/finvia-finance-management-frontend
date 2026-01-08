@@ -7,7 +7,7 @@ export const deleteMyAccount = async (userId: string) => {
     const cookieStore = await cookies();
 
     const res = await fetch(
-      `http://localhost:1126/api/v1/user/delete/${userId}`,
+      `https://finvia-dusky.vercel.app/api/v1/user/delete/${userId}`,
       {
         method: "PATCH",
         headers: {

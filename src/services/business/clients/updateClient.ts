@@ -41,7 +41,7 @@ export const updateClient = async (
     const cookieHeader = cookieStore.toString();
 
     const res = await fetch(
-      `http://localhost:1126/api/v1/client/edit/${clientId}`,
+      `https://finvia-dusky.vercel.app/api/v1/client/edit/${clientId}`,
       {
         method: "PATCH",
         headers: {

@@ -28,7 +28,7 @@ export const verifyOtp = async (currentState: any, formData: FormData) => {
     const cookieStore = await cookies();
     const cookieHeader = cookieStore.toString();
 
-    const res = await fetch("http://localhost:1126/api/v1/auth/signup/verify", {
+    const res = await fetch("https://finvia-dusky.vercel.app/api/v1/auth/signup/verify", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

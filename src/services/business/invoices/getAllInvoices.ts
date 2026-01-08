@@ -8,7 +8,7 @@ export const getAllInvoices = async () => {
     const cookieHeader = cookieStore.toString();
 
     const res = await fetch(
-      "http://localhost:1126/api/v1/invoice/all", 
+      "https://finvia-dusky.vercel.app/api/v1/invoice/all", 
       {
         method: "GET",
         headers: {

@@ -9,7 +9,7 @@ export const deleteClient = async (clientId: string, currentState: any) => {
     const cookieHeader = cookieStore.toString();
 
     const res = await fetch(
-      `http://localhost:1126/api/v1/client/delete/${clientId}`,
+      `https://finvia-dusky.vercel.app/api/v1/client/delete/${clientId}`,
       {
         method: "PATCH",
         headers: {

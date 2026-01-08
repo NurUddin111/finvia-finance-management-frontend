@@ -7,7 +7,7 @@ export const logoutUser = async () => {
     const cookieStore = await cookies();
     const cookieHeader = cookieStore.toString();
 
-    await fetch("http://localhost:1126/api/v1/auth/logout", {
+    await fetch("https://finvia-dusky.vercel.app/api/v1/auth/logout", {
       method: "POST",
       headers: {
         Cookie: cookieHeader,
