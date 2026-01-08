@@ -5,22 +5,19 @@ import { cookies } from "next/headers";
 
 export const createInvoice = async (currentState: any, formData: FormData) => {
   try {
-    // 🔹 Parse items safely
     const itemsRaw = formData.get("items");
     const items = itemsRaw ? JSON.parse(itemsRaw as string) : [];
 
-    // 🔹 Build payload EXACTLY as backend expects
     const payload = {
       email: formData.get("email"),
-      dueDays: Number(formData.get("dueDays")) || 3, // ✅ default 3
+      dueDays: Number(formData.get("dueDays")) || 3,
       items,
       taxRate: Number(formData.get("taxRate")) || 0,
-      notes: formData.get("notes") || undefined, // ✅ optional
+      notes: formData.get("notes") || undefined, 
     };
 
     console.log(payload);
 
-    // 🔹 Required validation (simple, like your style)
     if (!payload.email) {
       return {
         success: false,
@@ -35,12 +32,10 @@ export const createInvoice = async (currentState: any, formData: FormData) => {
       };
     }
 
-    // 🔹 Optional cleanup (remove empty notes)
     if (!payload.notes) {
       delete payload.notes;
     }
 
-    // 🔹 Forward cookies (same as AddBusiness)
     const cookieStore = await cookies();
     const cookieHeader = cookieStore.toString();
 

@@ -21,14 +21,12 @@ export const updateBusiness = async (
       logoUrl: formData.get("logoUrl") || undefined,
     };
 
-    // 🔹 clean empty fields
     (Object.keys(payload) as (keyof typeof payload)[]).forEach((key) => {
       if (payload[key] === "" || payload[key] === null) {
         payload[key] = undefined;
       }
     });
 
-    // 🔹 nothing to update
     if (
       !payload.name &&
       !payload.email &&
@@ -41,7 +39,6 @@ export const updateBusiness = async (
       return { success: true };
     }
 
-    // 🔹 zod validation (partial)
     const validationResult = zodValidator(
       payload,
       CreateBusinessZodSchemaValidation.partial()
@@ -51,11 +48,9 @@ export const updateBusiness = async (
       return validationResult;
     }
 
-    // 🔹 forward cookies
     const cookieStore = await cookies();
     const cookieHeader = cookieStore.toString();
 
-    // 🔹 API call
     const res = await fetch(
       `http://localhost:1126/api/v1/business/edit/${businessId}`,
       {
