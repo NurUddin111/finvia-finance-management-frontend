@@ -22,7 +22,7 @@ export const changePassword = async (currentState: any, formData: FormData) => {
     const cookieHeader = cookieStore.toString();
 
     const res = await fetch(
-      "https://finvia-backend.vercel.app//api/v1/auth/change-password",
+      "https://finvia-backend.vercel.app/api/v1/auth/change-password",
       {
         method: "POST",
         headers: {

@@ -28,7 +28,7 @@ export const signupPassword = async (currentState: any, formData: FormData) => {
     const cookieHeader = cookieStore.toString();
 
     const res = await fetch(
-      "https://finvia-backend.vercel.app//api/v1/auth/signup/password",
+      "https://finvia-backend.vercel.app/api/v1/auth/signup/password",
       {
         method: "POST",
         headers: {

@@ -41,7 +41,7 @@ export const updateUser = async (
     const cookieHeader = cookieStore.toString();
 
     const res = await fetch(
-      `https://finvia-backend.vercel.app//api/v1/user/edit/${userId}`,
+      `https://finvia-backend.vercel.app/api/v1/user/edit/${userId}`,
       {
         method: "PATCH",
         headers: {

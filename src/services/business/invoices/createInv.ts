@@ -39,7 +39,7 @@ export const createInvoice = async (currentState: any, formData: FormData) => {
     const cookieStore = await cookies();
     const cookieHeader = cookieStore.toString();
 
-    const res = await fetch("https://finvia-backend.vercel.app//api/v1/invoice/create", {
+    const res = await fetch("https://finvia-backend.vercel.app/api/v1/invoice/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

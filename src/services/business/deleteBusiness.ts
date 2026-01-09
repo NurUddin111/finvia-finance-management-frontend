@@ -7,7 +7,7 @@ export const deleteMyBusiness = async (businessId: string) => {
     const cookieStore = await cookies();
 
     const res = await fetch(
-      `https://finvia-backend.vercel.app//api/v1/business/delete/${businessId}`,
+      `https://finvia-backend.vercel.app/api/v1/business/delete/${businessId}`,
       {
         method: "DELETE",
         headers: {

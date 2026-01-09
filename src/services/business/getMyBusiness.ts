@@ -7,7 +7,7 @@ export const getMyBusiness = async () => {
     const cookieStore = await cookies();
     const cookieHeader = cookieStore.toString();
 
-    const res = await fetch("https://finvia-backend.vercel.app//api/v1/business/my-business", {
+    const res = await fetch("https://finvia-backend.vercel.app/api/v1/business/my-business", {
       method: "GET",
       headers: {
         Cookie: cookieHeader,
