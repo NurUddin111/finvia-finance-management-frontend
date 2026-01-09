@@ -27,17 +27,23 @@ export const login = async (currentState: any, formData: FormData) => {
 
     const newFormData = JSON.stringify(loginData);
 
-    const res = await fetch("https://finvia-backend.vercel.app/api/v1/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: newFormData,
-    });
+    const res = await fetch(
+      "https://finvia-backend.vercel.app/api/v1/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: newFormData,
+      }
+    );
 
     const result = res.json();
 
     const setCookieHeaders = res.headers.getSetCookie();
+
+    console.log(setCookieHeaders);
 
     let parsedAccessToken: any = null;
     let parsedRefreshToken: any = null;
@@ -82,14 +88,14 @@ export const login = async (currentState: any, formData: FormData) => {
     const cookieStore = await cookies();
 
     cookieStore.set("accessToken", accessToken, {
-      secure: false,
+      secure: true,
       httpOnly: true,
       maxAge: 24 * 60 * 60,
       path: parsedAccessToken?.path || "/",
     });
 
     cookieStore.set("refreshToken", refreshToken, {
-      secure: false,
+      secure: true,
       httpOnly: true,
       maxAge: 30 * 24 * 60 * 60,
       path: parsedRefreshToken?.path || "/",
