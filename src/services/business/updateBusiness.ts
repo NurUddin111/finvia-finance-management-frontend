@@ -52,7 +52,7 @@ export const updateBusiness = async (
     const cookieHeader = cookieStore.toString();
 
     const res = await fetch(
-      `https://finvia-dusky.vercel.app/api/v1/business/edit/${businessId}`,
+      `https://finvia-backend.vercel.app//api/v1/business/edit/${businessId}`,
       {
         method: "PATCH",
         headers: {

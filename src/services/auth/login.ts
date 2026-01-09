@@ -27,7 +27,7 @@ export const login = async (currentState: any, formData: FormData) => {
 
     const newFormData = JSON.stringify(loginData);
 
-    const res = await fetch("https://finvia-dusky.vercel.app/api/v1/auth/login", {
+    const res = await fetch("https://finvia-backend.vercel.app//api/v1/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

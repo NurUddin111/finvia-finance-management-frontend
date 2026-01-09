@@ -8,7 +8,7 @@ export const sendInvoice = async (invoiceId: string) => {
     const cookieHeader = cookieStore.toString();
 
     const res = await fetch(
-      `https://finvia-dusky.vercel.app/api/v1/invoice/send/${invoiceId}`,
+      `https://finvia-backend.vercel.app//api/v1/invoice/send/${invoiceId}`,
       {
         method: "POST",
         headers: {
