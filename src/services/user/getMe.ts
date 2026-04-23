@@ -7,7 +7,7 @@ export const getMyProfile = async () => {
     const cookieStore = await cookies();
     const cookieHeader = cookieStore.toString();
 
-    const res = await fetch("https://finvia-backend.vercel.app/api/v1/user/my-profile", {
+    const res = await fetch("http://localhost:1126/api/v1/user/my-profile", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

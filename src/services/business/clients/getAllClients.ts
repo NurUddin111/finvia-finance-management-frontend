@@ -8,7 +8,7 @@ export const getAllClients = async () => {
     const cookieHeader = cookieStore.toString();
 
     const res = await fetch(
-      "https://finvia-backend.vercel.app/api/v1/client/all",
+      "http://localhost:1126/api/v1/client/all",
       {
         method: "GET",
         headers: {

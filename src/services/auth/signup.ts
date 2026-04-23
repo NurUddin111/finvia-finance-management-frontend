@@ -27,7 +27,7 @@ export const signup = async (currentState: any, formData: FormData) => {
 
     const newFormData = JSON.stringify(signupData);
 
-    const res = await fetch("https://finvia-backend.vercel.app/api/v1/auth/signup", {
+    const res = await fetch("http://localhost:1126/api/v1/auth/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
