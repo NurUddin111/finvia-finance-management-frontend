@@ -17,14 +17,14 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 // ── Monthly Revenue ───────────────────────────────────────────────
-const revenueData = [
-  { month: "Jan", revenue: 42000 },
-  { month: "Feb", revenue: 58000 },
-  { month: "Mar", revenue: 35000 },
-  { month: "Apr", revenue: 71000 },
-  { month: "May", revenue: 63000 },
-  { month: "Jun", revenue: 89000 },
-];
+// const revenueDatass = [
+//   { month: "Jan", revenue: 42000 },
+//   { month: "Feb", revenue: 58000 },
+//   { month: "Mar", revenue: 35000 },
+//   { month: "Apr", revenue: 71000 },
+//   { month: "May", revenue: 63000 },
+//   { month: "Jun", revenue: 89000 },
+// ];
 
 function RevenueTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
@@ -38,16 +38,23 @@ function RevenueTooltip({ active, payload, label }: any) {
   );
 }
 
-export function RevenueChart() {
+export function RevenueChart({
+  revenueData,
+}: {
+  revenueData: {
+    month: string;
+    revenue: number;
+  }[];
+}) {
   return (
     <Card className="bg-card border-border">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm font-medium">Monthly revenue</CardTitle>
           <div className="flex gap-1">
-            <button className="text-[11px] px-3 py-1 rounded-full border border-border text-muted-foreground">
+            {/* <button className="text-[11px] px-3 py-1 rounded-full border border-border text-muted-foreground">
               Weekly
-            </button>
+            </button> */}
             <button className="text-[11px] px-3 py-1 rounded-full border border-blue-500/50 text-blue-400 bg-blue-500/10">
               Monthly
             </button>
