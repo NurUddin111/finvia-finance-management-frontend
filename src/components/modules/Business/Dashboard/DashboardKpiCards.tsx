@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { getKPICardDetails } from "@/services/business/dashboard/kpiCardDetails";
+import { getMonthlyRevenue } from "@/services/business/dashboard/monthlyRevenue";
 import { TrendingUp, FileText, CheckCircle, AlertCircle } from "lucide-react";
 
 interface KpiCardProps {
@@ -46,7 +47,6 @@ export async function DashboardKpiCards() {
     overdueInvDiff,
   } = KPICardDetails.data.KPICardDetails;
 
-  console.log(0 >= 0 ? "↑ " : "↓ " + overdueInvDiff + " since last week");
   return (
     <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
       <KpiCard
