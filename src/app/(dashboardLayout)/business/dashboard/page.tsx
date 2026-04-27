@@ -22,6 +22,7 @@ import { QuickActions } from "@/components/modules/Business/Dashboard/QuickActio
 import { getMe } from "@/services/auth/getMe";
 import { getKPICardDetails } from "@/services/business/dashboard/kpiCardDetails";
 import { getMonthlyRevenue } from "@/services/business/dashboard/monthlyRevenue";
+import { getRecentTransactions } from "@/services/business/dashboard/recentTransaction";
 import { getTopClients } from "@/services/business/dashboard/topClients";
 
 export default async function BusinessDashboardPage() {
@@ -66,6 +67,9 @@ export default async function BusinessDashboardPage() {
   const topClientsList = await getTopClients();
   const topClients = topClientsList.data;
 
+  const recentTransactionsList = await getRecentTransactions();
+  const recentTransactions = recentTransactionsList.data;
+
   return (
     <div className="p-6 space-y-5 max-w-7xl">
       {/* ── Page heading ── */}
@@ -97,7 +101,7 @@ export default async function BusinessDashboardPage() {
       {/* ── Top clients | Recent transactions ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <TopClientsTable topClients={topClients} />
-        <RecentTransactions />
+        <RecentTransactions recentTransactions={recentTransactions} />
       </div>
 
       {/* ── Overdue invoices | Upcoming due dates ── */}
