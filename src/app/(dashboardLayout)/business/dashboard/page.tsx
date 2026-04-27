@@ -20,8 +20,10 @@ import {
 } from "@/components/modules/Business/Dashboard/DashboardTables";
 import { QuickActions } from "@/components/modules/Business/Dashboard/QuickActions";
 import { getMe } from "@/services/auth/getMe";
+import { months } from "@/services/business/dashboard/constants";
 import { getKPICardDetails } from "@/services/business/dashboard/kpiCardDetails";
 import { getMonthlyRevenue } from "@/services/business/dashboard/monthlyRevenue";
+import { getOverdueInvoices } from "@/services/business/dashboard/overdueInvoices";
 import { getRecentTransactions } from "@/services/business/dashboard/recentTransaction";
 import { getTopClients } from "@/services/business/dashboard/topClients";
 
@@ -32,20 +34,6 @@ export default async function BusinessDashboardPage() {
 
   const MonthlyRevenueDetails = await getMonthlyRevenue();
   const monthlyRevenue = MonthlyRevenueDetails.data;
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
 
   const revenueData = months
     .filter((m) => monthlyRevenue[m] !== undefined)
@@ -69,6 +57,11 @@ export default async function BusinessDashboardPage() {
 
   const recentTransactionsList = await getRecentTransactions();
   const recentTransactions = recentTransactionsList.data;
+
+  const overdueInvoicesList = await getOverdueInvoices();
+  const overdueInvoices = overdueInvoicesList.data;
+
+  console.log(overdueInvoices);
 
   return (
     <div className="p-6 space-y-5 max-w-7xl">
@@ -107,7 +100,7 @@ export default async function BusinessDashboardPage() {
       {/* ── Overdue invoices | Upcoming due dates ── */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         <div className="lg:col-span-3">
-          <OverdueInvoices />
+          <OverdueInvoices overdueInvoices={overdueInvoices} />
         </div>
         <div className="lg:col-span-2">
           <UpcomingDueDates />

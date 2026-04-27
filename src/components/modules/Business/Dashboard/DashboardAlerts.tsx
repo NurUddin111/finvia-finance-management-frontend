@@ -2,50 +2,24 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 
 // ── Overdue Invoices ──────────────────────────────────────────────
-const overdueInvoices = [
-  {
-    initials: "FA",
-    name: "Farhan Ali",
-    invoice: "#INV-1042",
-    dueDate: "Apr 10",
-    daysAgo: 13,
-    amount: "৳18,500",
-  },
-  {
-    initials: "RB",
-    name: "Rania Begum",
-    invoice: "#INV-1038",
-    dueDate: "Apr 14",
-    daysAgo: 9,
-    amount: "৳11,200",
-  },
-  {
-    initials: "KH",
-    name: "Karim Hasan",
-    invoice: "#INV-1051",
-    dueDate: "Apr 18",
-    daysAgo: 5,
-    amount: "৳9,800",
-  },
-  {
-    initials: "SJ",
-    name: "Sabrina Jahan",
-    invoice: "#INV-1056",
-    dueDate: "Apr 20",
-    daysAgo: 3,
-    amount: "৳6,400",
-  },
-  {
-    initials: "AI",
-    name: "Arif Islam",
-    invoice: "#INV-1059",
-    dueDate: "Apr 22",
-    daysAgo: 1,
-    amount: "৳4,750",
-  },
-];
 
-export function OverdueInvoices() {
+type Invoice = {
+  client: {
+    name: string;
+  };
+  invoiceNumber: string;
+  dueDate: string;
+  total: number;
+  formattedDueDate: string;
+  daysAgo: number;
+};
+
+export function OverdueInvoices({
+  overdueInvoices,
+}: {
+  overdueInvoices: Invoice[];
+}) {
+  const totalOverdue = overdueInvoices.reduce((sum, inv) => sum + inv.total, 0);
   return (
     <Card className="bg-card border-border">
       <CardHeader className="pb-3">
@@ -54,15 +28,16 @@ export function OverdueInvoices() {
             Overdue invoices
           </CardTitle>
           <span className="text-[10px] px-2.5 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">
-            5 overdue
+            {overdueInvoices.length} overdue
           </span>
         </div>
       </CardHeader>
       <CardContent className="px-4 pb-4">
         {/* Alert banner */}
         <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/7 border border-red-500/20 mb-4 text-xs text-red-400">
-          <AlertCircle size={13} className="shrink-0" />5 invoices are past
-          their due date. Send reminders to avoid revenue loss.
+          <AlertCircle size={13} className="shrink-0" />
+          {overdueInvoices.length} invoices are past their due date. Send
+          reminders to avoid revenue loss.
         </div>
 
         <table className="w-full text-xs">
@@ -85,7 +60,7 @@ export function OverdueInvoices() {
           <tbody>
             {overdueInvoices.map((inv, i) => (
               <tr
-                key={inv.invoice}
+                key={inv.invoiceNumber}
                 className={
                   i < overdueInvoices.length - 1
                     ? "border-b border-border/50"
@@ -94,21 +69,25 @@ export function OverdueInvoices() {
               >
                 <td className="py-2.5">
                   <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-500/10 text-blue-400 text-[8px] shrink-0">
+                    {/* <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-500/10 text-blue-400 text-[8px] shrink-0">
                       {inv.initials}
-                    </span>
-                    <span className="text-foreground">{inv.name}</span>
+                    </span> */}
+                    <span className="text-foreground">{inv.client.name}</span>
                   </div>
                 </td>
-                <td className="py-2.5 text-muted-foreground">{inv.invoice}</td>
+                <td className="py-2.5 text-muted-foreground">
+                  {inv.invoiceNumber}
+                </td>
                 <td className="py-2.5">
-                  <span className="text-foreground">{inv.dueDate}</span>
+                  <span className="text-foreground">
+                    {inv.formattedDueDate}
+                  </span>
                   <span className="text-red-400 ml-1.5 text-[10px]">
                     {inv.daysAgo}d ago
                   </span>
                 </td>
                 <td className="py-2.5 text-right font-medium text-red-400">
-                  {inv.amount}
+                  {inv.total}
                 </td>
               </tr>
             ))}
@@ -122,7 +101,7 @@ export function OverdueInvoices() {
                 Total overdue
               </td>
               <td className="pt-3 text-right font-semibold text-red-400">
-                ৳50,650
+                ৳{totalOverdue}
               </td>
             </tr>
           </tfoot>
