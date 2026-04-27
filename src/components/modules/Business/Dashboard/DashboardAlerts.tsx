@@ -3,7 +3,7 @@ import { AlertCircle } from "lucide-react";
 
 // ── Overdue Invoices ──────────────────────────────────────────────
 
-type Invoice = {
+type OverdueInvoice = {
   client: {
     name: string;
   };
@@ -17,7 +17,7 @@ type Invoice = {
 export function OverdueInvoices({
   overdueInvoices,
 }: {
-  overdueInvoices: Invoice[];
+  overdueInvoices: OverdueInvoice[];
 }) {
   const totalOverdue = overdueInvoices.reduce((sum, inv) => sum + inv.total, 0);
   return (
@@ -69,9 +69,6 @@ export function OverdueInvoices({
               >
                 <td className="py-2.5">
                   <div className="flex items-center gap-2">
-                    {/* <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-500/10 text-blue-400 text-[8px] shrink-0">
-                      {inv.initials}
-                    </span> */}
                     <span className="text-foreground">{inv.client.name}</span>
                   </div>
                 </td>
@@ -87,7 +84,7 @@ export function OverdueInvoices({
                   </span>
                 </td>
                 <td className="py-2.5 text-right font-medium text-red-400">
-                  {inv.total}
+                  ৳{inv.total}
                 </td>
               </tr>
             ))}
@@ -112,69 +109,92 @@ export function OverdueInvoices({
 }
 
 // ── Upcoming Due Dates ────────────────────────────────────────────
-const upcomingDues = [
-  {
-    day: "24",
-    month: "Apr",
-    urgent: true,
-    client: "Tanvir Hossain",
-    invoice: "#INV-1061 · iPhone 15 Pro Max",
-    amount: "৳1,32,000",
-    status: "Sent",
-  },
-  {
-    day: "25",
-    month: "Apr",
-    urgent: true,
-    client: "Nusrat Islam",
-    invoice: "#INV-1063 · Accessories bundle",
-    amount: "৳8,400",
-    status: "Sent",
-  },
-  {
-    day: "27",
-    month: "Apr",
-    urgent: false,
-    client: "Sadia Khan",
-    invoice: "#INV-1064 · Samsung A35 × 2",
-    amount: "৳52,000",
-    status: "Draft",
-  },
-  {
-    day: "28",
-    month: "Apr",
-    urgent: false,
-    client: "Mahbub Rahman",
-    invoice: "#INV-1065 · Realme GT 6",
-    amount: "৳42,500",
-    status: "Sent",
-  },
-  {
-    day: "30",
-    month: "Apr",
-    urgent: false,
-    client: "Rafiq Ahmed",
-    invoice: "#INV-1066 · Repair service",
-    amount: "৳3,200",
-    status: "Draft",
-  },
-];
+// const upcomingDues = [
+//   {
+//     day: "24",
+//     month: "Apr",
+//     urgent: true,
+//     client: "Tanvir Hossain",
+//     invoice: "#INV-1061 · iPhone 15 Pro Max",
+//     amount: "৳1,32,000",
+//     status: "Sent",
+//   },
+//   {
+//     day: "25",
+//     month: "Apr",
+//     urgent: true,
+//     client: "Nusrat Islam",
+//     invoice: "#INV-1063 · Accessories bundle",
+//     amount: "৳8,400",
+//     status: "Sent",
+//   },
+//   {
+//     day: "27",
+//     month: "Apr",
+//     urgent: false,
+//     client: "Sadia Khan",
+//     invoice: "#INV-1064 · Samsung A35 × 2",
+//     amount: "৳52,000",
+//     status: "Draft",
+//   },
+//   {
+//     day: "28",
+//     month: "Apr",
+//     urgent: false,
+//     client: "Mahbub Rahman",
+//     invoice: "#INV-1065 · Realme GT 6",
+//     amount: "৳42,500",
+//     status: "Sent",
+//   },
+//   {
+//     day: "30",
+//     month: "Apr",
+//     urgent: false,
+//     client: "Rafiq Ahmed",
+//     invoice: "#INV-1066 · Repair service",
+//     amount: "৳3,200",
+//     status: "Draft",
+//   },
+// ];
 
-function DueStatusBadge({ status }: { status: string }) {
-  const styles: Record<string, string> = {
-    Sent: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-    Draft: "bg-orange-400/10 text-orange-400 border-orange-400/20",
-  };
+type TxnStatus = "SENT" | "FAILED" | "CANCELLED";
+
+type UpcomingOverdueInv = {
+  client: { name: string };
+  invoiceNumber: string;
+  status: TxnStatus;
+  dueDate: string;
+  total: number;
+  formattedDueDate: string;
+};
+
+const STATUS_STYLES: Record<TxnStatus, string> = {
+  SENT: "bg-blue-500/10   text-blue-400    border-blue-500/20",
+  FAILED: "bg-red-500/10    text-red-400     border-red-500/20",
+  CANCELLED: "bg-muted/30      text-muted-foreground border-border",
+};
+
+const STATUS_LABEL: Record<TxnStatus, string> = {
+  SENT: "Sent",
+  FAILED: "Failed",
+  CANCELLED: "Cancelled",
+};
+
+function DueStatusBadge({ status }: { status: TxnStatus }) {
   return (
     <span
-      className={`text-[10px] px-2 py-0.5 rounded-full border ${styles[status] ?? ""}`}
+      className={`text-[10px] px-2 py-0.5 rounded-full border ${STATUS_STYLES[status]}`}
     >
-      {status}
+      {STATUS_LABEL[status]}
     </span>
   );
 }
 
-export function UpcomingDueDates() {
+export function UpcomingDueDates({
+  upcomingOverdueInv,
+}: {
+  upcomingOverdueInv: UpcomingOverdueInv[];
+}) {
   return (
     <Card className="bg-card border-border">
       <CardHeader className="pb-3">
@@ -186,40 +206,39 @@ export function UpcomingDueDates() {
         </div>
       </CardHeader>
       <CardContent className="px-4 pb-4 space-y-0">
-        {upcomingDues.map((d, i) => (
+        {upcomingOverdueInv.map((d, i) => (
           <div
             key={i}
-            className={`flex items-start gap-3 py-2.5 ${i < upcomingDues.length - 1 ? "border-b border-border/50" : ""}`}
+            className={`flex items-start gap-3 py-2.5 ${i < upcomingOverdueInv.length - 1 ? "border-b border-border/50" : ""}`}
           >
             {/* Date badge */}
             <div
-              className={`min-w-11 text-center py-1.5 px-1 rounded-lg border shrink-0 ${
-                d.urgent
-                  ? "border-red-500/30 bg-red-500/6"
-                  : "border-border bg-background"
-              }`}
+              className={`min-w-11 text-center py-1.5 px-1 rounded-lg border shrink-0 border-red-500/30 bg-red-500/6`}
             >
-              <p
-                className={`text-sm font-semibold leading-none ${d.urgent ? "text-red-400" : "text-foreground"}`}
-              >
-                {d.day}
+              <p className={`text-sm font-semibold leading-none text-red-400`}>
+                {d.formattedDueDate.split(" ")[1].replace(",", "")}
               </p>
               <p className="text-[9px] text-muted-foreground mt-1 uppercase tracking-wider">
-                {d.month}
+                {d.formattedDueDate
+                  .split(" ")[0]
+                  .replace(",", "")
+                  .toUpperCase()}
               </p>
             </div>
 
             {/* Meta */}
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-foreground truncate">{d.client}</p>
+              <p className="text-xs text-foreground truncate">
+                {d.client.name}
+              </p>
               <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
-                {d.invoice}
+                {d.invoiceNumber}
               </p>
             </div>
 
             {/* Amount + status */}
             <div className="text-right shrink-0">
-              <p className="text-xs font-medium text-foreground">{d.amount}</p>
+              <p className="text-xs font-medium text-foreground">৳{d.total}</p>
               <div className="mt-1">
                 <DueStatusBadge status={d.status} />
               </div>
