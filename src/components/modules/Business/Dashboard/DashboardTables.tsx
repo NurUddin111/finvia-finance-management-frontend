@@ -1,45 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-// ── Top Clients ───────────────────────────────────────────────────
-const topClients = [
-  {
-    initials: "RA",
-    name: "Rafiq Ahmed",
-    spent: "৳42,500",
-    invoices: 18,
-    status: "Active",
-  },
-  {
-    initials: "SK",
-    name: "Sadia Khan",
-    spent: "৳38,200",
-    invoices: 14,
-    status: "Active",
-  },
-  {
-    initials: "TH",
-    name: "Tanvir Hossain",
-    spent: "৳31,800",
-    invoices: 11,
-    status: "Active",
-  },
-  {
-    initials: "NI",
-    name: "Nusrat Islam",
-    spent: "৳27,400",
-    invoices: 9,
-    status: "Pending",
-  },
-  {
-    initials: "MR",
-    name: "Mahbub Rahman",
-    spent: "৳24,100",
-    invoices: 8,
-    status: "Active",
-  },
-];
-
 function statusVariant(
   s: string,
 ): "default" | "secondary" | "destructive" | "outline" {
@@ -48,7 +9,16 @@ function statusVariant(
   return "outline";
 }
 
-export function TopClientsTable() {
+export function TopClientsTable({
+  topClients,
+}: {
+  topClients: {
+    name: string;
+    totalSpent: number;
+    totalInvoices: number;
+    status: string;
+  }[];
+}) {
   return (
     <Card className="bg-card border-border">
       <CardHeader className="pb-3">
@@ -87,17 +57,17 @@ export function TopClientsTable() {
                     <span className="inline-flex items-center justify-center w-4 h-4 rounded text-[9px] bg-blue-500/10 text-blue-400 shrink-0 font-medium">
                       {i + 1}
                     </span>
-                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-500/10 text-blue-400 text-[9px] shrink-0">
+                    {/* <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-500/10 text-blue-400 text-[9px] shrink-0">
                       {c.initials}
-                    </span>
+                    </span> */}
                     <span className="text-foreground">{c.name}</span>
                   </div>
                 </td>
                 <td className="py-2.5 text-right font-medium text-foreground">
-                  {c.spent}
+                  {c.totalSpent}
                 </td>
                 <td className="py-2.5 text-right text-muted-foreground">
-                  {c.invoices}
+                  {c.totalInvoices}
                 </td>
                 <td className="py-2.5 text-right">
                   <Badge

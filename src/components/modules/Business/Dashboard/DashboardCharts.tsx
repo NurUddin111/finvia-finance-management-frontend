@@ -98,14 +98,32 @@ export function RevenueChart({
 }
 
 // ── Invoice Status Donut ──────────────────────────────────────────
-const invoiceData = [
-  { name: "Paid", value: 142, fill: "#3fb950" },
-  { name: "Sent", value: 24, fill: "#58a6ff" },
-  { name: "Draft", value: 18, fill: "#f0883e" },
-];
+// const invoiceData = [
+//   { name: "Paid", value: 142, fill: "#3fb950" },
+//   { name: "Sent", value: 24, fill: "#58a6ff" },
+//   { name: "Draft", value: 18, fill: "#f0883e" },
+// ];
 
-export function InvoiceStatusChart() {
-  const total = invoiceData.reduce((s, d) => s + d.value, 0);
+export function InvoiceStatusChart({
+  paidInv,
+  paidInvPer,
+  pendingInv,
+  pendingInvPer,
+  draftedInv,
+  draftedInvPer,
+}: {
+  paidInv: number;
+  paidInvPer: number;
+  pendingInv: number;
+  pendingInvPer: number;
+  draftedInv: number;
+  draftedInvPer: number;
+}) {
+  const invoiceData = [
+    { name: "Paid", value: paidInv, fill: "#3fb950" },
+    { name: "Sent", value: pendingInv, fill: "#58a6ff" },
+    { name: "Draft", value: draftedInv, fill: "#f0883e" },
+  ];
   return (
     <Card className="bg-card border-border">
       <CardHeader className="pb-2">
@@ -113,18 +131,27 @@ export function InvoiceStatusChart() {
       </CardHeader>
       <CardContent>
         <div className="flex gap-3 flex-wrap mb-3">
-          {invoiceData.map((d) => (
-            <div
-              key={d.name}
-              className="flex items-center gap-1.5 text-[11px] text-muted-foreground"
-            >
-              <span
-                className="w-2 h-2 rounded-sm shrink-0"
-                style={{ background: d.fill }}
-              />
-              {d.name} {Math.round((d.value / total) * 100)}%
-            </div>
-          ))}
+          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+            <span
+              className="w-2 h-2 rounded-sm shrink-0"
+              style={{ background: "#3fb950" }}
+            />
+            Paid {paidInvPer}%
+          </div>
+          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+            <span
+              className="w-2 h-2 rounded-sm shrink-0"
+              style={{ background: "#58a6ff" }}
+            />
+            Sent {pendingInvPer}%
+          </div>
+          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+            <span
+              className="w-2 h-2 rounded-sm shrink-0"
+              style={{ background: "#f0883e" }}
+            />
+            Draft {draftedInvPer}%
+          </div>
         </div>
         <ResponsiveContainer width="100%" height={170}>
           <PieChart>

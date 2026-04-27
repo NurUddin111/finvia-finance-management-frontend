@@ -1,6 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { getKPICardDetails } from "@/services/business/dashboard/kpiCardDetails";
-import { getMonthlyRevenue } from "@/services/business/dashboard/monthlyRevenue";
 import { TrendingUp, FileText, CheckCircle, AlertCircle } from "lucide-react";
 
 interface KpiCardProps {

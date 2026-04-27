@@ -20,7 +20,9 @@ import {
 } from "@/components/modules/Business/Dashboard/DashboardTables";
 import { QuickActions } from "@/components/modules/Business/Dashboard/QuickActions";
 import { getMe } from "@/services/auth/getMe";
+import { getKPICardDetails } from "@/services/business/dashboard/kpiCardDetails";
 import { getMonthlyRevenue } from "@/services/business/dashboard/monthlyRevenue";
+import { getTopClients } from "@/services/business/dashboard/topClients";
 
 export default async function BusinessDashboardPage() {
   const myProfile = await getMe();
@@ -29,7 +31,6 @@ export default async function BusinessDashboardPage() {
 
   const MonthlyRevenueDetails = await getMonthlyRevenue();
   const monthlyRevenue = MonthlyRevenueDetails.data;
-  console.log(monthlyRevenue);
   const months = [
     "Jan",
     "Feb",
@@ -46,11 +47,24 @@ export default async function BusinessDashboardPage() {
   ];
 
   const revenueData = months
-    .filter((m) => monthlyRevenue[m] !== undefined) 
+    .filter((m) => monthlyRevenue[m] !== undefined)
     .map((m) => ({
       month: m,
       revenue: monthlyRevenue[m] as number,
     }));
+
+  const KPICardDetails = await getKPICardDetails();
+  const {
+    pendingInvoices,
+    pendingInvPer,
+    paidInvoices,
+    paidInvPer,
+    draftedInvoices,
+    draftedInvPer,
+  } = KPICardDetails.data.KPICardDetails;
+
+  const topClientsList = await getTopClients();
+  const topClients = topClientsList.data;
 
   return (
     <div className="p-6 space-y-5 max-w-7xl">
@@ -68,14 +82,21 @@ export default async function BusinessDashboardPage() {
 
       {/* ── Invoice status | Top products | Payment method ── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <InvoiceStatusChart />
+        <InvoiceStatusChart
+          paidInv={paidInvoices}
+          paidInvPer={paidInvPer}
+          pendingInv={pendingInvoices}
+          pendingInvPer={pendingInvPer}
+          draftedInv={draftedInvoices}
+          draftedInvPer={draftedInvPer}
+        />
         <TopProductsChart />
         <PaymentMethodChart />
       </div>
 
       {/* ── Top clients | Recent transactions ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <TopClientsTable />
+        <TopClientsTable topClients={topClients} />
         <RecentTransactions />
       </div>
 
