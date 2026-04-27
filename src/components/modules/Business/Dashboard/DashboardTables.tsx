@@ -57,14 +57,11 @@ export function TopClientsTable({
                     <span className="inline-flex items-center justify-center w-4 h-4 rounded text-[9px] bg-blue-500/10 text-blue-400 shrink-0 font-medium">
                       {i + 1}
                     </span>
-                    {/* <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-500/10 text-blue-400 text-[9px] shrink-0">
-                      {c.initials}
-                    </span> */}
                     <span className="text-foreground">{c.name}</span>
                   </div>
                 </td>
                 <td className="py-2.5 text-right font-medium text-foreground">
-                  {c.totalSpent}
+                  ৳{c.totalSpent}
                 </td>
                 <td className="py-2.5 text-right text-muted-foreground">
                   {c.totalInvoices}

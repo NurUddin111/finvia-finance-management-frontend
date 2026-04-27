@@ -26,6 +26,7 @@ import { getMonthlyRevenue } from "@/services/business/dashboard/monthlyRevenue"
 import { getOverdueInvoices } from "@/services/business/dashboard/overdueInvoices";
 import { getRecentTransactions } from "@/services/business/dashboard/recentTransaction";
 import { getTopClients } from "@/services/business/dashboard/topClients";
+import { getUpcomingOverdueInvoices } from "@/services/business/dashboard/upcomingOverdueInv";
 
 export default async function BusinessDashboardPage() {
   const myProfile = await getMe();
@@ -61,7 +62,8 @@ export default async function BusinessDashboardPage() {
   const overdueInvoicesList = await getOverdueInvoices();
   const overdueInvoices = overdueInvoicesList.data;
 
-  console.log(overdueInvoices);
+  const upcomingOverdueInvoicesList = await getUpcomingOverdueInvoices();
+  const upcomingOverdueInvoices = upcomingOverdueInvoicesList.data;
 
   return (
     <div className="p-6 space-y-5 max-w-7xl">
@@ -103,7 +105,7 @@ export default async function BusinessDashboardPage() {
           <OverdueInvoices overdueInvoices={overdueInvoices} />
         </div>
         <div className="lg:col-span-2">
-          <UpcomingDueDates />
+          <UpcomingDueDates upcomingOverdueInv={upcomingOverdueInvoices} />
         </div>
       </div>
 
