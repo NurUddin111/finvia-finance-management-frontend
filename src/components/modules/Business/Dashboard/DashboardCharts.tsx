@@ -382,12 +382,43 @@ export function ClientGrowthChart() {
 }
 
 // ── New vs Returning Donut ────────────────────────────────────────
-const clientTypeData = [
-  { name: "New", value: 27, fill: "#58a6ff" },
-  { name: "Returning", value: 40, fill: "#3fb950" },
-];
 
-export function ClientTypeChart() {
+// const clientTypeData = [
+//   { name: "New", value: 27 },
+//   { name: "Returning", value: 40 },
+// ];
+
+type clientPieChart = {
+  newClientsThisMonth: number;
+  newClientsDiff: number;
+  oldClientsThisMonth: number;
+  oldClientsDiff: number;
+  newClientsPercentage: number;
+  oldClientsPercentage: number;
+};
+
+export function ClientTypeChart({
+  clientPieChartData,
+}: {
+  clientPieChartData: clientPieChart;
+}) {
+  console.log(clientPieChartData);
+  const formattedClientPieChart = [
+    {
+      name: "New",
+      fill: "#58a6ff",
+      value: clientPieChartData.newClientsThisMonth,
+      percentage: clientPieChartData.newClientsPercentage,
+      difference: clientPieChartData.newClientsDiff,
+    },
+    {
+      name: "Returning",
+      fill: "#3fb950",
+      value: clientPieChartData.oldClientsThisMonth,
+      percentage: clientPieChartData.oldClientsPercentage,
+      difference: clientPieChartData.oldClientsDiff,
+    },
+  ];
   return (
     <Card className="bg-card border-border">
       <CardHeader className="pb-2">
@@ -397,7 +428,7 @@ export function ClientTypeChart() {
       </CardHeader>
       <CardContent>
         <div className="flex gap-3 mb-2">
-          {clientTypeData.map((d) => (
+          {formattedClientPieChart.map((d) => (
             <div
               key={d.name}
               className="flex items-center gap-1.5 text-[11px] text-muted-foreground"
@@ -406,14 +437,14 @@ export function ClientTypeChart() {
                 className="w-2 h-2 rounded-sm"
                 style={{ background: d.fill }}
               />
-              {d.name} {Math.round((d.value / 67) * 100)}%
+              {d.name} {d.percentage}%
             </div>
           ))}
         </div>
         <ResponsiveContainer width="100%" height={170}>
           <PieChart>
             <Pie
-              data={clientTypeData}
+              data={formattedClientPieChart}
               cx="50%"
               cy="50%"
               innerRadius={52}
@@ -438,16 +469,26 @@ export function ClientTypeChart() {
             <p className="text-[10px] text-muted-foreground mb-1">
               New this month
             </p>
-            <p className="text-xl font-semibold text-blue-400">27</p>
-            <p className="text-[10px] text-emerald-400 mt-1">
-              ↑ 5 vs last month
+            <p className="text-xl font-semibold text-blue-400">
+              {clientPieChartData.newClientsThisMonth}
+            </p>
+            <p
+              className={`text-[10px] mt-1 ${clientPieChartData.newClientsDiff >= 0 ? " text-emerald-400" : "text-orange-400"}`}
+            >
+              {clientPieChartData.newClientsDiff >= 0 ? "↑" : "↓"}
+              {clientPieChartData.newClientsDiff} vs last month
             </p>
           </div>
           <div className="bg-background rounded-lg p-3 text-center">
             <p className="text-[10px] text-muted-foreground mb-1">Returning</p>
-            <p className="text-xl font-semibold text-emerald-400">40</p>
-            <p className="text-[10px] text-emerald-400 mt-1">
-              ↑ 8 vs last month
+            <p className="text-xl font-semibold text-emerald-400">
+              {clientPieChartData.oldClientsThisMonth}
+            </p>
+            <p
+              className={`text-[10px] mt-1 ${clientPieChartData.oldClientsDiff >= 0 ? " text-emerald-400" : "text-orange-400"}`}
+            >
+              {clientPieChartData.oldClientsDiff >= 0 ? "↑" : "↓"}{" "}
+              {clientPieChartData.oldClientsDiff} vs last month
             </p>
           </div>
         </div>
