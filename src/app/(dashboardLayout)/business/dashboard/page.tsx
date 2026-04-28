@@ -20,6 +20,7 @@ import {
 } from "@/components/modules/Business/Dashboard/DashboardTables";
 import { QuickActions } from "@/components/modules/Business/Dashboard/QuickActions";
 import { getMe } from "@/services/auth/getMe";
+import { getClientsPieChartData } from "@/services/business/dashboard/clientsPieChart";
 import { months } from "@/services/business/dashboard/constants";
 import { getKPICardDetails } from "@/services/business/dashboard/kpiCardDetails";
 import { getMonthlyRevenue } from "@/services/business/dashboard/monthlyRevenue";
@@ -64,6 +65,9 @@ export default async function BusinessDashboardPage() {
 
   const upcomingOverdueInvoicesList = await getUpcomingOverdueInvoices();
   const upcomingOverdueInvoices = upcomingOverdueInvoicesList.data;
+
+  const clientPieChartsData = await getClientsPieChartData();
+  const clientPieCharts = clientPieChartsData.data;
 
   return (
     <div className="p-6 space-y-5 max-w-7xl">
@@ -111,7 +115,7 @@ export default async function BusinessDashboardPage() {
 
       {/* ── New vs returning clients | Client growth ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <ClientTypeChart />
+        <ClientTypeChart clientPieChartData={clientPieCharts} />
         <ClientGrowthChart />
       </div>
     </div>
