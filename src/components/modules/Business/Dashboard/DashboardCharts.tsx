@@ -97,33 +97,26 @@ export function RevenueChart({
   );
 }
 
-// ── Invoice Status Donut ──────────────────────────────────────────
-// const invoiceData = [
-//   { name: "Paid", value: 142, fill: "#3fb950" },
-//   { name: "Sent", value: 24, fill: "#58a6ff" },
-//   { name: "Draft", value: 18, fill: "#f0883e" },
-// ];
+type InvStatusChart = {
+  paidInvoices: number;
+  paidInvPer: number;
+  pendingInvoices: number;
+  pendingInvPer: number;
+  draftedInvoices: number;
+  draftedInvPer: number;
+};
 
 export function InvoiceStatusChart({
-  paidInv,
-  paidInvPer,
-  pendingInv,
-  pendingInvPer,
-  draftedInv,
-  draftedInvPer,
+  invStatusChart,
 }: {
-  paidInv: number;
-  paidInvPer: number;
-  pendingInv: number;
-  pendingInvPer: number;
-  draftedInv: number;
-  draftedInvPer: number;
+  invStatusChart: InvStatusChart;
 }) {
   const invoiceData = [
-    { name: "Paid", value: paidInv, fill: "#3fb950" },
-    { name: "Sent", value: pendingInv, fill: "#58a6ff" },
-    { name: "Draft", value: draftedInv, fill: "#f0883e" },
+    { name: "Paid", value: invStatusChart.paidInvoices, fill: "#3fb950" },
+    { name: "Sent", value: invStatusChart.pendingInvoices, fill: "#58a6ff" },
+    { name: "Draft", value: invStatusChart.draftedInvoices, fill: "#f0883e" },
   ];
+
   return (
     <Card className="bg-card border-border">
       <CardHeader className="pb-2">
@@ -136,21 +129,21 @@ export function InvoiceStatusChart({
               className="w-2 h-2 rounded-sm shrink-0"
               style={{ background: "#3fb950" }}
             />
-            Paid {paidInvPer}%
+            Paid {invStatusChart.paidInvPer}%
           </div>
           <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
             <span
               className="w-2 h-2 rounded-sm shrink-0"
               style={{ background: "#58a6ff" }}
             />
-            Sent {pendingInvPer}%
+            Sent {invStatusChart.pendingInvPer}%
           </div>
           <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
             <span
               className="w-2 h-2 rounded-sm shrink-0"
               style={{ background: "#f0883e" }}
             />
-            Draft {draftedInvPer}%
+            Draft {invStatusChart.draftedInvPer}%
           </div>
         </div>
         <ResponsiveContainer width="100%" height={170}>
@@ -317,65 +310,135 @@ export function PaymentMethodChart() {
 }
 
 // ── Client Growth Line Chart ──────────────────────────────────────
-const clientGrowthData = [
-  { month: "Jan", clients: 28 },
-  { month: "Feb", clients: 34 },
-  { month: "Mar", clients: 39 },
-  { month: "Apr", clients: 45 },
-  { month: "May", clients: 54 },
-  { month: "Jun", clients: 67 },
-];
 
-export function ClientGrowthChart() {
+type Month =
+  | "Jan"
+  | "Feb"
+  | "Mar"
+  | "Apr"
+  | "May"
+  | "Jun"
+  | "Jul"
+  | "Aug"
+  | "Sep"
+  | "Oct"
+  | "Nov"
+  | "Dec";
+
+type MonthlyClientCount = Partial<Record<Month, number>>;
+
+export function ClientGrowthChart({
+  clientNumbers,
+}: {
+  clientNumbers: MonthlyClientCount;
+}) {
+  // 1. Format the raw object into the array Recharts expects
+  const monthsOrder: Month[] = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const chartData = monthsOrder
+    .filter((m) => clientNumbers[m] !== undefined)
+    .map((m) => ({
+      month: m,
+      clients: clientNumbers[m],
+    }));
+
+  // 2. Dynamically determine the date range for the sub-header
+  const startMonth = chartData[0]?.month || "Jan";
+  const endMonth = chartData[chartData.length - 1]?.month || "Jan";
+  const currentYear = new Date().getFullYear();
+
   return (
-    <Card className="bg-card border-border">
+    <Card className="bg-card border-border shadow-sm">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-sm font-medium">Client growth</CardTitle>
-          <span className="text-[11px] text-muted-foreground">
-            Jan – Jun 2025
+          <div>
+            <CardTitle className="text-sm font-semibold text-foreground">
+              Client Growth
+            </CardTitle>
+            <p className="text-[11px] text-muted-foreground">
+              Total active client base over time
+            </p>
+          </div>
+          <span className="px-2 py-1 bg-muted/50 rounded-md text-[11px] font-medium text-muted-foreground">
+            {startMonth} – {endMonth} {currentYear}
           </span>
         </div>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={240}>
-          <LineChart data={clientGrowthData}>
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
-              vertical={false}
-            />
-            <XAxis
-              dataKey="month"
-              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
-              axisLine={false}
-              tickLine={false}
-            />
-            <YAxis
-              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
-              axisLine={false}
-              tickLine={false}
-            />
-            <Tooltip
-              formatter={(v) => [`${v ?? 0} clients`, "Total"]}
-              contentStyle={{
-                background: "hsl(var(--card))",
-                border: "1px solid hsl(var(--border))",
-                borderRadius: 8,
-                fontSize: 12,
-              }}
-              cursor={{ stroke: "hsl(var(--border))" }}
-            />
-            <Line
-              type="monotone"
-              dataKey="clients"
-              stroke="#58a6ff"
-              strokeWidth={2}
-              dot={{ fill: "#58a6ff", r: 4, strokeWidth: 0 }}
-              activeDot={{ r: 6, fill: "#58a6ff" }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        <div className="h-60 w-full pt-4">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={chartData}
+              margin={{ top: 5, right: 10, left: -20, bottom: 0 }}
+            >
+              <CartesianGrid
+                strokeDasharray="4 4"
+                stroke="hsl(var(--border))"
+                vertical={false}
+              />
+              <XAxis
+                dataKey="month"
+                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+                dy={10}
+              />
+              <YAxis
+                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+                allowDecimals={false}
+              />
+              <Tooltip
+                formatter={(value: any) => [`${value ?? 0} Clients`, "Total"]}
+                cursor={{
+                  stroke: "hsl(var(--primary))",
+                  strokeWidth: 1,
+                  strokeDasharray: "4 4",
+                }}
+                contentStyle={{
+                  background: "hsl(var(--card))",
+                  border: "1px solid hsl(var(--border))",
+                  borderRadius: "8px",
+                  fontSize: "12px",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                }}
+                labelStyle={{ fontWeight: "bold", marginBottom: "4px" }}
+              />
+              <Line
+                type="monotone"
+                dataKey="clients"
+                stroke="hsl(var(--primary))" // Uses your theme's primary color
+                strokeWidth={3}
+                dot={{
+                  fill: "hsl(var(--card))",
+                  stroke: "hsl(var(--primary))",
+                  strokeWidth: 2,
+                  r: 4,
+                }}
+                activeDot={{
+                  r: 6,
+                  strokeWidth: 0,
+                  fill: "hsl(var(--primary))",
+                }}
+                animationDuration={1500}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );
@@ -402,7 +465,6 @@ export function ClientTypeChart({
 }: {
   clientPieChartData: clientPieChart;
 }) {
-  console.log(clientPieChartData);
   const formattedClientPieChart = [
     {
       name: "New",
@@ -476,7 +538,7 @@ export function ClientTypeChart({
               className={`text-[10px] mt-1 ${clientPieChartData.newClientsDiff >= 0 ? " text-emerald-400" : "text-orange-400"}`}
             >
               {clientPieChartData.newClientsDiff >= 0 ? "↑" : "↓"}
-              {clientPieChartData.newClientsDiff} vs last month
+              {Math.abs(clientPieChartData.newClientsDiff)} vs last month
             </p>
           </div>
           <div className="bg-background rounded-lg p-3 text-center">
@@ -488,7 +550,7 @@ export function ClientTypeChart({
               className={`text-[10px] mt-1 ${clientPieChartData.oldClientsDiff >= 0 ? " text-emerald-400" : "text-orange-400"}`}
             >
               {clientPieChartData.oldClientsDiff >= 0 ? "↑" : "↓"}{" "}
-              {clientPieChartData.oldClientsDiff} vs last month
+              {Math.abs(clientPieChartData.oldClientsDiff)} vs last month
             </p>
           </div>
         </div>

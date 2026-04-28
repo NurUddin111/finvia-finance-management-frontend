@@ -22,7 +22,9 @@ function KpiCard({ label, value, sub, subType, icon }: KpiCardProps) {
     <Card className="bg-card border-border">
       <CardContent className="p-5">
         <div className="flex items-start justify-between mb-3">
-          <p className="text-xs text-muted-foreground tracking-wide ">{label}</p>
+          <p className="text-xs text-muted-foreground tracking-wide ">
+            {label}
+          </p>
           <div className="text-muted-foreground">{icon}</div>
         </div>
         <p className="text-2xl font-semibold text-foreground mb-1">{value}</p>
@@ -44,7 +46,7 @@ export async function DashboardKpiCards() {
     collectionRate,
     totalOverdueInvoices,
     overdueInvDiff,
-  } = KPICardDetails.data.KPICardDetails;
+  } = KPICardDetails.data;
 
   return (
     <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">

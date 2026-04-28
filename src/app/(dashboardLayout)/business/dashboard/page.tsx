@@ -20,6 +20,7 @@ import {
 } from "@/components/modules/Business/Dashboard/DashboardTables";
 import { QuickActions } from "@/components/modules/Business/Dashboard/QuickActions";
 import { getMe } from "@/services/auth/getMe";
+import { getClientsNumByMonth } from "@/services/business/dashboard/clientsByMonth";
 import { getClientsPieChartData } from "@/services/business/dashboard/clientsPieChart";
 import { months } from "@/services/business/dashboard/constants";
 import { getKPICardDetails } from "@/services/business/dashboard/kpiCardDetails";
@@ -44,15 +45,9 @@ export default async function BusinessDashboardPage() {
       revenue: monthlyRevenue[m] as number,
     }));
 
-  const KPICardDetails = await getKPICardDetails();
-  const {
-    pendingInvoices,
-    pendingInvPer,
-    paidInvoices,
-    paidInvPer,
-    draftedInvoices,
-    draftedInvPer,
-  } = KPICardDetails.data.KPICardDetails;
+  const KPICardDetailsList = await getKPICardDetails();
+  const KPICardDetails = KPICardDetailsList.data;
+  console.log(KPICardDetails);
 
   const topClientsList = await getTopClients();
   const topClients = topClientsList.data;
@@ -68,6 +63,9 @@ export default async function BusinessDashboardPage() {
 
   const clientPieChartsData = await getClientsPieChartData();
   const clientPieCharts = clientPieChartsData.data;
+
+  const clientsNumByMonthList = await getClientsNumByMonth();
+  const clientsNumByMonth = clientsNumByMonthList.data;
 
   return (
     <div className="p-6 space-y-5 max-w-7xl">
@@ -85,14 +83,7 @@ export default async function BusinessDashboardPage() {
 
       {/* ── Invoice status | Top products | Payment method ── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <InvoiceStatusChart
-          paidInv={paidInvoices}
-          paidInvPer={paidInvPer}
-          pendingInv={pendingInvoices}
-          pendingInvPer={pendingInvPer}
-          draftedInv={draftedInvoices}
-          draftedInvPer={draftedInvPer}
-        />
+        <InvoiceStatusChart invStatusChart={KPICardDetails} />
         <TopProductsChart />
         <PaymentMethodChart />
       </div>
@@ -116,7 +107,7 @@ export default async function BusinessDashboardPage() {
       {/* ── New vs returning clients | Client growth ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <ClientTypeChart clientPieChartData={clientPieCharts} />
-        <ClientGrowthChart />
+        <ClientGrowthChart clientNumbers={clientsNumByMonth} />
       </div>
     </div>
   );
