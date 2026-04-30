@@ -1,42 +1,34 @@
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Search } from "lucide-react";
 
-export default function ClientsFilters() {
+const ClientToolbar = () => {
   return (
-    <div className=" flex w-full flex-col gap-4 rounded-lg border p-4 md:flex-row md:items-center md:justify-between">
-      {/* Filters */}
-      <div className=" flex w-full flex-col gap-3 sm:flex-row sm:items-center md:max-w-xl">
-        {/* Search */}
-        <div className="relative w-full sm:flex-1">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Search clients..." className="pl-9" />
-        </div>
-
-        {/* Status */}
-        <Select defaultValue="all">
-          <SelectTrigger className="w-full sm:w-40">
-            <SelectValue placeholder="All Statuses" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
-            <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="inactive">Inactive</SelectItem>
-          </SelectContent>
-        </Select>
+    <div className="flex items-center gap-2.5 mb-4">
+      {/* Search */}
+      <div className="relative flex-1">
+        <Search
+          size={14}
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-white/25 pointer-events-none"
+        />
+        <input
+          type="text"
+          placeholder="Search clients by name, email, or phone…"
+          className="w-full border border-white/9 rounded-[9px] pl-9 pr-3 py-2 text-[13px] text-white placeholder:text-white/25 outline-none focus:border-violet-500/50 transition-colors"
+        />
       </div>
 
-      {/* Result Count */}
-      <p className="text-sm text-muted-foreground text-left md:text-right">
-        5 results found
-      </p>
+      {/* Status filter */}
+      <select className="bg-[#16161E] border border-white/9 rounded-[9px] px-3 py-2 text-[13px] text-white/60 outline-none cursor-pointer focus:border-violet-500/50 transition-colors">
+        <option value="all">All Statuses</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+
+      {/* Result count */}
+      <span className="text-[12px] text-white/30 whitespace-nowrap">
+        -- result found
+      </span>
     </div>
   );
-}
+};
+
+export default ClientToolbar;

@@ -1,20 +1,39 @@
-import { cn } from "@/lib/utils";
+import { ClientStatus } from "@/types/client";
+import React from "react";
+interface BadgeStyle {
+  wrapper: string;
+  dot: string;
+  label: string;
+}
 
-export default function ClientStatusBadge({
-  status,
-}: {
-  status: "active" | "pending" | "inactive";
-}) {
+const STATUS_STYLES: Record<ClientStatus, BadgeStyle> = {
+  active: {
+    wrapper: "bg-emerald-400/10 text-emerald-400",
+    dot: "bg-emerald-400",
+    label: "Active",
+  },
+  inactive: {
+    wrapper: "bg-white/5 text-white/30",
+    dot: "bg-white/20",
+    label: "Inactive",
+  },
+};
+
+interface ClientStatusBadgeProps {
+  status: ClientStatus;
+}
+
+const ClientStatusBadge: React.FC<ClientStatusBadgeProps> = ({ status }) => {
+  const style = STATUS_STYLES[status] ?? STATUS_STYLES.inactive;
+
   return (
     <span
-      className={cn(
-        "rounded-full px-3 py-1 text-xs font-medium",
-        status === "active" && "bg-green-100 text-green-700",
-        status === "pending" && "bg-yellow-100 text-yellow-700",
-        status === "inactive" && "bg-gray-100 text-gray-700"
-      )}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium ${style.wrapper}`}
     >
-      {status.charAt(0).toUpperCase() + status.slice(1)}
+      <span className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
+      {style.label}
     </span>
   );
-}
+};
+
+export default ClientStatusBadge;
