@@ -1,13 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 import UpdateClientModal from "./EditClient";
 import DeleteClientModal from "./DeleteClientModal";
 
-export default function ClientActions({
-  client,
-}: {
+interface ClientActionsProps {
   client: {
     id: string;
     name: string;
@@ -15,32 +13,43 @@ export default function ClientActions({
     phone?: string;
     address?: string;
   };
-}) {
-  const [open, setOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
+}
+
+export default function ClientActions({ client }: ClientActionsProps) {
+  const [open, setOpen] = useState<boolean>(false);
+  const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
 
   return (
     <>
-      <div className="flex w-full justify-end gap-2 md:flex-col md:w-auto">
-        <Button
-          onClick={() => setOpen(true)}
-          variant="outline"
-          size="sm"
-          className="flex-1 md:flex-none min-w-18 h-9 px-3 border-white/10  hover:border-indigo-500/40  hover:bg-indigo-500/1"
+      <div className="flex items-center gap-1.5">
+        {/* View — no modal yet, wire when ready */}
+        <button
+          title="View client"
+          className="w-7.5 h-7.5 rounded-[7px] flex items-center justify-center bg-white/5 text-white/40 hover:bg-white/10 hover:text-white transition-all duration-150"
         >
-          Edit
-        </Button>
+          <Eye size={14} />
+        </button>
 
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setDeleteOpen(true)}
-          className="flex-1 md:flex-none min-w-18 h-9 px-3 border-red-500/30 text-red-500 hover:bg-red-500/10 hover:border-red-500"
+        {/* Edit */}
+        <button
+          title="Edit client"
+          onClick={() => setOpen(true)}
+          className="w-7.5 h-7.5 rounded-[7px] flex items-center justify-center bg-violet-500/15 text-violet-300 hover:bg-violet-500/30 hover:text-violet-200 transition-all duration-150"
         >
-          Delete
-        </Button>
+          <Pencil size={14} />
+        </button>
+
+        {/* Delete */}
+        <button
+          title="Delete client"
+          onClick={() => setDeleteOpen(true)}
+          className="w-7.5 h-7.5 rounded-[7px] flex items-center justify-center bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-all duration-150"
+        >
+          <Trash2 size={14} />
+        </button>
       </div>
 
+      {/* Your existing modals — untouched */}
       <UpdateClientModal
         open={open}
         onClose={() => setOpen(false)}

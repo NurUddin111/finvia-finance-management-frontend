@@ -1,16 +1,27 @@
-import ClientsHeader from "@/components/modules/Business/Clients/ClientHeader";
-import ClientsFilters from "@/components/modules/Business/Clients/ClientsFilter";
-import ClientsTable from "@/components/modules/Business/Clients/ClientsTable";
-import React from "react";
+"use server";
 
-const ClientsPage = () => {
+import ClientsHeader from "@/components/modules/Business/Clients/ClientHeader";
+import ClientStatCards from "@/components/modules/Business/Clients/ClientStatsCard";
+import ClientToolbar from "@/components/modules/Business/Clients/ClientsFilter";
+import ClientsTable from "@/components/modules/Business/Clients/ClientsTable";
+import { getAllClients } from "@/services/business/clients/getAllClients";
+
+const ClientsPage = async () => {
+  const res = await getAllClients();
+  const clients = res.success ? res.data : [];
   return (
-    <div>
-      <div className="space-y-6">
-        <ClientsHeader />
-        <ClientsFilters />
-        <ClientsTable />
-      </div>
+    <div className="p-7 min-h-screen">
+      {/* Page header */}
+      <ClientsHeader />
+
+      {/* Stat summary cards */}
+      <ClientStatCards />
+
+      {/* Search + filter toolbar */}
+      <ClientToolbar />
+
+      {/* Main table */}
+      <ClientsTable clients={clients} />
     </div>
   );
 };

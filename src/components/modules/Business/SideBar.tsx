@@ -25,6 +25,11 @@ const BusinessSideBar = () => {
             icon="invoices"
             href="/business/dashboard/invoices"
           />
+          <SidebarItem
+            label="Products"
+            icon="products"
+            href="/business/dashboard/products"
+          />
           <SettingsAccordion />
         </nav>
 
