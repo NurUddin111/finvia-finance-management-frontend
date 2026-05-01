@@ -1,4 +1,4 @@
-export type ClientStatus = "active" | "inactive";
+export type ClientStatus = "ACTIVE" | "INACTIVE";
 
 export interface Client {
   id: string;
@@ -6,30 +6,20 @@ export interface Client {
   email: string;
   phone: string;
   address: string;
+  status: ClientStatus;
   totalInvoices: number;
   totalSpent: number;
   isDeleted: false;
   createdAt: Date;
   updatedAt: Date;
+  formattedDate: string;
 }
 
-export interface BusinessClient {
-  id: string;
-  businessId: string;
-  clientId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  client: {
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
-    address: string;
-    totalInvoices: number;
-    totalSpent: number;
-    isDeleted: false;
-    createdAt: Date;
-    updatedAt: Date;
-  };
-  formattedDate: string;
+export interface ClientsStats {
+  totalClients: number;
+  currentMonthClients: number;
+  activeClients: number;
+  activeClientPercentage: number;
+  inactiveClients: number;
+  neverBilledClients: number;
 }

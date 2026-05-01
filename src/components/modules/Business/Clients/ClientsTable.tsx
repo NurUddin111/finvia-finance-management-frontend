@@ -1,9 +1,8 @@
 "use client";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Client, ClientStatus } from "@/types/client";
 import ClientActions from "./ClientActions";
 import ClientAvatar from "./ClientAvatar";
-import { BusinessClient } from "@/types/client";
 
 const TABLE_HEADERS = [
   "Client",
@@ -14,12 +13,29 @@ const TABLE_HEADERS = [
   "Actions",
 ];
 
-const StatusBadge = () => (
-  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-emerald-400/10 text-emerald-400">
-    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-    Active
-  </span>
-);
+const statusConfig: Record<ClientStatus, { dot: string; badge: string }> = {
+  ACTIVE: {
+    dot: "bg-emerald-400",
+    badge: "bg-emerald-400/10 text-emerald-400",
+  },
+  INACTIVE: {
+    dot: "bg-zinc-400",
+    badge: "bg-zinc-400/10 text-zinc-400",
+  },
+};
+
+const StatusBadge = ({ status }: { status: ClientStatus }) => {
+  const { dot, badge } = statusConfig[status];
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium ${badge}`}
+    >
+      <span className={`w-1.5 h-1.5 rounded-full ${dot}`} />
+      {status}
+    </span>
+  );
+};
 
 const InvoicePill = ({ count }: { count: number }) => {
   if (!count || count === 0) {
@@ -44,11 +60,7 @@ const EmptyState = ({ colSpan }: { colSpan: number }) => (
   </tr>
 );
 
-export default function ClientsTable({
-  clients,
-}: {
-  clients: BusinessClient[];
-}) {
+export default function ClientsTable({ clients }: { clients: Client[] }) {
   return (
     <>
       {/* ── Mobile cards ── */}
@@ -58,23 +70,23 @@ export default function ClientsTable({
             No clients found!
           </div>
         ) : (
-          clients.map((client: BusinessClient) => (
+          clients.map((client: Client) => (
             <div
               key={client.id}
               className="w-full rounded-xl border border-white/[0.07] p-4 space-y-3"
             >
               {/* Client info */}
               <div className="flex items-center gap-3">
-                <ClientAvatar name={client?.client.name} />
+                <ClientAvatar name={client?.name} />
                 <div className="min-w-0">
                   <p className="text-[13px] font-medium text-white truncate">
-                    {client?.client.name}
+                    {client?.name}
                   </p>
                   <p className="text-[12px] text-white/40 truncate">
-                    {client?.client.email}
+                    {client?.email}
                   </p>
                   <p className="text-[11px] text-white/25">
-                    {client?.client.phone || "—"}
+                    {client?.phone || "—"}
                   </p>
                 </div>
               </div>
@@ -83,11 +95,11 @@ export default function ClientsTable({
               <div className="flex justify-between text-[12px] border-t border-white/5 pt-3">
                 <div className="space-y-1.5">
                   <p className="text-white/30">Status</p>
-                  <StatusBadge />
+                  <StatusBadge status={client.status} />
                 </div>
                 <div className="space-y-1.5">
                   <p className="text-white/30">Invoices</p>
-                  <InvoicePill count={client.client.totalInvoices ?? 0} />
+                  <InvoicePill count={client.totalInvoices ?? 0} />
                 </div>
                 <div className="space-y-1.5 text-right">
                   <p className="text-white/30">Added</p>
@@ -97,7 +109,7 @@ export default function ClientsTable({
 
               {/* Actions */}
               <div className="border-t border-white/5 pt-3">
-                <ClientActions client={client?.client} />
+                <ClientActions client={client} />
               </div>
             </div>
           ))
@@ -124,7 +136,7 @@ export default function ClientsTable({
             {clients.length === 0 ? (
               <EmptyState colSpan={TABLE_HEADERS.length} />
             ) : (
-              clients.map((client: any, idx: number) => (
+              clients.map((client: Client, idx: number) => (
                 <tr
                   key={client.id}
                   className="border-b border-white/5 last:border-0 hover:bg-white/2 transition-colors duration-150"
@@ -132,10 +144,10 @@ export default function ClientsTable({
                   {/* Client */}
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-3">
-                      <ClientAvatar name={client?.client.name} />
+                      <ClientAvatar name={client.name} />
                       <div>
                         <p className="text-[13px] font-medium text-white leading-none">
-                          {client?.client.name}
+                          {client.name}
                         </p>
                         <p className="text-[11px] text-white/25 mt-1">
                           #{String(idx + 1).padStart(3, "0")}
@@ -147,21 +159,21 @@ export default function ClientsTable({
                   {/* Contact */}
                   <td className="px-4 py-3.5">
                     <p className="text-[12px] text-white/60 truncate">
-                      {client?.client.email}
+                      {client.email}
                     </p>
                     <p className="text-[11px] text-white/30 mt-0.5">
-                      {client?.client.phone || "—"}
+                      {client.phone || "—"}
                     </p>
                   </td>
 
                   {/* Status — hardcoded active until model is updated */}
                   <td className="px-4 py-3.5">
-                    <StatusBadge />
+                    <StatusBadge status={client.status} />
                   </td>
 
                   {/* Invoices */}
                   <td className="px-4 py-3.5">
-                    <InvoicePill count={client?.client.totalInvoices ?? 0} />
+                    <InvoicePill count={client.totalInvoices ?? 0} />
                   </td>
 
                   {/* Added */}
@@ -173,7 +185,7 @@ export default function ClientsTable({
 
                   {/* Actions */}
                   <td className="px-4 py-3.5">
-                    <ClientActions client={client?.client} />
+                    <ClientActions client={client} />
                   </td>
                 </tr>
               ))
