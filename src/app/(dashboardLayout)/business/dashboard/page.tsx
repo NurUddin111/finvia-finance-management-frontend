@@ -47,7 +47,6 @@ export default async function BusinessDashboardPage() {
 
   const KPICardDetailsList = await getKPICardDetails();
   const KPICardDetails = KPICardDetailsList.data;
-  console.log(KPICardDetails);
 
   const topClientsList = await getTopClients();
   const topClients = topClientsList.data;
