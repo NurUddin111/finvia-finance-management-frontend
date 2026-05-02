@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import CreateInvoiceModal from "./CreateInvoiceModal";
+import { FilePlus } from "lucide-react";
 
 export default function InvoicesHeader() {
   const [open, setOpen] = useState(false);
@@ -23,6 +24,7 @@ export default function InvoicesHeader() {
         onClick={() => setOpen(true)}
         className=" w-full md:w-auto h-11 rounded-full bg-primary px-6 text-primary-foreground transition-all duration-300 shadow-[0_0_0_1px_rgba(124,106,242,0.25)] md:hover:-translate-y-0.5 md:hover:shadow-[0_0_0_1px_rgba(124,106,242,0.4),0_18px_60px_rgba(124,106,242,0.4)]"
       >
+        <FilePlus />
         Create Invoice
       </Button>
 
