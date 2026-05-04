@@ -1,1 +1,1 @@
-// todo: Create a function to set OVERDUE if an invoice due date is passed.
+// todo: add payment method(CASH/ONLINE)

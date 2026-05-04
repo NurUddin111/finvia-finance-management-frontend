@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/app/(dashboardLayout)/business/dashboard/page.tsx
 
 import {
@@ -30,41 +31,53 @@ import { getRecentTransactions } from "@/services/business/dashboard/recentTrans
 import { getTopClients } from "@/services/business/dashboard/topClients";
 import { getUpcomingOverdueInvoices } from "@/services/business/dashboard/upcomingOverdueInv";
 
+// Unwraps a PromiseSettledResult, returning the fallback if it rejected
+function unwrap<T>(
+  res: PromiseSettledResult<{ success: boolean; data?: T; error?: any }>,
+  fallback: T,
+): T {
+  if (res.status === "rejected") return fallback;
+  if (!res.value.success || res.value.data === undefined) return fallback;
+  return res.value.data;
+}
+
 export default async function BusinessDashboardPage() {
   const myProfile = await getMe();
-  if (!myProfile) return null;
-  const { name, role, avatar } = myProfile?.data;
+  if (!myProfile?.data) return null;
+  const { name, role, avatar } = myProfile.data;
 
-  const MonthlyRevenueDetails = await getMonthlyRevenue();
-  const monthlyRevenue = MonthlyRevenueDetails.data;
+  const KPICardDetailsRes = await getKPICardDetails();
+  const KPICardDetails = KPICardDetailsRes.data;
+
+  const [
+    monthlyRevenueRes,
+    topClientsRes,
+    recentTransactionsRes,
+    overdueInvoicesRes,
+    upcomingOverdueRes,
+    clientPieRes,
+    clientGrowthRes,
+  ] = await Promise.allSettled([
+    getMonthlyRevenue(),
+    getTopClients(),
+    getRecentTransactions(),
+    getOverdueInvoices(),
+    getUpcomingOverdueInvoices(),
+    getClientsPieChartData(),
+    getClientsNumByMonth(),
+  ]);
+
+  const monthlyRevenue = unwrap(monthlyRevenueRes, {});
+  const topClients = unwrap(topClientsRes, []);
+  const recentTransactions = unwrap(recentTransactionsRes, []);
+  const overdueInvoices = unwrap(overdueInvoicesRes, []);
+  const upcomingOverdue = unwrap(upcomingOverdueRes, []);
+  const clientPieCharts = unwrap(clientPieRes, null);
+  const clientsNumByMonth = unwrap(clientGrowthRes, []);
 
   const revenueData = months
     .filter((m) => monthlyRevenue[m] !== undefined)
-    .map((m) => ({
-      month: m,
-      revenue: monthlyRevenue[m] as number,
-    }));
-
-  const KPICardDetailsList = await getKPICardDetails();
-  const KPICardDetails = KPICardDetailsList.data;
-
-  const topClientsList = await getTopClients();
-  const topClients = topClientsList.data;
-
-  const recentTransactionsList = await getRecentTransactions();
-  const recentTransactions = recentTransactionsList.data;
-
-  const overdueInvoicesList = await getOverdueInvoices();
-  const overdueInvoices = overdueInvoicesList.data;
-
-  const upcomingOverdueInvoicesList = await getUpcomingOverdueInvoices();
-  const upcomingOverdueInvoices = upcomingOverdueInvoicesList.data;
-
-  const clientPieChartsData = await getClientsPieChartData();
-  const clientPieCharts = clientPieChartsData.data;
-
-  const clientsNumByMonthList = await getClientsNumByMonth();
-  const clientsNumByMonth = clientsNumByMonthList.data;
+    .map((m) => ({ month: m, revenue: monthlyRevenue[m] as number }));
 
   return (
     <div className="p-6 space-y-5 max-w-7xl">
@@ -99,7 +112,7 @@ export default async function BusinessDashboardPage() {
           <OverdueInvoices overdueInvoices={overdueInvoices} />
         </div>
         <div className="lg:col-span-2">
-          <UpcomingDueDates upcomingOverdueInv={upcomingOverdueInvoices} />
+          <UpcomingDueDates upcomingOverdueInv={upcomingOverdue} />
         </div>
       </div>
 

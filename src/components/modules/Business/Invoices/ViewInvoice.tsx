@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import {
@@ -10,35 +9,9 @@ import {
 import { Button } from "@/components/ui/button";
 import InvoiceStatusBadge from "./InvoicesStatus";
 import InvoiceViewSkeleton from "./ViewInvSkeleton";
-import { URL } from "url";
 import { sendInvoice } from "@/services/business/invoices/sendInv";
 import { useRouter } from "next/navigation";
-
-type InvoiceItem = {
-  id: string;
-  name: string;
-  quantity: number;
-  pricePerUnit: number;
-  total: number;
-};
-
-type InvoiceData = {
-  id: string;
-  invoiceNumber: string;
-  status: string;
-  issueDate: string;
-  dueDate: string;
-  subtotal: number;
-  tax: number;
-  total: number;
-  currency: string;
-  notes: string | null;
-  invPdfUrl: URL;
-  client: {
-    email: string;
-  };
-  items: InvoiceItem[];
-};
+import { Invoice } from "@/types/invoice";
 
 export default function InvoiceViewModal({
   open,
@@ -48,7 +21,7 @@ export default function InvoiceViewModal({
 }: {
   open: boolean;
   onClose: () => void;
-  invoice: InvoiceData | null;
+  invoice: Invoice | null;
   loading: boolean;
 }) {
   const router = useRouter();
@@ -70,9 +43,7 @@ export default function InvoiceViewModal({
                   <h2 className="text-xl font-semibold truncate">
                     Invoice {invoice.invoiceNumber}
                   </h2>
-                  <InvoiceStatusBadge
-                    status={(invoice.status ?? "unpaid") as any}
-                  />
+                  <InvoiceStatusBadge status={invoice.status} />
                 </div>
 
                 <p className="text-sm text-muted-foreground truncate">
