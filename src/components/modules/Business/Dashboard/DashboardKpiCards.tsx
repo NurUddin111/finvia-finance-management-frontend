@@ -76,8 +76,8 @@ export async function DashboardKpiCards() {
       <KpiCard
         label="Overdue Invoices"
         value={totalOverdueInvoices}
-        sub={`${overdueInvDiff >= 0 ? "↑" : "↓"} ${overdueInvDiff} since last week`}
-        subType={overdueInvDiff <= 0 ? "up" : "warn"}
+        sub={`${overdueInvDiff >= 0 ? "↑" : "↓"} ${Math.abs(overdueInvDiff)} since last week`}
+        subType={overdueInvDiff >= 0 ? "up" : "warn"}
         icon={<AlertCircle size={16} className="text-orange-400" />}
       />
     </div>
