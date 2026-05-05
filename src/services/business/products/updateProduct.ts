@@ -2,35 +2,26 @@
 "use server";
 
 import { zodValidator } from "@/lib/zodValidator";
-import { AddClientZodSchemaValidation } from "@/zod/client.validation";
+import { AddProductZodSchemaValidation } from "@/zod/product.validation";
 import { cookies } from "next/headers";
 
-export const updateClient = async (
-  clientId: string,
+export const updateProduct = async (
+  productId: string,
   currentState: any,
-  formData: FormData
+  formData: FormData,
 ) => {
   try {
     const payload = {
       name: formData.get("name") || undefined,
-      email: formData.get("email") || undefined,
-      phone: formData.get("phone") || undefined,
-      address: formData.get("address") || undefined,
     };
 
-    (Object.keys(payload) as (keyof typeof payload)[]).forEach((key) => {
-      if (payload[key] === "" || payload[key] === null) {
-        payload[key] = undefined;
-      }
-    });
-
-    if (!payload.name && !payload.email && !payload.phone && !payload.address) {
+    if (!payload.name) {
       return { success: true };
     }
 
     const validationResult = zodValidator(
       payload,
-      AddClientZodSchemaValidation.partial()
+      AddProductZodSchemaValidation,
     );
 
     if (!validationResult.success) {
@@ -41,7 +32,7 @@ export const updateClient = async (
     const cookieHeader = cookieStore.toString();
 
     const res = await fetch(
-      `http://localhost:1126/api/v1/client/edit/${clientId}`,
+      `http://localhost:1126/api/v1/product/${productId}`,
       {
         method: "PATCH",
         headers: {
@@ -49,7 +40,7 @@ export const updateClient = async (
           Cookie: cookieHeader,
         },
         body: JSON.stringify(validationResult.data),
-      }
+      },
     );
 
     const result = await res.json();
@@ -57,7 +48,7 @@ export const updateClient = async (
     if (!res.ok) {
       return {
         success: false,
-        error: result?.message || "Failed to update client",
+        error: result?.message || "Failed to update product",
       };
     }
 
