@@ -2,11 +2,15 @@
 
 import ProductsHeader from "@/components/modules/Business/Product/ProductHeader";
 import ProductStatCards from "@/components/modules/Business/Product/ProductsStats";
+import ProductTable from "@/components/modules/Business/Product/ProductsTable";
 import ProductToolbar from "@/components/modules/Business/Product/ProductToolbar";
+import { getAllProducts } from "@/services/business/products/allProducts";
 import { getProductsStats } from "@/services/business/products/productsStats";
-import { ProductStats } from "@/types/product";
+import { Product, ProductStats } from "@/types/product";
 
 const ClientsPage = async () => {
+  const allProductsRes = await getAllProducts();
+  const products = allProductsRes.data as Product[];
   const productsStatsRes = await getProductsStats();
   const productsStats = productsStatsRes.data as ProductStats;
   return (
@@ -21,6 +25,11 @@ const ClientsPage = async () => {
       <ProductToolbar />
 
       {/* Main table */}
+      <ProductTable
+        products={products}
+        // onEdit={(product) => openEditModal(product)}
+        // onDelete={(product) => openDeleteDialog(product)}
+      />
     </div>
   );
 };

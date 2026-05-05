@@ -1,5 +1,5 @@
 import React from "react";
-import { Package, TrendingUp, Clock, DollarSign } from "lucide-react";
+import { Package, Clock, DollarSign, Award } from "lucide-react";
 import { ProductStats } from "@/types/product";
 
 type DeltaType = "up" | "down" | "neutral" | "warn";
@@ -61,7 +61,7 @@ const ProductStatCards = ({ productStats }: { productStats: ProductStats }) => {
     totalProducts,
     currentMonthProducts,
     totalEarning,
-    totalSold,
+    topSellingProduct,
     pendingOrders,
     pendingOrdersValue,
   } = productStats;
@@ -86,13 +86,15 @@ const ProductStatCards = ({ productStats }: { productStats: ProductStats }) => {
       iconColor: "text-emerald-400",
     },
     {
-      label: "Total Sold",
-      value: totalSold,
-      delta: totalSold > 0 ? "Units across all products" : "No sales yet",
-      deltaType: (totalSold > 0 ? "up" : "neutral") as DeltaType,
-      icon: <TrendingUp size={13} />,
-      iconBg: "bg-blue-500/20",
-      iconColor: "text-blue-400",
+      label: "Top Selling Product",
+      value: topSellingProduct ? topSellingProduct.name : "No sales yet",
+      delta: topSellingProduct
+        ? `${topSellingProduct.totalSold} units sold`
+        : "Start invoicing products",
+      deltaType: (topSellingProduct ? "up" : "neutral") as DeltaType,
+      icon: <Award size={13} />,
+      iconBg: "bg-violet-500/20",
+      iconColor: "text-violet-400",
     },
     {
       label: "Pending Orders",

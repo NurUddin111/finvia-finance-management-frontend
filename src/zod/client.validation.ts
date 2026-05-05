@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const CreateBusinessZodSchemaValidation = z.object({
+export const AddClientZodSchemaValidation = z.object({
   name: z
     .string({
       error: (issue) =>
@@ -20,11 +20,6 @@ export const CreateBusinessZodSchemaValidation = z.object({
         }
       },
     }),
-
-  category: z.string({
-    error: (issue) =>
-      issue.input === undefined ? "Category is required" : "Invalid Category",
-  }),
 
   email: z
     .email({
@@ -66,22 +61,4 @@ export const CreateBusinessZodSchemaValidation = z.object({
     })
     .max(500, { message: "Address cannot exceed 500 characters." })
     .optional(),
-
-  website: z
-    .url({
-      error: () => {
-        return "Invalid website url!";
-      },
-    })
-    .optional(),
-
-  logoUrl: z
-    .url({
-      error: () => {
-        return "Invalid logo url!";
-      },
-    })
-    .optional(),
 });
-
-
