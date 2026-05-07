@@ -2,7 +2,7 @@
 "use server";
 
 import { zodValidator } from "@/lib/zodValidator";
-import { AddClientZodSchemaValidation } from "@/zod/business.validation";
+import { AddClientZodSchemaValidation } from "@/zod/client.validation";
 import { cookies } from "next/headers";
 
 export const addClient = async (currentState: any, formData: FormData) => {
@@ -14,7 +14,7 @@ export const addClient = async (currentState: any, formData: FormData) => {
       address: formData.get("address") || undefined,
     };
 
-    if (!payload.name || !payload.email ) {
+    if (!payload.name || !payload.email) {
       return {
         success: false,
         error: "Name, Email are required",
@@ -23,7 +23,7 @@ export const addClient = async (currentState: any, formData: FormData) => {
 
     const validationResult = zodValidator(
       payload,
-      AddClientZodSchemaValidation
+      AddClientZodSchemaValidation,
     );
 
     if (!validationResult.success) {
@@ -42,7 +42,7 @@ export const addClient = async (currentState: any, formData: FormData) => {
     const cookieStore = await cookies();
     const cookieHeader = cookieStore.toString();
 
-    console.log(cookieHeader)
+    console.log(cookieHeader);
 
     const res = await fetch("http://localhost:1126/api/v1/client/add", {
       method: "POST",
