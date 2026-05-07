@@ -1,9 +1,47 @@
-import { Search } from "lucide-react";
+"use client";
 
-const ProductToolbar = () => {
+import { Search, X } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+
+const ProductToolbar = ({ total }: { total: number }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const [searchValue, setSearchValue] = useState(
+    searchParams.get("search") || "",
+  );
+  const isFirstRender = useRef(true);
+
+  // Only search is a filter here — no status/year on products
+  const isFiltered = !!searchParams.get("search");
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    const timer = setTimeout(() => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (searchValue) {
+        params.set("search", searchValue);
+      } else {
+        params.delete("search");
+      }
+      params.set("page", "1");
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [searchValue]);
+
+  const handleReset = () => {
+    setSearchValue("");
+    router.replace(pathname, { scroll: false });
+  };
+
   return (
     <div className="flex flex-col gap-2.5 mb-4 md:flex-row md:items-center">
-      {/* Search — full width on mobile, flex-1 on desktop */}
       <div className="relative flex-1">
         <Search
           size={14}
@@ -11,19 +49,29 @@ const ProductToolbar = () => {
         />
         <input
           type="text"
-          placeholder="Search clients by name, email, or phone…"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          placeholder="Search products by name…"
           className="w-full border border-white/8 rounded-[9px] pl-9 pr-3 py-2 text-[13px] text-white placeholder:text-white/25 outline-none focus:border-indigo-500/40 transition-colors"
         />
       </div>
 
-      {/* Second row on mobile: select + count side by side */}
       <div className="flex items-center gap-2.5">
-        {/* Divider — desktop only */}
         <div className="hidden md:block h-5 w-px bg-white/[0.07]" />
 
         <span className="text-[12px] text-white/25 whitespace-nowrap tabular-nums">
-          — result found
+          {total} result{total !== 1 ? "s" : ""} found
         </span>
+
+        {isFiltered && (
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[8px] text-[12px] text-white/40 border border-white/[0.07] hover:text-white/70 hover:border-white/20 transition-all"
+          >
+            <X size={12} />
+            Reset
+          </button>
+        )}
       </div>
     </div>
   );
