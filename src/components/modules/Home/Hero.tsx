@@ -39,7 +39,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.16, ease: "easeOut" }}
           className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center"
         >
-          <Button className=" h-12 px-8 rounded-full bg-primary text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 shadow-[0_0_0_1px_rgba(124,106,242,0.25),0_12px_45px_rgba(124,106,242,0.3)] hover:shadow-[0_0_0_1px_rgba(124,106,242,0.4),0_18px_60px_rgba(124,106,242,0.4)] w-full sm:w-auto">
+          <Button className="h-12 px-8 rounded-full bg-primary text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 shadow-[0_0_0_1px_rgba(124,106,242,0.25),0_12px_45px_rgba(124,106,242,0.3)] hover:shadow-[0_0_0_1px_rgba(124,106,242,0.4),0_18px_60px_rgba(124,106,242,0.4)] w-full sm:w-auto">
             Get started free
           </Button>
 

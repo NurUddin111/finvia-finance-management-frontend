@@ -30,6 +30,7 @@ import { getOverdueInvoices } from "@/services/business/dashboard/overdueInvoice
 import { getRecentTransactions } from "@/services/business/dashboard/recentTransaction";
 import { getTopClients } from "@/services/business/dashboard/topClients";
 import { getUpcomingOverdueInvoices } from "@/services/business/dashboard/upcomingOverdueInv";
+import { getTopProducts } from "@/services/business/products/topProducts";
 
 // Unwraps a PromiseSettledResult, returning the fallback if it rejected
 function unwrap<T>(
@@ -57,6 +58,7 @@ export default async function BusinessDashboardPage() {
     upcomingOverdueRes,
     clientPieRes,
     clientGrowthRes,
+    topProductsRes, // ← add
   ] = await Promise.allSettled([
     getMonthlyRevenue(),
     getTopClients(),
@@ -65,6 +67,7 @@ export default async function BusinessDashboardPage() {
     getUpcomingOverdueInvoices(),
     getClientsPieChartData(),
     getClientsNumByMonth(),
+    getTopProducts(), // ← add
   ]);
 
   const monthlyRevenue = unwrap(monthlyRevenueRes, {});
@@ -74,6 +77,7 @@ export default async function BusinessDashboardPage() {
   const upcomingOverdue = unwrap(upcomingOverdueRes, []);
   const clientPieCharts = unwrap(clientPieRes, null);
   const clientsNumByMonth = unwrap(clientGrowthRes, []);
+  const topProducts = unwrap(topProductsRes, []);
 
   const revenueData = months
     .filter((m) => monthlyRevenue[m] !== undefined)
@@ -96,7 +100,7 @@ export default async function BusinessDashboardPage() {
       {/* ── Invoice status | Top products | Payment method ── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <InvoiceStatusChart invStatusChart={KPICardDetails} />
-        <TopProductsChart />
+        <TopProductsChart topProducts={topProducts} />
         <PaymentMethodChart />
       </div>
 
