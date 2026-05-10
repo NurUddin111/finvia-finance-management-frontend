@@ -48,7 +48,7 @@ export default function Navbar() {
         "sticky top-0 z-50 transition-all",
         scrolled
           ? "bg-background/80 backdrop-blur-xl border-b border-border"
-          : "bg-transparent"
+          : "bg-transparent",
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
@@ -70,7 +70,7 @@ export default function Navbar() {
                 "relative text-sm text-muted-foreground transition-colors hover:text-foreground",
                 "after:absolute after:left-0 after:-bottom-1 after:h-0.5",
                 "after:w-0 after:bg-white after:transition-all after:duration-300",
-                "hover:after:w-full"
+                "hover:after:w-full",
               )}
             >
               {item.label}
@@ -90,7 +90,7 @@ export default function Navbar() {
 
           <Button
             onClick={() => router.push("/signup", { scroll: false })}
-            className="rounded-full px-5 bg-primary text-primary-foreground shadow-[0_0_0_1px_rgba(124,106,242,0.4),0_15px_50px_rgba(124,106,242,0.35)]"
+            className="rounded-full px-5 bg-primary text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 shadow-[0_0_0_1px_rgba(124,106,242,0.4),0_15px_50px_rgba(124,106,242,0.35)] hover:shadow-[0_0_0_1px_rgba(124,106,242,0.4),0_18px_60px_rgba(124,106,242,0.4)] w-full sm:w-auto"
           >
             Register
           </Button>

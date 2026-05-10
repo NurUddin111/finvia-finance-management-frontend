@@ -176,15 +176,23 @@ export function InvoiceStatusChart({
 }
 
 // ── Top Products Horizontal Bar ───────────────────────────────────
-const productData = [
-  { name: "Galaxy A55", units: 84 },
-  { name: "iPhone Case", units: 72 },
-  { name: "Redmi 13", units: 61 },
-  { name: "Realme Buds", units: 53 },
-  { name: "Screen Guard", units: 47 },
-];
+// const productData = [
+//   { name: "Galaxy A55", units: 84 },
+//   { name: "iPhone Case", units: 72 },
+//   { name: "Redmi 13", units: 61 },
+//   { name: "Realme Buds", units: 53 },
+//   { name: "Screen Guard", units: 47 },
+// ];
 
-export function TopProductsChart() {
+type TopProduct = { name: string; totalSold: number };
+
+export function TopProductsChart({
+  topProducts,
+}: {
+  topProducts: TopProduct[];
+}) {
+  const data = topProducts.map((p) => ({ name: p.name, units: p.totalSold }));
+
   return (
     <Card className="bg-card border-border">
       <CardHeader className="pb-2">
@@ -193,62 +201,70 @@ export function TopProductsChart() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={220}>
-          <BarChart
-            data={productData}
-            layout="vertical"
-            barSize={18}
-            margin={{ left: 8 }}
-          >
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
-              horizontal={false}
-            />
-            <XAxis
-              type="number"
-              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
-              axisLine={false}
-              tickLine={false}
-            />
-            <YAxis
-              type="category"
-              dataKey="name"
-              width={90}
-              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
-              axisLine={false}
-              tickLine={false}
-            />
-            <Tooltip
-              formatter={(v, n) => [`${v ?? 0} units`, String(n)]}
-              contentStyle={{
-                background: "hsl(var(--card))",
-                border: "1px solid hsl(var(--border))",
-                borderRadius: 8,
-                fontSize: 12,
-              }}
-              cursor={{ fill: "rgba(255,255,255,0.03)" }}
-            />
-            <Bar
-              dataKey="units"
-              radius={[0, 4, 4, 0]}
-              shape={(props: any) => {
-                const { x, y, width, height, index } = props;
-                const opacity = +(0.85 - index * 0.13).toFixed(2);
-                return (
-                  <rect
-                    x={x}
-                    y={y}
-                    width={width}
-                    height={height}
-                    fill={`rgba(88,166,255,${opacity})`}
-                    rx={4}
-                  />
-                );
-              }}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+        {data.length === 0 ? (
+          <div className="flex items-center justify-center h-55 text-sm text-muted-foreground">
+            No sales data yet
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart
+              data={data}
+              layout="vertical"
+              barSize={18}
+              margin={{ left: 8 }}
+            >
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="hsl(var(--border))"
+                horizontal={false}
+              />
+              <XAxis
+                type="number"
+                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                axisLine={false}
+                tickLine={false}
+                allowDecimals={false}
+              />
+              <YAxis
+                type="category"
+                dataKey="name"
+                width={90}
+                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <Tooltip
+                formatter={(v) => [`${v ?? 0} units`, "Sold"]}
+                contentStyle={{
+                  background: "hsl(var(--card))",
+                  border: "1px solid hsl(var(--border))",
+                  borderRadius: 8,
+                  fontSize: 12,
+                }}
+                itemStyle={{ color: "#4ade80" }}
+                cursor={{ fill: "rgba(255,255,255,0.03)" }}
+              />
+              <Bar
+                dataKey="units"
+                radius={[0, 4, 4, 0]}
+                shape={(props: any) => {
+                  const { x, y, width, height, index } = props;
+                  const opacity = +(0.85 - index * 0.13).toFixed(2);
+                  return (
+                    <rect
+                      x={x}
+                      y={y}
+                      width={width}
+                      height={height}
+                      fill={`rgba(88,166,255,${opacity})`}
+                      rx={4}
+                    />
+                  );
+                }}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
       </CardContent>
     </Card>
   );
