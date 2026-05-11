@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CircleUser } from "lucide-react";
+import { CircleUser, Sparkles } from "lucide-react";
 
 function formatRole(role: string) {
   return role
@@ -18,32 +18,69 @@ const DashboardHeader = async ({
   avatar: string;
 }) => {
   const formattedRole = formatRole(role);
+
   return (
-    <div className="flex items-start justify-between mb-5">
-      {/* Left — page title */}
-      <div>
-        <h1 className="text-xl font-semibold text-foreground">Dashboard</h1>
-        <p className="text-sm text-muted-foreground mt-0.5">
-          Overview of your business performance
-        </p>
+    <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between mb-8">
+      {/* LEFT SIDE */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center rounded-full border border-blue-500/20 bg-blue-500/10 p-1.5">
+            <Sparkles className="size-4 text-blue-400" />
+          </div>
+
+          <span className="text-xs font-medium tracking-[0.2em] uppercase text-blue-400">
+            Finvia Analytics
+          </span>
+        </div>
+
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight text-white">
+            Dashboard
+          </h1>
+
+          <p className="mt-1 text-sm text-slate-400 max-w-xl leading-relaxed">
+            Monitor revenue, invoices, payments, and client activity from one
+            central place.
+          </p>
+        </div>
       </div>
 
-      {/* Right — user card */}
-      <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-card border border-border">
-        <Avatar>
-          <AvatarImage src={avatar} alt="Profile image" />
-          <AvatarFallback>
-            <CircleUser aria-hidden="true" className="opacity-60" size={30} />
-          </AvatarFallback>
-        </Avatar>
+      {/* RIGHT SIDE */}
+      <div
+        className="
+          group
+          relative
+          overflow-hidden
+          rounded-2xl
+          border border-white/10
+          bg-white/3
+          px-4 py-3
+          backdrop-blur-xl
+          transition-all duration-300
+          hover:border-blue-500/30
+          hover:bg-blue-500/4
+          hover:shadow-[0_0_30px_rgba(59,130,246,0.12)]
+        "
+      >
+        {/* Glow */}
+        <div className="absolute inset-0 bg-linear-to-br from-blue-500/5 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-        <div className="text-left">
-          <p className="text-sm font-medium text-foreground leading-tight">
-            {name}
-          </p>
-          <p className="text-[11px] text-muted-foreground mt-0.5 tracking-wide">
-            {formattedRole}
-          </p>
+        <div className="relative flex items-center gap-3">
+          <Avatar className="size-11 border border-white/10 shadow-lg">
+            <AvatarImage src={avatar} alt={name} />
+
+            <AvatarFallback className="bg-slate-900 text-slate-300">
+              <CircleUser aria-hidden="true" className="opacity-70" size={22} />
+            </AvatarFallback>
+          </Avatar>
+
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-white">{name}</p>
+
+            <p className="mt-0.5 text-xs tracking-wide text-slate-400">
+              {formattedRole}
+            </p>
+          </div>
         </div>
       </div>
     </div>
