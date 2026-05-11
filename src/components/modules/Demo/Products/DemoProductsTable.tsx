@@ -1,12 +1,10 @@
-"use client";
+// src/components/modules/Demo/Product/DemoProductTable.tsx
 
 import { PackageOpen } from "lucide-react";
 import { Product } from "@/types/product";
-import ProductActions from "./ProductActions";
+import DemoProductActions from "./DemoProductActions";
 
-// Removed: useState, Search import, local `filtered` logic
-// Search is now handled server-side via URL params
-const ProductTable = ({ products }: { products: Product[] }) => {
+const DemoProductTable = ({ products }: { products: Product[] }) => {
   return (
     <div className="border border-white/[0.07] rounded-xl overflow-hidden">
       <table className="w-full text-sm">
@@ -57,7 +55,7 @@ const ProductTable = ({ products }: { products: Product[] }) => {
                   )}
                 </td>
                 <td className="px-4 py-3 text-center">
-                  <ProductActions product={product} />
+                  <DemoProductActions />
                 </td>
               </tr>
             ))
@@ -68,4 +66,4 @@ const ProductTable = ({ products }: { products: Product[] }) => {
   );
 };
 
-export default ProductTable;
+export default DemoProductTable;
