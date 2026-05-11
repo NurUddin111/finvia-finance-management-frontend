@@ -1,7 +1,7 @@
+// src/app/(dashboardLayout)/demo/dashboard/settings/page.tsx
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { User, Building2, Shield, Lock } from "lucide-react";
 
 const settingsItems = [
@@ -11,20 +11,15 @@ const settingsItems = [
   { label: "Password", slug: "password", icon: Lock },
 ];
 
-export default function MobileSettingsIndexPage() {
-  const pathname = usePathname();
-
+export default function DemoSettingsIndexPage() {
   return (
-    <div className="md:hidden p-4 space-y-3">
-      <h2 className="text-lg font-semibold mb-2">Settings</h2>
-
+    <div className="md:hidden space-y-3">
       {settingsItems.map((item) => {
         const Icon = item.icon;
-
         return (
           <Link
             key={item.slug}
-            href={`/business/dashboard/settings/${item.slug}`}
+            href={`/demo/dashboard/settings/${item.slug}`}
             className="flex items-center gap-3 rounded-xl border px-4 py-3 text-sm hover:bg-white/5 transition-colors"
           >
             <Icon size={18} className="text-muted-foreground" />

@@ -29,7 +29,7 @@ export default function DemoProductsHeader() {
         </Button>
 
         {showNudge && (
-          <div className="absolute right-0 top-13 z-50 flex items-center gap-2 rounded-xl border border-white/10 bg-card px-4 py-3 shadow-xl text-sm text-muted-foreground whitespace-nowrap">
+          <div className="absolute right-0 top-13 z-50 flex items-center gap-2 rounded-xl border border-white/10 bg-card bg-red-950 px-4 py-3 shadow-xl text-sm text-muted-foreground whitespace-nowrap">
             <Lock size={13} className="text-primary shrink-0" />
             Sign up to use this feature
           </div>

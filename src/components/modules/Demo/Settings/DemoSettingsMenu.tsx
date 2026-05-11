@@ -1,8 +1,7 @@
-// src/components/modules/Business/Settings/SettingsMenu.tsx
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   Accordion,
   AccordionContent,
@@ -18,7 +17,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { logoutUser } from "@/services/auth/logout";
 
 const settingsItems = [
   { label: "Profile", slug: "profile", icon: User },
@@ -31,13 +29,13 @@ interface SettingsAccordionProps {
   basePath?: string;
 }
 
-export default function SettingsAccordion({
-  basePath = "/business/dashboard/settings",
+export default function DemoSettingsAccordion({
+  basePath = "/demo/dashboard/settings",
 }: SettingsAccordionProps) {
   const pathname = usePathname();
   const isSettingsRoute = pathname.startsWith(basePath);
   const [openLogout, setOpenLogout] = useState(false);
-  const router = useRouter();
+  const [showNudge, setShowNudge] = useState(false);
 
   return (
     <>
@@ -108,13 +106,16 @@ export default function SettingsAccordion({
 
             <Button
               variant="destructive"
-              onClick={async () => {
-                await logoutUser();
-                router.refresh();
-              }}
+              onClick={() => setShowNudge((v) => !v)}
             >
               Logout
             </Button>
+            {showNudge && (
+              <div className="absolute right-0 top-13 z-50 flex items-center gap-2 rounded-xl border border-white/10 bg-card bg-red-950 px-4 py-3 shadow-xl text-sm text-muted-foreground whitespace-nowrap">
+                <Lock size={13} className="text-primary shrink-0" />
+                Sign up to use this feature
+              </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>

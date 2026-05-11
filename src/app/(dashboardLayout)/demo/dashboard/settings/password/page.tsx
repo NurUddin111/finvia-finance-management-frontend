@@ -1,12 +1,13 @@
+// src/app/(dashboardLayout)/demo/dashboard/settings/password/page.tsx
 "use client";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import ChangePasswordModal from "@/components/modules/Auth/ChangePasswordModal";
+import { Lock } from "lucide-react";
 
-export default function PasswordPage() {
-  const [openChangePassword, setOpenChangePassword] = useState(false);
+export default function DemoPasswordPage() {
+  const [showNudge, setShowNudge] = useState(false);
 
   return (
     <div className="w-full max-w-5xl">
@@ -29,20 +30,21 @@ export default function PasswordPage() {
               </p>
             </div>
 
-            <Button
-              variant="outline"
-              onClick={() => setOpenChangePassword(true)}
-            >
-              Change Password
-            </Button>
+            <div className="relative">
+              <Button variant="outline" onClick={() => setShowNudge((v) => !v)}>
+                Change Password
+              </Button>
+
+              {showNudge && (
+                <div className="absolute right-0 -top-12 z-50 flex items-center gap-2 rounded-xl border border-white/10 bg-card bg-red-950 px-4 py-2.5 shadow-xl text-sm text-muted-foreground whitespace-nowrap">
+                  <Lock size={13} className="text-primary shrink-0" />
+                  Sign up to change your password
+                </div>
+              )}
+            </div>
           </div>
         </CardContent>
       </Card>
-
-      <ChangePasswordModal
-        open={openChangePassword}
-        onClose={() => setOpenChangePassword(false)}
-      />
     </div>
   );
 }

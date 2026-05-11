@@ -89,7 +89,7 @@ export default function DemoInvoicesTable({
                 View
               </Button>
               {nudgeId === invoice.id && (
-                <div className="absolute right-0 bottom-10 z-50 flex items-center gap-2 rounded-xl border border-white/10 bg-card px-3 py-2 shadow-xl text-xs text-muted-foreground whitespace-nowrap">
+                <div className="absolute right-0 bottom-10 z-50 flex items-center gap-2 rounded-xl border border-white/10 bg-card bg-red-950 px-3 py-2 shadow-xl text-xs text-muted-foreground whitespace-nowrap">
                   <Lock size={11} className="text-primary shrink-0" />
                   Sign up to view invoice
                 </div>
@@ -172,7 +172,7 @@ export default function DemoInvoicesTable({
                     <Eye size={15} />
                   </Button>
                   {nudgeId === invoice.id && (
-                    <div className="absolute right-14 top-3 z-50 flex items-center gap-2 rounded-xl border border-white/10 bg-card px-3 py-2 shadow-xl text-xs text-muted-foreground whitespace-nowrap">
+                    <div className="absolute right-14 top-3 z-50 flex items-center gap-2 rounded-xl border border-white/10 bg-card bg-red-950 px-3 py-2 shadow-xl text-xs text-muted-foreground whitespace-nowrap">
                       <Lock size={11} className="text-primary shrink-0" />
                       Sign up to view invoice
                     </div>

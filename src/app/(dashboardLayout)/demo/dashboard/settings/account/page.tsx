@@ -1,78 +1,13 @@
+// src/app/(dashboardLayout)/demo/dashboard/settings/account/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Lock } from "lucide-react";
 
-import { getMyBusiness } from "@/services/business/getMyBusiness";
-import { getMyProfile } from "@/services/user/getMe";
-import { deleteMyAccount } from "@/services/user/deleteAccount";
-import { deleteMyBusiness } from "@/services/business/deleteBusiness";
-
-export default function AccountPage() {
-  const router = useRouter();
-
-  const [userId, setUserId] = useState<string>("");
-  const [businessId, setBusinessId] = useState<string>("");
-
-  const [openAccount, setOpenAccount] = useState(false);
-  const [openBusiness, setOpenBusiness] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  /* ================= FETCH IDS ================= */
-
-  useEffect(() => {
-    const fetchIds = async () => {
-      const profileRes = await getMyProfile();
-      if (profileRes?.success) {
-        setUserId(profileRes.data.id);
-      }
-
-      const businessRes = await getMyBusiness();
-      if (businessRes?.success) {
-        setBusinessId(businessRes.data.id);
-      }
-    };
-
-    fetchIds();
-  }, []);
-
-  /* ================= ACTIONS ================= */
-
-  const handleDeleteAccount = async () => {
-    if (!userId) return;
-    setLoading(true);
-
-    const res = await deleteMyAccount(userId);
-
-    setLoading(false);
-    if (res?.success) {
-      router.push("/login");
-    }
-  };
-
-  const handleDeleteBusiness = async () => {
-    if (!businessId) return;
-    setLoading(true);
-
-    const res = await deleteMyBusiness(businessId);
-
-    setLoading(false);
-    if (res?.success) {
-      router.refresh();
-    }
-  };
-
-  /* ================= UI ================= */
+export default function DemoAccountPage() {
+  const [nudge, setNudge] = useState<"business" | "account" | null>(null);
 
   return (
     <div className="w-full max-w-5xl">
@@ -98,13 +33,23 @@ export default function AccountPage() {
               </p>
             </div>
 
-            <Button
-              variant="destructive"
-              disabled={!businessId}
-              onClick={() => setOpenBusiness(true)}
-            >
-              Delete Business
-            </Button>
+            <div className="relative">
+              <Button
+                variant="destructive"
+                onClick={() =>
+                  setNudge((v) => (v === "business" ? null : "business"))
+                }
+              >
+                Delete Business
+              </Button>
+
+              {nudge === "business" && (
+                <div className="absolute right-0 -top-12 z-50 flex items-center gap-2 rounded-xl border border-white/10 bg-card  bg-red-950 px-4 py-2.5 shadow-xl text-sm text-muted-foreground whitespace-nowrap">
+                  <Lock size={13} className="text-primary shrink-0" />
+                  Sign up to manage your business
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="border-t" />
@@ -119,71 +64,26 @@ export default function AccountPage() {
               </p>
             </div>
 
-            <Button
-              variant="destructive"
-              disabled={!userId}
-              onClick={() => setOpenAccount(true)}
-            >
-              Delete Account
-            </Button>
+            <div className="relative">
+              <Button
+                variant="destructive"
+                onClick={() =>
+                  setNudge((v) => (v === "account" ? null : "account"))
+                }
+              >
+                Delete Account
+              </Button>
+
+              {nudge === "account" && (
+                <div className="absolute right-0 -top-12 z-50 flex items-center gap-2 rounded-xl border border-white/10 bg-card  bg-red-950 px-4 py-2.5 shadow-xl text-sm text-muted-foreground whitespace-nowrap">
+                  <Lock size={13} className="text-primary shrink-0" />
+                  Sign up to manage your account
+                </div>
+              )}
+            </div>
           </div>
         </CardContent>
       </Card>
-
-      {/* ================= Delete Business Modal ================= */}
-      <Dialog open={openBusiness} onOpenChange={setOpenBusiness}>
-        <DialogContent className="max-w-sm">
-          <DialogHeader>
-            <DialogTitle className="text-red-600">Delete Business</DialogTitle>
-          </DialogHeader>
-
-          <p className="text-sm text-muted-foreground">
-            This will permanently delete your business and all its associated
-            data.
-          </p>
-
-          <div className="mt-6 flex justify-end gap-3">
-            <Button variant="outline" onClick={() => setOpenBusiness(false)}>
-              Cancel
-            </Button>
-
-            <Button
-              variant="destructive"
-              disabled={loading}
-              onClick={handleDeleteBusiness}
-            >
-              {loading ? "Deleting..." : "Yes, Delete"}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* ================= Delete Account Modal ================= */}
-      <Dialog open={openAccount} onOpenChange={setOpenAccount}>
-        <DialogContent className="max-w-sm">
-          <DialogHeader>
-            <DialogTitle className="text-red-600">Delete Account</DialogTitle>
-          </DialogHeader>
-
-          <p className="text-sm text-muted-foreground">
-            This will permanently delete your account and all its data.
-          </p>
-
-          <div className="mt-6 flex justify-end gap-3">
-            <Button variant="outline" onClick={() => setOpenAccount(false)}>
-              Cancel
-            </Button>
-
-            <Button
-              variant="destructive"
-              disabled={loading}
-              onClick={handleDeleteAccount}
-            >
-              {loading ? "Deleting..." : "Yes, Delete"}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
