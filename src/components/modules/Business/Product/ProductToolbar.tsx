@@ -66,7 +66,7 @@ const ProductToolbar = ({ total }: { total: number }) => {
         {isFiltered && (
           <button
             onClick={handleReset}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[8px] text-[12px] text-white/40 border border-white/[0.07] hover:text-white/70 hover:border-white/20 transition-all"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[12px] text-white/40 border border-white/[0.07] hover:text-white/70 hover:border-white/20 transition-all"
           >
             <X size={12} />
             Reset
