@@ -13,7 +13,6 @@ import {
   Line,
   PieChart,
   Pie,
-  Sector,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -48,48 +47,85 @@ export function RevenueChart({
   }[];
 }) {
   return (
-    <Card className="bg-card border-border">
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-sm font-medium">Monthly revenue</CardTitle>
-          <div className="flex gap-1">
-            {/* <button className="text-[11px] px-3 py-1 rounded-full border border-border text-muted-foreground">
-              Weekly
-            </button> */}
-            <button className="text-[11px] px-3 py-1 rounded-full border border-blue-500/50 text-blue-400 bg-blue-500/10">
-              Monthly
-            </button>
-          </div>
+    <Card
+      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] transition-all duration-300  hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
+      "
+    >
+      {/* Ambient Glow */}
+      <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+        <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
+      </div>
+
+      <CardHeader className="relative flex flex-col gap-4 pb-2 sm:flex-row sm:items-center sm:justify-between">
+        {/* LEFT */}
+        <div className="space-y-1">
+          <CardTitle className="text-lg font-semibold tracking-tight text-white">
+            Monthly Revenue
+          </CardTitle>
+
+          <p className="text-sm text-slate-400">
+            Revenue performance over recent months
+          </p>
+        </div>
+
+        {/* RIGHT */}
+        <div className="flex items-center gap-2">
+          <button
+            className="rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-1.5 text-xs font-medium  text-blue-400 backdrop-blur-md transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15
+            "
+          >
+            Monthly
+          </button>
         </div>
       </CardHeader>
-      <CardContent>
-        <ResponsiveContainer width="100%" height={200}>
-          <BarChart data={revenueData} barCategoryGap="30%" barGap={4}>
+
+      <CardContent className="relative pt-4">
+        <ResponsiveContainer width="100%" height={260}>
+          <BarChart data={revenueData} barCategoryGap="22%">
+            <defs>
+              <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="rgba(96,165,250,0.95)" />
+                <stop offset="100%" stopColor="rgba(59,130,246,0.35)" />
+              </linearGradient>
+            </defs>
+
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
+              stroke="rgba(255,255,255,0.05)"
               vertical={false}
             />
+
             <XAxis
               dataKey="month"
-              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
+              tick={{
+                fill: "rgba(148,163,184,0.8)",
+                fontSize: 11,
+              }}
               axisLine={false}
               tickLine={false}
             />
+
             <YAxis
               tickFormatter={(v) => `৳${v / 1000}K`}
-              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
+              tick={{
+                fill: "rgba(148,163,184,0.8)",
+                fontSize: 11,
+              }}
               axisLine={false}
               tickLine={false}
             />
+
             <Tooltip
               content={<RevenueTooltip />}
-              cursor={{ fill: "rgba(255,255,255,0.03)" }}
+              cursor={{
+                fill: "rgba(255,255,255,0.025)",
+              }}
             />
+
             <Bar
               dataKey="revenue"
-              fill="rgba(88,166,255,0.75)"
-              radius={[4, 4, 0, 0]}
+              fill="url(#revenueGradient)"
+              radius={[10, 10, 4, 4]}
             />
           </BarChart>
         </ResponsiveContainer>
@@ -113,77 +149,145 @@ export function InvoiceStatusChart({
   invStatusChart: InvStatusChart;
 }) {
   const invoiceData = [
-    { name: "Paid", value: invStatusChart.paidInvoices, fill: "#3fb950" },
-    { name: "Sent", value: invStatusChart.pendingInvoices, fill: "#58a6ff" },
-    { name: "Draft", value: invStatusChart.draftedInvoices, fill: "#f0883e" },
+    {
+      name: "Paid",
+      value: invStatusChart.paidInvoices,
+      fill: "#22c55e",
+    },
+    {
+      name: "Sent",
+      value: invStatusChart.pendingInvoices,
+      fill: "#3b82f6",
+    },
+    {
+      name: "Draft",
+      value: invStatusChart.draftedInvoices,
+      fill: "#f59e0b",
+    },
   ];
 
+  const totalInvoices =
+    invStatusChart.paidInvoices +
+    invStatusChart.pendingInvoices +
+    invStatusChart.draftedInvoices;
+
   return (
-    <Card className="bg-card border-border">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium">Invoice status</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex gap-3 flex-wrap mb-3">
-          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <span
-              className="w-2 h-2 rounded-sm shrink-0"
-              style={{ background: "#3fb950" }}
-            />
-            Paid {invStatusChart.paidInvPer}%
-          </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <span
-              className="w-2 h-2 rounded-sm shrink-0"
-              style={{ background: "#58a6ff" }}
-            />
-            Sent {invStatusChart.pendingInvPer}%
-          </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <span
-              className="w-2 h-2 rounded-sm shrink-0"
-              style={{ background: "#f0883e" }}
-            />
-            Draft {invStatusChart.draftedInvPer}%
-          </div>
+    <Card
+      className="
+        group
+        relative
+        overflow-hidden
+        rounded-2xl
+        border border-white/10
+        bg-linear-to-b
+        from-[#0B1120]
+        to-[#050816]
+        transition-all duration-300
+        hover:border-blue-500/20
+        hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
+      "
+    >
+      {/* Ambient glow */}
+      <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+        <div className="absolute left-0 top-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
+      </div>
+
+      <CardHeader className="relative pb-2">
+        <div className="space-y-1">
+          <CardTitle className="text-lg font-semibold tracking-tight text-white">
+            Invoice Status
+          </CardTitle>
+
+          <p className="text-sm text-slate-400">
+            Distribution of invoice processing states
+          </p>
         </div>
-        <ResponsiveContainer width="100%" height={170}>
-          <PieChart>
-            <Pie
-              data={invoiceData}
-              cx="50%"
-              cy="50%"
-              innerRadius={52}
-              outerRadius={76}
-              paddingAngle={2}
-              dataKey="value"
-              stroke="transparent"
-            />
-            <Tooltip
-              formatter={(v, n) => [`${v ?? 0} invoices`, String(n)]}
-              contentStyle={{
-                background: "hsl(var(--card))",
-                border: "1px solid hsl(var(--border))",
-                borderRadius: 8,
-                fontSize: 12,
-              }}
-              labelStyle={{ color: "hsl(var(--muted-foreground))" }}
-            />
-          </PieChart>
-        </ResponsiveContainer>
+      </CardHeader>
+
+      <CardContent className="relative">
+        {/* LEGEND */}
+        <div className="mb-6 flex flex-wrap gap-3">
+          {invoiceData.map((item) => (
+            <div
+              key={item.name}
+              className="
+                flex items-center gap-2
+                rounded-full
+                border border-white/10
+                bg-white/3
+                px-3 py-1.5
+                backdrop-blur-md
+              "
+            >
+              <span
+                className="h-2.5 w-2.5 rounded-full"
+                style={{ background: item.fill }}
+              />
+
+              <span className="text-xs font-medium text-slate-300">
+                {item.name}
+              </span>
+
+              <span className="text-xs text-slate-500">
+                {item.name === "Paid"
+                  ? invStatusChart.paidInvPer
+                  : item.name === "Sent"
+                    ? invStatusChart.pendingInvPer
+                    : invStatusChart.draftedInvPer}
+                %
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* CHART */}
+        <div className="relative flex items-center justify-center">
+          {/* CENTER INFO */}
+          <div className="absolute z-10 flex flex-col items-center">
+            <span className="text-3xl font-semibold tracking-tight text-white">
+              {totalInvoices}
+            </span>
+
+            <span className="text-xs uppercase tracking-[0.2em] text-slate-500">
+              Invoices
+            </span>
+          </div>
+
+          <ResponsiveContainer width="100%" height={240}>
+            <PieChart>
+              <Pie
+                data={invoiceData}
+                cx="50%"
+                cy="50%"
+                innerRadius={70}
+                outerRadius={92}
+                paddingAngle={3}
+                dataKey="value"
+                stroke="rgba(255,255,255,0.04)"
+                strokeWidth={2}
+              />
+
+              <Tooltip
+                formatter={(v, n) => [`${v ?? 0} invoices`, String(n)]}
+                contentStyle={{
+                  background: "rgba(15,23,42,0.95)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: "14px",
+                  backdropFilter: "blur(10px)",
+                  fontSize: 12,
+                  color: "white",
+                }}
+                labelStyle={{
+                  color: "rgba(148,163,184,0.9)",
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );
 }
-
-// ── Top Products Horizontal Bar ───────────────────────────────────
-// const productData = [
-//   { name: "Galaxy A55", units: 84 },
-//   { name: "iPhone Case", units: 72 },
-//   { name: "Redmi 13", units: 61 },
-//   { name: "Realme Buds", units: 53 },
-//   { name: "Screen Guard", units: 47 },
-// ];
 
 type TopProduct = { name: string; totalSold: number };
 
@@ -192,76 +296,144 @@ export function TopProductsChart({
 }: {
   topProducts: TopProduct[];
 }) {
-  const data = topProducts.map((p) => ({ name: p.name, units: p.totalSold }));
+  const data = topProducts.map((p) => ({
+    name: p.name,
+    units: p.totalSold,
+  }));
 
   return (
-    <Card className="bg-card border-border">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium">
-          Top selling products
-        </CardTitle>
+    <Card
+      className="
+        group
+        relative
+        overflow-hidden
+        rounded-2xl
+        border border-white/10
+        bg-linear-to-b
+        from-[#0B1120]
+        to-[#050816]
+        transition-all duration-300
+        hover:border-blue-500/20
+        hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
+      "
+    >
+      {/* Ambient glow */}
+      <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+        <div className="absolute bottom-0 right-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
+      </div>
+
+      <CardHeader className="relative pb-2">
+        <div className="space-y-1">
+          <CardTitle className="text-lg font-semibold tracking-tight text-white">
+            Top Selling Products
+          </CardTitle>
+
+          <p className="text-sm text-slate-400">
+            Best performing products based on units sold
+          </p>
+        </div>
       </CardHeader>
-      <CardContent>
+
+      <CardContent className="relative">
         {data.length === 0 ? (
-          <div className="flex items-center justify-center h-55 text-sm text-muted-foreground">
-            No sales data yet
+          <div
+            className="
+              flex h-65 flex-col items-center justify-center
+              rounded-2xl
+              border border-dashed border-white/10
+              bg-white/2
+              text-center
+            "
+          >
+            <div className="mb-3 rounded-full border border-white/10 bg-white/3 p-3">
+              <div className="h-3 w-3 rounded-full bg-blue-400" />
+            </div>
+
+            <p className="text-sm font-medium text-slate-300">
+              No sales data yet
+            </p>
+
+            <p className="mt-1 text-xs text-slate-500">
+              Product analytics will appear here
+            </p>
           </div>
         ) : (
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={260}>
             <BarChart
               data={data}
               layout="vertical"
-              barSize={18}
-              margin={{ left: 8 }}
+              barSize={22}
+              margin={{
+                top: 8,
+                right: 12,
+                left: 20,
+                bottom: 8,
+              }}
             >
+              <defs>
+                <linearGradient
+                  id="productBarGradient"
+                  x1="0"
+                  y1="0"
+                  x2="1"
+                  y2="0"
+                >
+                  <stop offset="0%" stopColor="rgba(96,165,250,0.95)" />
+                  <stop offset="100%" stopColor="rgba(59,130,246,0.45)" />
+                </linearGradient>
+              </defs>
+
               <CartesianGrid
                 strokeDasharray="3 3"
-                stroke="hsl(var(--border))"
+                stroke="rgba(255,255,255,0.04)"
                 horizontal={false}
               />
+
               <XAxis
                 type="number"
-                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                allowDecimals={false}
+                tick={{
+                  fill: "rgba(148,163,184,0.8)",
+                  fontSize: 11,
+                }}
                 axisLine={false}
                 tickLine={false}
-                allowDecimals={false}
               />
+
               <YAxis
                 type="category"
                 dataKey="name"
-                width={90}
-                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
+                width={120}
+                tick={{
+                  fill: "rgba(226,232,240,0.92)",
+                  fontSize: 11,
+                }}
                 axisLine={false}
                 tickLine={false}
               />
+
               <Tooltip
                 formatter={(v) => [`${v ?? 0} units`, "Sold"]}
                 contentStyle={{
-                  background: "hsl(var(--card))",
-                  border: "1px solid hsl(var(--border))",
-                  borderRadius: 8,
+                  background: "rgba(15,23,42,0.95)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: "14px",
+                  backdropFilter: "blur(10px)",
                   fontSize: 12,
+                  color: "white",
                 }}
-                itemStyle={{ color: "#4ade80" }}
-                cursor={{ fill: "rgba(255,255,255,0.03)" }}
+                itemStyle={{
+                  color: "#60a5fa",
+                }}
+                cursor={{
+                  fill: "rgba(255,255,255,0.025)",
+                }}
               />
+
               <Bar
                 dataKey="units"
-                radius={[0, 4, 4, 0]}
-                shape={(props: any) => {
-                  const { x, y, width, height, index } = props;
-                  const opacity = +(0.85 - index * 0.13).toFixed(2);
-                  return (
-                    <rect
-                      x={x}
-                      y={y}
-                      width={width}
-                      height={height}
-                      fill={`rgba(88,166,255,${opacity})`}
-                      rx={4}
-                    />
-                  );
-                }}
+                radius={[0, 12, 12, 0]}
+                fill="url(#productBarGradient)"
               />
             </BarChart>
           </ResponsiveContainer>
@@ -284,77 +456,135 @@ export function PaymentMethodChart({ stats }: { stats: PaymentMethodStats }) {
   const isEmpty = stats.total === 0;
 
   return (
-    <Card className="bg-card border-border">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium">Payment method</CardTitle>
+    <Card
+      className="
+        group
+        relative
+        overflow-hidden
+        rounded-2xl
+        border border-white/10
+        bg-linear-to-b
+        from-[#0B1120]
+        to-[#050816]
+        transition-all duration-300
+        hover:border-blue-500/20
+        hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
+      "
+    >
+      {/* Ambient glow */}
+      <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+        <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
+      </div>
+
+      <CardHeader className="relative pb-2">
+        <div className="space-y-1">
+          <CardTitle className="text-lg font-semibold tracking-tight text-white">
+            Payment Methods
+          </CardTitle>
+
+          <p className="text-sm text-slate-400">
+            Preferred payment channels used by customers
+          </p>
+        </div>
       </CardHeader>
-      <CardContent>
+
+      <CardContent className="relative">
         {isEmpty ? (
-          <div className="flex items-center justify-center h-50 text-sm text-muted-foreground">
-            No payment data yet
+          <div
+            className="
+              flex h-65 flex-col items-center justify-center
+              rounded-2xl
+              border border-dashed border-white/10
+              bg-white/3
+              text-center
+            "
+          >
+            <div className="mb-3 rounded-full border border-white/10 bg-white/3 p-3">
+              <div className="h-3 w-3 rounded-full bg-blue-400" />
+            </div>
+
+            <p className="text-sm font-medium text-slate-300">
+              No payment data yet
+            </p>
+
+            <p className="mt-1 text-xs text-slate-500">
+              Payment analytics will appear here
+            </p>
           </div>
         ) : (
           <>
-            <div className="flex gap-3 mb-3">
+            {/* LEGEND */}
+            <div className="mb-6 flex flex-wrap gap-3">
               {data.map((d) => (
                 <div
                   key={d.name}
-                  className="flex items-center gap-1.5 text-[11px] text-muted-foreground"
+                  className="
+                    flex items-center gap-2
+                    rounded-full
+                    border border-white/10
+                    bg-white/3
+                    px-3 py-1.5
+                    backdrop-blur-md
+                  "
                 >
                   <span
-                    className="w-2 h-2 rounded-sm"
+                    className="h-2.5 w-2.5 rounded-full"
                     style={{ background: d.fill }}
                   />
-                  {d.name} {d.value}%
+
+                  <span className="text-xs font-medium text-slate-300">
+                    {d.name}
+                  </span>
+
+                  <span className="text-xs text-slate-500">{d.value}%</span>
                 </div>
               ))}
             </div>
 
-            <ResponsiveContainer width="100%" height={170}>
-              <PieChart>
-                <Pie
-                  data={data}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={52}
-                  outerRadius={76}
-                  paddingAngle={2}
-                  dataKey="value"
-                  stroke="transparent"
-                  shape={(props: any) => {
-                    const {
-                      cx,
-                      cy,
-                      innerRadius,
-                      outerRadius,
-                      startAngle,
-                      endAngle,
-                      fill,
-                    } = props;
-                    return (
-                      <Sector
-                        cx={cx}
-                        cy={cy}
-                        innerRadius={innerRadius}
-                        outerRadius={outerRadius}
-                        startAngle={startAngle}
-                        endAngle={endAngle}
-                        fill={fill}
-                      />
-                    );
-                  }}
-                />
-                <Tooltip
-                  formatter={(v, n) => [`${v ?? 0}%`, String(n)]}
-                  contentStyle={{
-                    background: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: 8,
-                    fontSize: 12,
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+            {/* CHART */}
+            <div className="relative flex items-center justify-center">
+              {/* CENTER INFO */}
+              <div className="absolute z-10 flex flex-col items-center">
+                <span className="text-3xl font-semibold tracking-tight text-white">
+                  {stats.total}
+                </span>
+
+                <span className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                  Payments
+                </span>
+              </div>
+
+              <ResponsiveContainer width="100%" height={240}>
+                <PieChart>
+                  <Pie
+                    data={data}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={70}
+                    outerRadius={92}
+                    paddingAngle={3}
+                    dataKey="value"
+                    stroke="rgba(255,255,255,0.04)"
+                    strokeWidth={2}
+                  />
+
+                  <Tooltip
+                    formatter={(v, n) => [`${v ?? 0}%`, String(n)]}
+                    contentStyle={{
+                      background: "rgba(15,23,42,0.95)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: "14px",
+                      backdropFilter: "blur(10px)",
+                      fontSize: 12,
+                      color: "white",
+                    }}
+                    labelStyle={{
+                      color: "rgba(148,163,184,0.9)",
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </>
         )}
       </CardContent>
@@ -380,12 +610,13 @@ type Month =
 
 type MonthlyClientCount = Partial<Record<Month, number>>;
 
+import { TrendingUp } from "lucide-react";
+
 export function ClientGrowthChart({
   clientNumbers,
 }: {
   clientNumbers: MonthlyClientCount;
 }) {
-  // 1. Format the raw object into the array Recharts expects
   const monthsOrder: Month[] = [
     "Jan",
     "Feb",
@@ -408,86 +639,149 @@ export function ClientGrowthChart({
       clients: clientNumbers[m],
     }));
 
-  // 2. Dynamically determine the date range for the sub-header
   const startMonth = chartData[0]?.month || "Jan";
   const endMonth = chartData[chartData.length - 1]?.month || "Jan";
+
   const currentYear = new Date().getFullYear();
 
   return (
-    <Card className="bg-card border-border shadow-sm">
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="text-sm font-semibold text-foreground">
+    <Card
+      className="
+        group
+        relative
+        overflow-hidden
+        rounded-2xl
+        border border-white/10
+        bg-linear-to-b
+        from-[#0B1120]
+        to-[#050816]
+        transition-all duration-300
+        hover:border-blue-500/20
+        hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
+      "
+    >
+      {/* Ambient glow */}
+      <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+        <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
+      </div>
+
+      <CardHeader className="relative pb-2">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          {/* LEFT */}
+          <div className="space-y-1">
+            <CardTitle className="text-lg font-semibold tracking-tight text-white">
               Client Growth
             </CardTitle>
-            <p className="text-[11px] text-muted-foreground">
-              Total active client base over time
+
+            <p className="text-sm text-slate-400">
+              Active customer growth over time
             </p>
           </div>
-          <span className="px-2 py-1 bg-muted/50 rounded-md text-[11px] font-medium text-muted-foreground">
+
+          {/* RIGHT */}
+          <div
+            className="
+              inline-flex w-fit items-center gap-2
+              rounded-full
+              border border-blue-500/20
+              bg-blue-500/10
+              px-3 py-1.5
+              text-xs font-medium text-blue-400
+            "
+          >
+            <TrendingUp className="size-3.5" />
             {startMonth} – {endMonth} {currentYear}
-          </span>
+          </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="h-60 w-full pt-4">
+
+      <CardContent className="relative pt-4">
+        <div className="h-70 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={chartData}
-              margin={{ top: 5, right: 10, left: -20, bottom: 0 }}
+              margin={{
+                top: 10,
+                right: 12,
+                left: -18,
+                bottom: 0,
+              }}
             >
+              <defs>
+                <linearGradient id="growthGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="rgba(59,130,246,0.45)" />
+
+                  <stop offset="100%" stopColor="rgba(59,130,246,0)" />
+                </linearGradient>
+              </defs>
+
               <CartesianGrid
-                strokeDasharray="4 4"
-                stroke="hsl(var(--border))"
+                strokeDasharray="3 3"
+                stroke="rgba(255,255,255,0.05)"
                 vertical={false}
               />
+
               <XAxis
                 dataKey="month"
-                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
+                tick={{
+                  fill: "rgba(148,163,184,0.8)",
+                  fontSize: 11,
+                }}
                 axisLine={false}
                 tickLine={false}
                 dy={10}
               />
+
               <YAxis
-                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
+                allowDecimals={false}
+                tick={{
+                  fill: "rgba(148,163,184,0.8)",
+                  fontSize: 11,
+                }}
                 axisLine={false}
                 tickLine={false}
-                allowDecimals={false}
               />
+
               <Tooltip
                 formatter={(value: any) => [`${value ?? 0} Clients`, "Total"]}
                 cursor={{
-                  stroke: "hsl(var(--primary))",
+                  stroke: "rgba(59,130,246,0.4)",
                   strokeWidth: 1,
                   strokeDasharray: "4 4",
                 }}
                 contentStyle={{
-                  background: "hsl(var(--card))",
-                  border: "1px solid hsl(var(--border))",
-                  borderRadius: "8px",
-                  fontSize: "12px",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  background: "rgba(15,23,42,0.95)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: "14px",
+                  backdropFilter: "blur(10px)",
+                  fontSize: 12,
+                  color: "white",
                 }}
-                labelStyle={{ fontWeight: "bold", marginBottom: "4px" }}
+                labelStyle={{
+                  color: "rgba(148,163,184,0.9)",
+                  marginBottom: "6px",
+                  fontWeight: 600,
+                }}
               />
+
               <Line
                 type="monotone"
                 dataKey="clients"
-                stroke="hsl(var(--primary))" // Uses your theme's primary color
-                strokeWidth={3}
+                stroke="#3b82f6"
+                strokeWidth={3.5}
                 dot={{
-                  fill: "hsl(var(--card))",
-                  stroke: "hsl(var(--primary))",
-                  strokeWidth: 2,
+                  fill: "#0B1120",
+                  stroke: "#3b82f6",
+                  strokeWidth: 2.5,
                   r: 4,
                 }}
                 activeDot={{
-                  r: 6,
-                  strokeWidth: 0,
-                  fill: "hsl(var(--primary))",
+                  r: 7,
+                  fill: "#3b82f6",
+                  stroke: "#0B1120",
+                  strokeWidth: 2,
                 }}
-                animationDuration={1500}
+                animationDuration={1400}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -513,6 +807,8 @@ type clientPieChart = {
   oldClientsPercentage: number;
 };
 
+import { Users2 } from "lucide-react";
+
 export function ClientTypeChart({
   clientPieChartData,
 }: {
@@ -521,88 +817,198 @@ export function ClientTypeChart({
   const formattedClientPieChart = [
     {
       name: "New",
-      fill: "#58a6ff",
+      fill: "#3b82f6",
       value: clientPieChartData.newClientsThisMonth,
       percentage: clientPieChartData.newClientsPercentage,
       difference: clientPieChartData.newClientsDiff,
     },
     {
       name: "Returning",
-      fill: "#3fb950",
+      fill: "#22c55e",
       value: clientPieChartData.oldClientsThisMonth,
       percentage: clientPieChartData.oldClientsPercentage,
       difference: clientPieChartData.oldClientsDiff,
     },
   ];
+
+  const totalClients =
+    clientPieChartData.newClientsThisMonth +
+    clientPieChartData.oldClientsThisMonth;
+
   return (
-    <Card className="bg-card border-border">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium">
-          New vs returning clients
-        </CardTitle>
+    <Card
+      className="
+        group
+        relative
+        overflow-hidden
+        rounded-2xl
+        border border-white/10
+        bg-linear-to-b
+        from-[#0B1120]
+        to-[#050816]
+        transition-all duration-300
+        hover:border-blue-500/20
+        hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
+      "
+    >
+      {/* Ambient Glow */}
+      <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+        <div className="absolute left-0 top-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
+      </div>
+
+      <CardHeader className="relative pb-2">
+        <div className="space-y-1">
+          <CardTitle className="text-lg font-semibold tracking-tight text-white">
+            Client Growth
+          </CardTitle>
+
+          <p className="text-sm text-slate-400">
+            New versus returning customer engagement
+          </p>
+        </div>
       </CardHeader>
-      <CardContent>
-        <div className="flex gap-3 mb-2">
+
+      <CardContent className="relative">
+        {/* LEGEND */}
+        <div className="mb-6 flex flex-wrap gap-3">
           {formattedClientPieChart.map((d) => (
             <div
               key={d.name}
-              className="flex items-center gap-1.5 text-[11px] text-muted-foreground"
+              className="
+                flex items-center gap-2
+                rounded-full
+                border border-white/10
+                bg-white/3
+                px-3 py-1.5
+                backdrop-blur-md
+              "
             >
               <span
-                className="w-2 h-2 rounded-sm"
+                className="h-2.5 w-2.5 rounded-full"
                 style={{ background: d.fill }}
               />
-              {d.name} {d.percentage}%
+
+              <span className="text-xs font-medium text-slate-300">
+                {d.name}
+              </span>
+
+              <span className="text-xs text-slate-500">{d.percentage}%</span>
             </div>
           ))}
         </div>
-        <ResponsiveContainer width="100%" height={170}>
-          <PieChart>
-            <Pie
-              data={formattedClientPieChart}
-              cx="50%"
-              cy="50%"
-              innerRadius={52}
-              outerRadius={76}
-              paddingAngle={2}
-              dataKey="value"
-              stroke="transparent"
-            />
-            <Tooltip
-              formatter={(v, n) => [`${v ?? 0} clients`, String(n)]}
-              contentStyle={{
-                background: "hsl(var(--card))",
-                border: "1px solid hsl(var(--border))",
-                borderRadius: 8,
-                fontSize: 12,
-              }}
-            />
-          </PieChart>
-        </ResponsiveContainer>
-        <div className="grid grid-cols-2 gap-2 mt-3">
-          <div className="bg-background rounded-lg p-3 text-center">
-            <p className="text-[10px] text-muted-foreground mb-1">
-              New this month
+
+        {/* CHART */}
+        <div className="relative flex items-center justify-center">
+          {/* CENTER INFO */}
+          <div className="absolute z-10 flex flex-col items-center">
+            <div
+              className="
+                mb-2 flex h-10 w-10 items-center justify-center
+                rounded-full
+                border border-white/10
+                bg-white/3
+              "
+            >
+              <Users2 className="size-4 text-blue-400" />
+            </div>
+
+            <span className="text-3xl font-semibold tracking-tight text-white">
+              {totalClients}
+            </span>
+
+            <span className="text-xs uppercase tracking-[0.2em] text-slate-500">
+              Clients
+            </span>
+          </div>
+
+          <ResponsiveContainer width="100%" height={240}>
+            <PieChart>
+              <Pie
+                data={formattedClientPieChart}
+                cx="50%"
+                cy="50%"
+                innerRadius={70}
+                outerRadius={92}
+                paddingAngle={3}
+                dataKey="value"
+                stroke="rgba(255,255,255,0.04)"
+                strokeWidth={2}
+              />
+
+              <Tooltip
+                formatter={(v, n) => [`${v ?? 0} clients`, String(n)]}
+                contentStyle={{
+                  background: "rgba(15,23,42,0.95)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: "14px",
+                  backdropFilter: "blur(10px)",
+                  fontSize: 12,
+                  color: "white",
+                }}
+                labelStyle={{
+                  color: "rgba(148,163,184,0.9)",
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* METRICS */}
+        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {/* NEW */}
+          <div
+            className="
+              rounded-2xl
+              border border-blue-500/10
+              bg-blue-500/4
+              p-4
+            "
+          >
+            <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
+              New Clients
             </p>
-            <p className="text-xl font-semibold text-blue-400">
+
+            <p className="mt-3 text-3xl font-semibold text-blue-400">
               {clientPieChartData.newClientsThisMonth}
             </p>
+
             <p
-              className={`text-[10px] mt-1 ${clientPieChartData.newClientsDiff >= 0 ? " text-emerald-400" : "text-orange-400"}`}
+              className={`mt-2 text-xs font-medium ${
+                clientPieChartData.newClientsDiff >= 0
+                  ? "text-emerald-400"
+                  : "text-orange-400"
+              }`}
             >
               {clientPieChartData.newClientsDiff >= 0 ? "↑" : "↓"}
               {Math.abs(clientPieChartData.newClientsDiff)} vs last month
             </p>
           </div>
-          <div className="bg-background rounded-lg p-3 text-center">
-            <p className="text-[10px] text-muted-foreground mb-1">Returning</p>
-            <p className="text-xl font-semibold text-emerald-400">
+
+          {/* RETURNING */}
+          <div
+            className="
+              rounded-2xl
+              border border-emerald-500/10
+              bg-emerald-500/4
+              p-4
+            "
+          >
+            <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
+              Returning Clients
+            </p>
+
+            <p className="mt-3 text-3xl font-semibold text-emerald-400">
               {clientPieChartData.oldClientsThisMonth}
             </p>
+
             <p
-              className={`text-[10px] mt-1 ${clientPieChartData.oldClientsDiff >= 0 ? " text-emerald-400" : "text-orange-400"}`}
+              className={`mt-2 text-xs font-medium ${
+                clientPieChartData.oldClientsDiff >= 0
+                  ? "text-emerald-400"
+                  : "text-orange-400"
+              }`}
             >
-              {clientPieChartData.oldClientsDiff >= 0 ? "↑" : "↓"}{" "}
+              {clientPieChartData.oldClientsDiff >= 0 ? "↑" : "↓"}
               {Math.abs(clientPieChartData.oldClientsDiff)} vs last month
             </p>
           </div>
