@@ -45,7 +45,6 @@ export default function Hero() {
 
           <Button
             variant="outline"
-            disabled
             className="h-12 px-8 rounded-full opacity-60 w-full sm:w-auto"
           >
             View demo

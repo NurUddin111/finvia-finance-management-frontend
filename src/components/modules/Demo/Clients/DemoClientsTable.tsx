@@ -1,0 +1,189 @@
+// src/components/modules/Demo/Clients/DemoClientsTable.tsx
+"use client";
+
+import { Client, ClientStatus } from "@/types/client";
+import ClientAvatar from "@/components/modules/Business/Clients/ClientAvatar";
+import DemoClientActions from "./DemoClientsActions";
+
+const TABLE_HEADERS = [
+  "Client",
+  "Contact",
+  "Status",
+  "Invoices",
+  "Added",
+  "Actions",
+];
+
+const statusConfig: Record<ClientStatus, { dot: string; badge: string }> = {
+  ACTIVE: {
+    dot: "bg-emerald-400",
+    badge: "bg-emerald-400/10 text-emerald-400",
+  },
+  INACTIVE: {
+    dot: "bg-zinc-400",
+    badge: "bg-zinc-400/10 text-zinc-400",
+  },
+};
+
+const StatusBadge = ({ status }: { status: ClientStatus }) => {
+  const { dot, badge } = statusConfig[status];
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium ${badge}`}
+    >
+      <span className={`w-1.5 h-1.5 rounded-full ${dot}`} />
+      {status}
+    </span>
+  );
+};
+
+const InvoicePill = ({ count }: { count: number }) => {
+  if (!count || count === 0) {
+    return (
+      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[12px] font-semibold bg-white/5 text-white/20">
+        0
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[12px] font-semibold bg-indigo-500/15 text-indigo-300">
+      {count}
+    </span>
+  );
+};
+
+const EmptyState = ({ colSpan }: { colSpan: number }) => (
+  <tr>
+    <td colSpan={colSpan} className="py-16 text-center">
+      <p className="text-white/25 text-sm">No clients found!</p>
+    </td>
+  </tr>
+);
+
+export default function DemoClientsTable({ clients }: { clients: Client[] }) {
+  return (
+    <>
+      {/* ── Mobile cards ── */}
+      <div className="space-y-3 md:hidden">
+        {clients.length === 0 ? (
+          <div className="rounded-xl border border-white/[0.07] bg-[#16161E] p-6 text-center text-white/25 text-sm">
+            No clients found!
+          </div>
+        ) : (
+          clients.map((client) => (
+            <div
+              key={client.id}
+              className="w-full rounded-xl border border-white/[0.07] p-4 space-y-3"
+            >
+              <div className="flex items-center gap-3">
+                <ClientAvatar name={client.name} />
+                <div className="min-w-0">
+                  <p className="text-[13px] font-medium text-white truncate">
+                    {client.name}
+                  </p>
+                  <p className="text-[12px] text-white/40 truncate">
+                    {client.email}
+                  </p>
+                  <p className="text-[11px] text-white/25">
+                    {client.phone || "—"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex justify-between text-[12px] border-t border-white/5 pt-3">
+                <div className="space-y-1.5">
+                  <p className="text-white/30">Status</p>
+                  <StatusBadge status={client.status} />
+                </div>
+                <div className="space-y-1.5">
+                  <p className="text-white/30">Invoices</p>
+                  <InvoicePill count={client.totalInvoices ?? 0} />
+                </div>
+                <div className="space-y-1.5 text-right">
+                  <p className="text-white/30">Added</p>
+                  <p className="text-white/50">{client.formattedDate}</p>
+                </div>
+              </div>
+
+              <div className="border-t border-white/5 pt-3">
+                <DemoClientActions />
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* ── Desktop table ── */}
+      <div className="hidden md:block w-full overflow-x-auto border border-white/[0.07] rounded-[14px]">
+        <table className="w-full border-collapse">
+          <thead className="border-b border-white/[0.07]">
+            <tr>
+              {TABLE_HEADERS.map((h) => (
+                <th
+                  key={h}
+                  className="px-4 py-3 text-left text-[11px] font-semibold tracking-[0.5px] uppercase text-white/30"
+                >
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+
+          <tbody>
+            {clients.length === 0 ? (
+              <EmptyState colSpan={TABLE_HEADERS.length} />
+            ) : (
+              clients.map((client, idx) => (
+                <tr
+                  key={client.id}
+                  className="border-b border-white/5 last:border-0 hover:bg-white/2 transition-colors duration-150"
+                >
+                  <td className="px-4 py-3.5">
+                    <div className="flex items-center gap-3">
+                      <ClientAvatar name={client.name} />
+                      <div>
+                        <p className="text-[13px] font-medium text-white leading-none">
+                          {client.name}
+                        </p>
+                        <p className="text-[11px] text-white/25 mt-1">
+                          #{String(idx + 1).padStart(3, "0")}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td className="px-4 py-3.5">
+                    <p className="text-[12px] text-white/60 truncate">
+                      {client.email}
+                    </p>
+                    <p className="text-[11px] text-white/30 mt-0.5">
+                      {client.phone || "—"}
+                    </p>
+                  </td>
+
+                  <td className="px-4 py-3.5">
+                    <StatusBadge status={client.status} />
+                  </td>
+
+                  <td className="px-4 py-3.5">
+                    <InvoicePill count={client.totalInvoices ?? 0} />
+                  </td>
+
+                  <td className="px-4 py-3.5">
+                    <p className="text-[12px] text-white/40">
+                      {client.formattedDate}
+                    </p>
+                  </td>
+
+                  <td className="px-4 py-3.5">
+                    <DemoClientActions />
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+}

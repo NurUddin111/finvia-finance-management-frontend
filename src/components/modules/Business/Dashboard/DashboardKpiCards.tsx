@@ -1,5 +1,6 @@
+// src/components/modules/Business/Dashboard/DashboardKpiCards.tsx
+
 import { Card, CardContent } from "@/components/ui/card";
-import { getKPICardDetails } from "@/services/business/dashboard/kpiCardDetails";
 import { TrendingUp, FileText, CheckCircle, AlertCircle } from "lucide-react";
 
 interface KpiCardProps {
@@ -22,9 +23,7 @@ function KpiCard({ label, value, sub, subType, icon }: KpiCardProps) {
     <Card className="bg-card border-border">
       <CardContent className="p-5">
         <div className="flex items-start justify-between mb-3">
-          <p className="text-xs text-muted-foreground tracking-wide ">
-            {label}
-          </p>
+          <p className="text-xs text-muted-foreground tracking-wide">{label}</p>
           <div className="text-muted-foreground">{icon}</div>
         </div>
         <p className="text-2xl font-semibold text-foreground mb-1">{value}</p>
@@ -34,8 +33,19 @@ function KpiCard({ label, value, sub, subType, icon }: KpiCardProps) {
   );
 }
 
-export async function DashboardKpiCards() {
-  const KPICardDetails = await getKPICardDetails();
+export type KPICardData = {
+  totalRevenue: string;
+  revenueDiff: number;
+  revenueDiffInPercentage: number;
+  totalInvoices: string;
+  pendingInvoices: number;
+  paidInvoices: string;
+  collectionRate: number;
+  totalOverdueInvoices: string;
+  overdueInvDiff: number;
+};
+
+export function DashboardKpiCards({ data }: { data: KPICardData }) {
   const {
     totalRevenue,
     revenueDiff,
@@ -46,16 +56,14 @@ export async function DashboardKpiCards() {
     collectionRate,
     totalOverdueInvoices,
     overdueInvDiff,
-  } = KPICardDetails.data;
+  } = data;
 
   return (
-    <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
       <KpiCard
         label="Total Revenue"
         value={totalRevenue}
-        sub={`${
-          revenueDiff >= 0 ? "↑ " : "↓ "
-        }  ${revenueDiffInPercentage}% vs last month`}
+        sub={`${revenueDiff >= 0 ? "↑ " : "↓ "}${revenueDiffInPercentage}% vs last month`}
         subType={revenueDiff >= 0 ? "up" : "down"}
         icon={<TrendingUp size={16} />}
       />

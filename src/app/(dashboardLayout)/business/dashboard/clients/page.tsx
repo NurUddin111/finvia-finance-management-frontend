@@ -10,10 +10,6 @@ import { getClientsStats } from "@/services/business/clients/clientsStats";
 import { getAllClients } from "@/services/business/clients/getAllClients";
 import { Client, ClientsStats } from "@/types/client";
 
-// Next.js automatically injects searchParams into every page component
-// When URL is /clients?search=john&page=2
-// searchParams = { search: "john", page: "2" }
-// All values are strings — Next.js never gives you numbers here
 const ClientsPage = async ({
   searchParams,
 }: {

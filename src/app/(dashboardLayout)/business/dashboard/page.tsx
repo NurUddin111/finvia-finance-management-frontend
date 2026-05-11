@@ -19,7 +19,6 @@ import {
   RecentTransactions,
   TopClientsTable,
 } from "@/components/modules/Business/Dashboard/DashboardTables";
-import { QuickActions } from "@/components/modules/Business/Dashboard/QuickActions";
 import { getMe } from "@/services/auth/getMe";
 import { getClientsNumByMonth } from "@/services/business/dashboard/clientsByMonth";
 import { getClientsPieChartData } from "@/services/business/dashboard/clientsPieChart";
@@ -30,9 +29,9 @@ import { getOverdueInvoices } from "@/services/business/dashboard/overdueInvoice
 import { getRecentTransactions } from "@/services/business/dashboard/recentTransaction";
 import { getTopClients } from "@/services/business/dashboard/topClients";
 import { getUpcomingOverdueInvoices } from "@/services/business/dashboard/upcomingOverdueInv";
+import { getPaymentMethodStats } from "@/services/business/payment/methodStats";
 import { getTopProducts } from "@/services/business/products/topProducts";
 
-// Unwraps a PromiseSettledResult, returning the fallback if it rejected
 function unwrap<T>(
   res: PromiseSettledResult<{ success: boolean; data?: T; error?: any }>,
   fallback: T,
@@ -58,7 +57,8 @@ export default async function BusinessDashboardPage() {
     upcomingOverdueRes,
     clientPieRes,
     clientGrowthRes,
-    topProductsRes, // ← add
+    topProductsRes,
+    paymentMethodRes,
   ] = await Promise.allSettled([
     getMonthlyRevenue(),
     getTopClients(),
@@ -67,7 +67,8 @@ export default async function BusinessDashboardPage() {
     getUpcomingOverdueInvoices(),
     getClientsPieChartData(),
     getClientsNumByMonth(),
-    getTopProducts(), // ← add
+    getTopProducts(),
+    getPaymentMethodStats(),
   ]);
 
   const monthlyRevenue = unwrap(monthlyRevenueRes, {});
@@ -78,6 +79,11 @@ export default async function BusinessDashboardPage() {
   const clientPieCharts = unwrap(clientPieRes, null);
   const clientsNumByMonth = unwrap(clientGrowthRes, []);
   const topProducts = unwrap(topProductsRes, []);
+  const paymentMethodStats = unwrap(paymentMethodRes, {
+    online: 0,
+    cash: 0,
+    total: 0,
+  });
 
   const revenueData = months
     .filter((m) => monthlyRevenue[m] !== undefined)
@@ -88,11 +94,8 @@ export default async function BusinessDashboardPage() {
       {/* ── Page heading ── */}
       <DashboardHeader name={name} role={role} avatar={avatar} />
 
-      {/* ── Quick actions ── */}
-      <QuickActions />
-
       {/* ── KPI cards ── */}
-      <DashboardKpiCards />
+      <DashboardKpiCards data={KPICardDetails} />
 
       {/* ── Revenue chart ── */}
       <RevenueChart revenueData={revenueData} />
@@ -101,7 +104,7 @@ export default async function BusinessDashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <InvoiceStatusChart invStatusChart={KPICardDetails} />
         <TopProductsChart topProducts={topProducts} />
-        <PaymentMethodChart />
+        <PaymentMethodChart stats={paymentMethodStats} />
       </div>
 
       {/* ── Top clients | Recent transactions ── */}

@@ -13,6 +13,7 @@ import {
   Line,
   PieChart,
   Pie,
+  Sector,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -271,55 +272,91 @@ export function TopProductsChart({
 }
 
 // ── Payment Method Donut ──────────────────────────────────────────
-const paymentData = [
-  { name: "Online", value: 58, fill: "#58a6ff" },
-  { name: "Cash", value: 42, fill: "#d2a8ff" },
+type PaymentMethodStats = { online: number; cash: number; total: number };
+
+const PAYMENT_DATA = (stats: PaymentMethodStats) => [
+  { name: "Online", value: stats.online, fill: "#58a6ff" },
+  { name: "Cash", value: stats.cash, fill: "#d2a8ff" },
 ];
 
-export function PaymentMethodChart() {
+export function PaymentMethodChart({ stats }: { stats: PaymentMethodStats }) {
+  const data = PAYMENT_DATA(stats);
+  const isEmpty = stats.total === 0;
+
   return (
     <Card className="bg-card border-border">
       <CardHeader className="pb-2">
         <CardTitle className="text-sm font-medium">Payment method</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex gap-3 mb-3">
-          {paymentData.map((d) => (
-            <div
-              key={d.name}
-              className="flex items-center gap-1.5 text-[11px] text-muted-foreground"
-            >
-              <span
-                className="w-2 h-2 rounded-sm"
-                style={{ background: d.fill }}
-              />
-              {d.name} {d.value}%
+        {isEmpty ? (
+          <div className="flex items-center justify-center h-50 text-sm text-muted-foreground">
+            No payment data yet
+          </div>
+        ) : (
+          <>
+            <div className="flex gap-3 mb-3">
+              {data.map((d) => (
+                <div
+                  key={d.name}
+                  className="flex items-center gap-1.5 text-[11px] text-muted-foreground"
+                >
+                  <span
+                    className="w-2 h-2 rounded-sm"
+                    style={{ background: d.fill }}
+                  />
+                  {d.name} {d.value}%
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <ResponsiveContainer width="100%" height={170}>
-          <PieChart>
-            <Pie
-              data={paymentData}
-              cx="50%"
-              cy="50%"
-              innerRadius={52}
-              outerRadius={76}
-              paddingAngle={2}
-              dataKey="value"
-              stroke="transparent"
-            />
-            <Tooltip
-              formatter={(v, n) => [`${v ?? 0}%`, String(n)]}
-              contentStyle={{
-                background: "hsl(var(--card))",
-                border: "1px solid hsl(var(--border))",
-                borderRadius: 8,
-                fontSize: 12,
-              }}
-            />
-          </PieChart>
-        </ResponsiveContainer>
+
+            <ResponsiveContainer width="100%" height={170}>
+              <PieChart>
+                <Pie
+                  data={data}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={52}
+                  outerRadius={76}
+                  paddingAngle={2}
+                  dataKey="value"
+                  stroke="transparent"
+                  shape={(props: any) => {
+                    const {
+                      cx,
+                      cy,
+                      innerRadius,
+                      outerRadius,
+                      startAngle,
+                      endAngle,
+                      fill,
+                    } = props;
+                    return (
+                      <Sector
+                        cx={cx}
+                        cy={cy}
+                        innerRadius={innerRadius}
+                        outerRadius={outerRadius}
+                        startAngle={startAngle}
+                        endAngle={endAngle}
+                        fill={fill}
+                      />
+                    );
+                  }}
+                />
+                <Tooltip
+                  formatter={(v, n) => [`${v ?? 0}%`, String(n)]}
+                  contentStyle={{
+                    background: "hsl(var(--card))",
+                    border: "1px solid hsl(var(--border))",
+                    borderRadius: 8,
+                    fontSize: 12,
+                  }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </>
+        )}
       </CardContent>
     </Card>
   );
