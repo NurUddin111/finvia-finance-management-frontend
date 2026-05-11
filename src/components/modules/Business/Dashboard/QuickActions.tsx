@@ -36,21 +36,11 @@ export function QuickActions() {
       <Button
         variant="outline"
         size="sm"
-        className="gap-2 border-purple-400/30 bg-purple-400/10 text-purple-400 hover:bg-purple-400/20 hover:text-purple-300"
-        onClick={() => router.push("/business/payments/record")}
-      >
-        <BadgeCheck size={14} />
-        Record payment
-      </Button>
-
-      <Button
-        variant="outline"
-        size="sm"
         className="gap-2 border-orange-400/30 bg-orange-400/10 text-orange-400 hover:bg-orange-400/20 hover:text-orange-300"
         onClick={() => router.push("/business/invoices/send-receipt")}
       >
         <Receipt size={14} />
-        Send receipt
+        Add product
       </Button>
     </div>
   );
