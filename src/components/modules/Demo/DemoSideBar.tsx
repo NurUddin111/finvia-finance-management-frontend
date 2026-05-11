@@ -1,6 +1,6 @@
 import { SidebarItem } from "@/components/shared/highlightSideBar";
-import SettingsAccordion from "../Business/Settings/SettingsMenu";
 import DemoBusinessBrand from "./DemoBusinessBrand";
+import DemoSettingsAccordion from "./Settings/DemoSettingsMenu";
 
 const DemoSideBar = () => {
   return (
@@ -30,7 +30,7 @@ const DemoSideBar = () => {
             icon="products"
             href="/demo/dashboard/products"
           />
-          <SettingsAccordion />
+          <DemoSettingsAccordion />
         </nav>
 
         <div className="flex-1" />
