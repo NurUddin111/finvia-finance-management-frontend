@@ -12,28 +12,22 @@ export default function DemoProductsHeader() {
   return (
     <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
       {/* LEFT */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         <div className="flex items-center gap-2">
           <div className="flex items-center justify-center rounded-full border border-blue-500/20 bg-blue-500/10 p-1.5">
             <Boxes className="size-4 text-blue-400" />
           </div>
 
-          <span className="text-xs font-medium uppercase tracking-[0.2em] text-blue-400">
+          <span className="text-3xl font-medium uppercase tracking-[0.2em] text-blue-400">
             Product Management
           </span>
         </div>
 
-        <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-white">
-            Products
-          </h1>
-
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">
-            Organize, manage, and monitor your product catalog, inventory,
-            pricing, stock availability, and product performance across your
-            business.
-          </p>
-        </div>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">
+          Organize, manage, and monitor your product catalog, inventory,
+          pricing, stock availability, and product performance across your
+          business.
+        </p>
       </div>
 
       {/* RIGHT */}

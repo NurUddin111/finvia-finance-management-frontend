@@ -1,43 +1,53 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import { useRouter } from "next/navigation";
 
+import { AlertTriangle, Building2, ShieldAlert, Trash2 } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { AlertTriangle } from "lucide-react";
 
 import { getMyBusiness } from "@/services/business/getMyBusiness";
+
 import { getMyProfile } from "@/services/user/getMe";
+
 import { deleteMyAccount } from "@/services/user/deleteAccount";
+
 import { deleteMyBusiness } from "@/services/business/deleteBusiness";
 
 export default function AccountPage() {
   const router = useRouter();
 
   const [userId, setUserId] = useState<string>("");
+
   const [businessId, setBusinessId] = useState<string>("");
 
   const [openAccount, setOpenAccount] = useState(false);
+
   const [openBusiness, setOpenBusiness] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
-  /* ================= FETCH IDS ================= */
+  /* FETCH IDS */
 
   useEffect(() => {
     const fetchIds = async () => {
       const profileRes = await getMyProfile();
+
       if (profileRes?.success) {
         setUserId(profileRes.data.id);
       }
 
       const businessRes = await getMyBusiness();
+
       if (businessRes?.success) {
         setBusinessId(businessRes.data.id);
       }
@@ -46,15 +56,17 @@ export default function AccountPage() {
     fetchIds();
   }, []);
 
-  /* ================= ACTIONS ================= */
+  /* ACTIONS */
 
   const handleDeleteAccount = async () => {
     if (!userId) return;
+
     setLoading(true);
 
     const res = await deleteMyAccount(userId);
 
     setLoading(false);
+
     if (res?.success) {
       router.push("/login");
     }
@@ -62,125 +74,208 @@ export default function AccountPage() {
 
   const handleDeleteBusiness = async () => {
     if (!businessId) return;
+
     setLoading(true);
 
     const res = await deleteMyBusiness(businessId);
 
     setLoading(false);
+
     if (res?.success) {
       router.refresh();
     }
   };
 
-  /* ================= UI ================= */
-
   return (
-    <div className="w-full max-w-5xl">
-      <Card className="border-red-500/30">
-        <CardHeader className="border-b bg-red-500/5">
-          <div className="flex items-center gap-2 text-red-600">
-            <AlertTriangle size={18} />
-            <h2 className="text-lg font-semibold">Danger Zone</h2>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Irreversible actions for your account.
-          </p>
-        </CardHeader>
-
-        <CardContent className="pt-6 space-y-8">
-          {/* Delete Business */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h3 className="font-medium">Delete Business</h3>
-              <p className="text-sm text-muted-foreground max-w-md">
-                Permanently delete your business, clients and invoices. This
-                action cannot be undone.
-              </p>
+    <div className="min-h-screen rounded-2xl bg-[#050816] px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
+        {/* HEADER */}
+        <div className="rounded-3xl border border-red-500/15 bg-linear-to-b from-[#140809] to-[#050816] p-5 md:p-6">
+          <div className="flex items-start gap-4">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10">
+              <ShieldAlert className="size-6 text-red-400" />
             </div>
 
-            <Button
-              variant="destructive"
-              disabled={!businessId}
-              onClick={() => setOpenBusiness(true)}
-            >
-              Delete Business
-            </Button>
-          </div>
-
-          <div className="border-t" />
-
-          {/* Delete Account */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h3 className="font-medium">Delete Account</h3>
-              <p className="text-sm text-muted-foreground max-w-md">
-                Permanently remove your account and all related data. You will
-                be logged out immediately.
+              <span className="rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-red-400">
+                Danger Zone
+              </span>
+
+              <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white">
+                Account Management
+              </h1>
+
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">
+                These actions are permanent and irreversible. Please proceed
+                carefully before deleting your business or account.
               </p>
             </div>
-
-            <Button
-              variant="destructive"
-              disabled={!userId}
-              onClick={() => setOpenAccount(true)}
-            >
-              Delete Account
-            </Button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
 
-      {/* ================= Delete Business Modal ================= */}
+        {/* CONTENT */}
+        <div className="space-y-5">
+          {/* DELETE BUSINESS */}
+          <div className="rounded-3xl border border-red-500/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5 md:p-6">
+            <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-red-500/15 bg-red-500/10">
+                  <Building2 className="size-5 text-red-400" />
+                </div>
+
+                <div>
+                  <h2 className="text-lg font-semibold text-white">
+                    Delete Business
+                  </h2>
+
+                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">
+                    Permanently delete your business, invoices, products,
+                    clients, and all related records. This action cannot be
+                    undone.
+                  </p>
+                </div>
+              </div>
+
+              <Button
+                disabled={!businessId}
+                onClick={() => setOpenBusiness(true)}
+                className="h-11 rounded-2xl border border-red-500/20 bg-red-500/10 px-5 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300 hover:shadow-[0_0_25px_rgba(239,68,68,0.18)]"
+              >
+                <Trash2 className="size-4" />
+                Delete Business
+              </Button>
+            </div>
+          </div>
+
+          {/* DELETE ACCOUNT */}
+          <div className="rounded-3xl border border-red-500/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5 md:p-6">
+            <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-red-500/15 bg-red-500/10">
+                  <AlertTriangle className="size-5 text-red-400" />
+                </div>
+
+                <div>
+                  <h2 className="text-lg font-semibold text-white">
+                    Delete Account
+                  </h2>
+
+                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">
+                    Permanently remove your account and all related data. You
+                    will be logged out immediately after deletion.
+                  </p>
+                </div>
+              </div>
+
+              <Button
+                disabled={!userId}
+                onClick={() => setOpenAccount(true)}
+                className="h-11 rounded-2xl border border-red-500/20 bg-red-500/10 px-5 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300 hover:shadow-[0_0_25px_rgba(239,68,68,0.18)]"
+              >
+                <Trash2 className="size-4" />
+                Delete Account
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* DELETE BUSINESS MODAL */}
       <Dialog open={openBusiness} onOpenChange={setOpenBusiness}>
-        <DialogContent className="max-w-sm">
-          <DialogHeader>
-            <DialogTitle className="text-red-600">Delete Business</DialogTitle>
-          </DialogHeader>
+        <DialogContent className="overflow-hidden border border-red-500/15 bg-[#050816] p-0 shadow-[0_30px_120px_rgba(0,0,0,0.65)] sm:max-w-md">
+          <div className="border-b border-red-500/10 bg-linear-to-b from-[#140809] to-[#050816] px-6 py-6">
+            <DialogHeader>
+              <div className="mb-4 flex justify-center">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10">
+                  <Building2 className="size-6 text-red-400" />
+                </div>
+              </div>
 
-          <p className="text-sm text-muted-foreground">
-            This will permanently delete your business and all its associated
-            data.
-          </p>
+              <DialogTitle className="text-center text-2xl font-semibold text-white">
+                Delete Business
+              </DialogTitle>
 
-          <div className="mt-6 flex justify-end gap-3">
-            <Button variant="outline" onClick={() => setOpenBusiness(false)}>
-              Cancel
-            </Button>
+              <p className="mt-2 text-center text-sm leading-relaxed text-slate-400">
+                This action is permanent and cannot be undone.
+              </p>
+            </DialogHeader>
+          </div>
 
-            <Button
-              variant="destructive"
-              disabled={loading}
-              onClick={handleDeleteBusiness}
-            >
-              {loading ? "Deleting..." : "Yes, Delete"}
-            </Button>
+          <div className="px-6 py-6">
+            <div className="rounded-2xl border border-red-500/15 bg-red-500/8 p-4">
+              <p className="text-sm leading-relaxed text-slate-300">
+                Deleting your business will remove all invoices, clients,
+                products, and related business records.
+              </p>
+            </div>
+
+            <div className="mt-6 flex gap-3">
+              <Button
+                variant="outline"
+                onClick={() => setOpenBusiness(false)}
+                className="h-11 flex-1 rounded-2xl border-white/10 bg-white/3 text-slate-300 hover:border-white/20 hover:bg-white/5 hover:text-white"
+              >
+                Cancel
+              </Button>
+
+              <Button
+                disabled={loading}
+                onClick={handleDeleteBusiness}
+                className="h-11 flex-1 rounded-2xl border border-red-500/20 bg-red-500/10 text-red-400 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300"
+              >
+                {loading ? "Deleting..." : "Delete"}
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* ================= Delete Account Modal ================= */}
+      {/* DELETE ACCOUNT MODAL */}
       <Dialog open={openAccount} onOpenChange={setOpenAccount}>
-        <DialogContent className="max-w-sm">
-          <DialogHeader>
-            <DialogTitle className="text-red-600">Delete Account</DialogTitle>
-          </DialogHeader>
+        <DialogContent className="overflow-hidden border border-red-500/15 bg-[#050816] p-0 shadow-[0_30px_120px_rgba(0,0,0,0.65)] sm:max-w-md">
+          <div className="border-b border-red-500/10 bg-linear-to-b from-[#140809] to-[#050816] px-6 py-6">
+            <DialogHeader>
+              <div className="mb-4 flex justify-center">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10">
+                  <AlertTriangle className="size-6 text-red-400" />
+                </div>
+              </div>
 
-          <p className="text-sm text-muted-foreground">
-            This will permanently delete your account and all its data.
-          </p>
+              <DialogTitle className="text-center text-2xl font-semibold text-white">
+                Delete Account
+              </DialogTitle>
 
-          <div className="mt-6 flex justify-end gap-3">
-            <Button variant="outline" onClick={() => setOpenAccount(false)}>
-              Cancel
-            </Button>
+              <p className="mt-2 text-center text-sm leading-relaxed text-slate-400">
+                Your account and all data will be permanently removed.
+              </p>
+            </DialogHeader>
+          </div>
 
-            <Button
-              variant="destructive"
-              disabled={loading}
-              onClick={handleDeleteAccount}
-            >
-              {loading ? "Deleting..." : "Yes, Delete"}
-            </Button>
+          <div className="px-6 py-6">
+            <div className="rounded-2xl border border-red-500/15 bg-red-500/8 p-4">
+              <p className="text-sm leading-relaxed text-slate-300">
+                This will permanently erase your account and log you out
+                immediately from Finvia.
+              </p>
+            </div>
+
+            <div className="mt-6 flex gap-3">
+              <Button
+                variant="outline"
+                onClick={() => setOpenAccount(false)}
+                className="h-11 flex-1 rounded-2xl border-white/10 bg-white/3 text-slate-300 hover:border-white/20 hover:bg-white/5 hover:text-white"
+              >
+                Cancel
+              </Button>
+
+              <Button
+                disabled={loading}
+                onClick={handleDeleteAccount}
+                className="h-11 flex-1 rounded-2xl border border-red-500/20 bg-red-500/10 text-red-400 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300"
+              >
+                {loading ? "Deleting..." : "Delete"}
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

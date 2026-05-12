@@ -90,43 +90,50 @@ export default async function BusinessDashboardPage() {
     .map((m) => ({ month: m, revenue: monthlyRevenue[m] as number }));
 
   return (
-    <div className="p-6 space-y-5 max-w-7xl">
-      {/* ── Page heading ── */}
-      <DashboardHeader name={name} role={role} avatar={avatar} />
+    <div className="min-h-screen rounded-2xl bg-[#050816] px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
+      <div className="mx-auto flex w-full max-w-475 flex-col gap-6">
+        {/* ── Page heading ── */}
+        <DashboardHeader name={name} role={role} avatar={avatar} />
 
-      {/* ── KPI cards ── */}
-      <DashboardKpiCards data={KPICardDetails} />
+        {/* ── KPI cards ── */}
+        <DashboardKpiCards data={KPICardDetails} />
 
-      {/* ── Revenue chart ── */}
-      <RevenueChart revenueData={revenueData} />
+        {/* ── Revenue chart ── */}
+        <RevenueChart revenueData={revenueData} />
 
-      {/* ── Invoice status | Top products | Payment method ── */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <InvoiceStatusChart invStatusChart={KPICardDetails} />
-        <TopProductsChart topProducts={topProducts} />
-        <PaymentMethodChart stats={paymentMethodStats} />
-      </div>
+        {/* ── Invoice status | Top products | Payment method ── */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <InvoiceStatusChart invStatusChart={KPICardDetails} />
 
-      {/* ── Top clients | Recent transactions ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <TopClientsTable topClients={topClients} />
-        <RecentTransactions recentTransactions={recentTransactions} />
-      </div>
+          <TopProductsChart topProducts={topProducts} />
 
-      {/* ── Overdue invoices | Upcoming due dates ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-        <div className="lg:col-span-3">
-          <OverdueInvoices overdueInvoices={overdueInvoices} />
+          <PaymentMethodChart stats={paymentMethodStats} />
         </div>
-        <div className="lg:col-span-2">
-          <UpcomingDueDates upcomingOverdueInv={upcomingOverdue} />
-        </div>
-      </div>
 
-      {/* ── New vs returning clients | Client growth ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <ClientTypeChart clientPieChartData={clientPieCharts} />
-        <ClientGrowthChart clientNumbers={clientsNumByMonth} />
+        {/* ── Top clients | Recent transactions ── */}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <TopClientsTable topClients={topClients} />
+
+          <RecentTransactions recentTransactions={recentTransactions} />
+        </div>
+
+        {/* ── Overdue invoices | Upcoming due dates ── */}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
+          <div className="lg:col-span-3">
+            <OverdueInvoices overdueInvoices={overdueInvoices} />
+          </div>
+
+          <div className="lg:col-span-2">
+            <UpcomingDueDates upcomingOverdueInv={upcomingOverdue} />
+          </div>
+        </div>
+
+        {/* ── New vs returning clients | Client growth ── */}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <ClientTypeChart clientPieChartData={clientPieCharts} />
+
+          <ClientGrowthChart clientNumbers={clientsNumByMonth} />
+        </div>
       </div>
     </div>
   );
