@@ -4,17 +4,68 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 
+import { Loader2, UserPen, User, Mail, Phone, MapPin } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+
 import { updateClient } from "@/services/business/clients/updateClient";
+
 import { toast } from "sonner";
+
+// ── Styled Input ─────────────────────────────────────────────
+function FormField({
+  label,
+  icon: Icon,
+  name,
+  type = "text",
+  defaultValue,
+  placeholder,
+}: {
+  label: string;
+  icon: React.ElementType;
+  name: string;
+  type?: string;
+  defaultValue?: string;
+  placeholder?: string;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <label className="text-[10px] font-medium uppercase tracking-[0.18em] text-slate-500">
+        {label}
+      </label>
+
+      <div className="relative">
+        <Icon
+          size={14}
+          className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
+        />
+
+        <input
+          name={name}
+          type={type}
+          defaultValue={defaultValue}
+          placeholder={placeholder}
+          className={cn(
+            "h-10 w-full rounded-2xl border border-white/10 bg-white/3",
+            "pl-10 pr-4 text-[13px] text-white",
+            "placeholder:text-slate-500",
+            "outline-none transition-all duration-300",
+            "focus:border-blue-500/30",
+            "focus:bg-white/5",
+            "focus:shadow-[0_0_25px_rgba(59,130,246,0.08)]",
+          )}
+        />
+      </div>
+    </div>
+  );
+}
 
 export default function UpdateClientModal({
   open,
@@ -35,18 +86,20 @@ export default function UpdateClientModal({
 
   const [state, formAction, isPending] = useActionState(
     updateClient.bind(null, client.id),
-    null
+    null,
   );
 
   useEffect(() => {
     if (state) {
       if (state?.success) {
         onClose();
+
         router.refresh();
+
         toast.success("Client details updated successfully!");
       }
+
       if (!state?.success) {
-        onClose();
         toast.error("Failed to update client details!");
       }
     }
@@ -55,61 +108,113 @@ export default function UpdateClientModal({
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent
-        className=" w-full max-w-lg md:max-w-2xl bg-black max-h-[90vh] overflow-y-auto px-5 sm:px-6"
+        className={cn(
+          "overflow-hidden rounded-3xl border border-white/10",
+          "bg-linear-to-b from-[#0B1120] to-[#050816]",
+          "w-[95vw] max-w-md",
+          "p-0 shadow-[0_25px_100px_rgba(0,0,0,0.55)]",
+        )}
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
-        <DialogHeader>
-          <DialogTitle className="text-xl font-semibold text-center">
-            Update client
+        {/* Glow */}
+        <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-blue-500/10 blur-3xl" />
+
+        {/* Header */}
+        <DialogHeader className="relative border-b border-white/6 px-5 pb-4 pt-5">
+          <div className="mb-3 flex items-center justify-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
+              <UserPen className="size-5 text-blue-400" />
+            </div>
+          </div>
+
+          <DialogTitle className="text-center text-xl font-semibold tracking-tight text-white">
+            Update Client
           </DialogTitle>
+
+          <p className="mt-1 text-center text-[12px] leading-relaxed text-slate-400">
+            Modify client information and keep records up to date.
+          </p>
         </DialogHeader>
 
-        <form action={formAction} className="mt-6">
-          <FieldGroup className="space-y-4">
-            <Field>
-              <FieldLabel>Client Name</FieldLabel>
-              <Input name="name" defaultValue={client.name} />
-            </Field>
+        {/* Form */}
+        <form action={formAction} className="space-y-4 px-5 py-5">
+          <FormField
+            label="Client Name"
+            icon={User}
+            name="name"
+            defaultValue={client.name}
+            placeholder="Finvia Ltd"
+          />
 
-            <Field>
-              <FieldLabel>Client Email</FieldLabel>
-              <Input name="email" type="email" defaultValue={client.email} />
-            </Field>
+          <FormField
+            label="Client Email"
+            icon={Mail}
+            name="email"
+            type="email"
+            defaultValue={client.email}
+            placeholder="business@example.com"
+          />
 
-            <Field>
-              <FieldLabel>Phone</FieldLabel>
-              <Input name="phone" defaultValue={client.phone ?? ""} />
-            </Field>
+          <FormField
+            label="Phone"
+            icon={Phone}
+            name="phone"
+            defaultValue={client.phone ?? ""}
+            placeholder="+8801XXXXXXXXX"
+          />
 
-            <Field>
-              <FieldLabel>Address</FieldLabel>
-              <Input name="address" defaultValue={client.address ?? ""} />
-            </Field>
+          <FormField
+            label="Address"
+            icon={MapPin}
+            name="address"
+            defaultValue={client.address ?? ""}
+            placeholder="Dhaka, Bangladesh"
+          />
 
-            {!isPending && state?.success === false && (
-              <p className="text-sm text-red-500 text-center">{state.error}</p>
-            )}
-
-            <div className="mt-6 flex gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                className="flex-1 h-10"
-                onClick={onClose}
-              >
-                Cancel
-              </Button>
-
-              <Button
-                type="submit"
-                disabled={isPending}
-                className="flex-1 h-10"
-              >
-                {isPending ? "Updating..." : "Update Client"}
-              </Button>
+          {/* Error */}
+          {!isPending && state?.success === false && (
+            <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-3 py-2 text-[12px] text-red-400">
+              {state.error}
             </div>
-          </FieldGroup>
+          )}
+
+          {/* Actions */}
+          <div className="flex items-center gap-3 pt-1">
+            <button
+              type="button"
+              onClick={onClose}
+              className="h-10 flex-1 rounded-2xl border border-white/10 bg-white/3 px-4 text-[13px] font-medium text-slate-400 transition-all duration-300 hover:bg-white/5 hover:text-white"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              disabled={isPending}
+              className={cn(
+                "flex h-10 flex-1 items-center justify-center gap-2 rounded-2xl",
+                "border border-blue-500/20 bg-blue-500/10",
+                "px-4 text-[13px] font-medium text-blue-400",
+                "transition-all duration-300",
+                "hover:-translate-y-0.5",
+                "hover:border-blue-400/40",
+                "hover:bg-blue-500/15",
+                "hover:text-blue-300",
+                "hover:shadow-[0_0_30px_rgba(59,130,246,0.18)]",
+                "disabled:pointer-events-none disabled:opacity-50",
+              )}
+            >
+              {isPending ? (
+                <>
+                  <Loader2 size={14} className="animate-spin" />
+                  Updating...
+                </>
+              ) : (
+                "Update Client"
+              )}
+            </button>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

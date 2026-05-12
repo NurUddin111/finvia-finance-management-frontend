@@ -3,7 +3,9 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
-import { Loader2, User, Mail, Phone, MapPin } from "lucide-react";
+
+import { Loader2, User, Mail, Phone, MapPin, Users2 } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
 import {
@@ -12,10 +14,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+
 import { addClient } from "@/services/business/clients/addClient";
+
 import { toast } from "sonner";
 
-// ── Styled input with leading icon ──────────────────────────────────────────
+// ── Styled Input ─────────────────────────────────────────────
 function FormField({
   label,
   required,
@@ -33,25 +37,30 @@ function FormField({
 }) {
   return (
     <div className="space-y-1.5">
-      <label className="text-[12px] font-medium text-white/50 tracking-wide uppercase flex items-center gap-1">
+      <label className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-[0.18em] text-slate-500">
         {label}
-        {required && <span className="text-red-400 text-[10px]">*</span>}
+
+        {required && <span className="text-red-400">*</span>}
       </label>
+
       <div className="relative">
         <Icon
           size={14}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-white/25 pointer-events-none"
+          className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
         />
+
         <input
           name={name}
           type={type}
           placeholder={placeholder}
           className={cn(
-            "w-full bg-white/[0.04] border border-white/[0.08] rounded-[9px]",
-            "pl-9 pr-3 py-2.5 text-[13px] text-white",
-            "placeholder:text-white/20",
-            "outline-none focus:border-indigo-500/50 focus:bg-white/[0.06]",
-            "transition-all duration-150",
+            "h-10 w-full rounded-2xl border border-white/10 bg-white/3",
+            "pl-10 pr-4 text-[13px] text-white",
+            "placeholder:text-slate-500",
+            "outline-none transition-all duration-300",
+            "focus:border-blue-500/30",
+            "focus:bg-white/5",
+            "focus:shadow-[0_0_25px_rgba(59,130,246,0.08)]",
           )}
         />
       </div>
@@ -59,7 +68,7 @@ function FormField({
   );
 }
 
-// ── Modal ────────────────────────────────────────────────────────────────────
+// ── Modal ───────────────────────────────────────────────────
 export default function AddNewClientModal({
   open,
   onClose,
@@ -68,14 +77,18 @@ export default function AddNewClientModal({
   onClose: () => void;
 }) {
   const router = useRouter();
+
   const [state, formAction, isPending] = useActionState(addClient, null);
 
   useEffect(() => {
     if (state?.success) {
       onClose();
+
       toast.success("Client added successfully!");
+
       router.refresh();
     }
+
     if (state && !state.success) {
       toast.error(state.error ?? "Failed to add client");
     }
@@ -85,89 +98,110 @@ export default function AddNewClientModal({
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent
         className={cn(
-          "w-full max-w-md",
-          "border border-indigo-500/20",
-          "shadow-[0_0_0_1px_rgba(99,102,241,0.1),0_24px_80px_rgba(99,102,241,0.15),0_0_120px_rgba(99,102,241,0.08)]",
-          "max-h-[90vh] overflow-y-auto",
-          "px-5 py-6 sm:px-6",
-          "bg-black",
+          "overflow-hidden rounded-3xl border border-white/10",
+          "bg-linear-to-b from-[#0B1120] to-[#050816]",
+          "w-[95vw] max-w-md",
+          "p-0 shadow-[0_25px_100px_rgba(0,0,0,0.55)]",
         )}
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
-        <DialogHeader className="mb-5">
-          <DialogTitle className="text-[17px] font-semibold text-white text-center tracking-tight">
+        {/* Glow */}
+        <div className="absolute left-0 top-0 h-32 w-32 rounded-full bg-blue-500/10 blur-3xl" />
+
+        {/* Header */}
+        <DialogHeader className="relative border-b border-white/6 px-5 pb-4 pt-5">
+          <div className="mb-3 flex items-center justify-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
+              <Users2 className="size-5 text-blue-400" />
+            </div>
+          </div>
+
+          <DialogTitle className="text-center text-xl font-semibold tracking-tight text-white">
             Add New Client
           </DialogTitle>
-          <p className="text-[12px] text-white/30 text-center mt-1">
-            Required fields are marked with an asterisk
+
+          <p className="mt-1 text-center text-[12px] leading-relaxed text-slate-400">
+            Create and manage a new client profile.
           </p>
         </DialogHeader>
 
-        <form action={formAction} className="space-y-5">
-          {/* Required section */}
-          <div className="space-y-3">
-            <FormField
-              label="Client Name"
-              required
-              icon={User}
-              name="name"
-              placeholder="Finvia Ltd"
-            />
-            <FormField
-              label="Client Email"
-              required
-              icon={Mail}
-              name="email"
-              type="email"
-              placeholder="business@example.com"
-            />
-            <FormField
-              label="Phone"
-              icon={Phone}
-              name="phone"
-              placeholder="+8801XXXXXXXXX"
-            />
-            <FormField
-              label="Address"
-              icon={MapPin}
-              name="address"
-              placeholder="Dhaka, Bangladesh"
-            />
-          </div>
+        {/* Form */}
+        <form action={formAction} className="relative space-y-4 px-5 py-5">
+          <FormField
+            label="Client Name"
+            required
+            icon={User}
+            name="name"
+            placeholder="Finvia Ltd"
+          />
+
+          <FormField
+            label="Client Email"
+            required
+            icon={Mail}
+            name="email"
+            type="email"
+            placeholder="business@example.com"
+          />
+
+          <FormField
+            label="Phone"
+            icon={Phone}
+            name="phone"
+            placeholder="+8801XXXXXXXXX"
+          />
+
+          <FormField
+            label="Address"
+            icon={MapPin}
+            name="address"
+            placeholder="Dhaka, Bangladesh"
+          />
 
           {/* Error */}
           {state?.success === false && (
-            <p className="text-[12px] text-red-400 text-center bg-red-500/10 border border-red-500/20 rounded-lg py-2">
+            <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-3 py-2 text-[12px] text-red-400">
               {state.error}
-            </p>
+            </div>
           )}
 
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={isPending}
-            className={cn(
-              "w-full h-11 rounded-full mt-1",
-              "bg-indigo-600 text-white text-[13px] font-medium",
-              "flex items-center justify-center gap-2",
-              "shadow-[0_0_0_1px_rgba(99,102,241,0.3)]",
-              "transition-all duration-300",
-              "md:hover:-translate-y-0.5",
-              "md:hover:bg-indigo-500",
-              "md:hover:shadow-[0_0_0_1px_rgba(99,102,241,0.5),0_12px_45px_rgba(99,102,241,0.3)]",
-              "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0",
-            )}
-          >
-            {isPending ? (
-              <>
-                <Loader2 size={14} className="animate-spin" />
-                Adding Client...
-              </>
-            ) : (
-              "Add Client"
-            )}
-          </button>
+          {/* Actions */}
+          <div className="flex items-center gap-3 pt-1">
+            <button
+              type="button"
+              onClick={onClose}
+              className="h-10 flex-1 rounded-2xl border border-white/10 bg-white/3 px-4 text-[13px] font-medium text-slate-400 transition-all duration-300 hover:bg-white/5 hover:text-white"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              disabled={isPending}
+              className={cn(
+                "flex h-10 flex-1 items-center justify-center gap-2 rounded-2xl",
+                "border border-blue-500/20 bg-blue-500/10",
+                "px-4 text-[13px] font-medium text-blue-400",
+                "transition-all duration-300",
+                "hover:-translate-y-0.5",
+                "hover:border-blue-400/40",
+                "hover:bg-blue-500/15",
+                "hover:text-blue-300",
+                "hover:shadow-[0_0_30px_rgba(59,130,246,0.18)]",
+                "disabled:pointer-events-none disabled:opacity-50",
+              )}
+            >
+              {isPending ? (
+                <>
+                  <Loader2 size={14} className="animate-spin" />
+                  Adding...
+                </>
+              ) : (
+                "Add Client"
+              )}
+            </button>
+          </div>
         </form>
       </DialogContent>
     </Dialog>
