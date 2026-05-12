@@ -16,16 +16,6 @@ import {
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// ── Monthly Revenue ───────────────────────────────────────────────
-// const revenueDatass = [
-//   { month: "Jan", revenue: 42000 },
-//   { month: "Feb", revenue: 58000 },
-//   { month: "Mar", revenue: 35000 },
-//   { month: "Apr", revenue: 71000 },
-//   { month: "May", revenue: 63000 },
-//   { month: "Jun", revenue: 89000 },
-// ];
-
 function RevenueTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
@@ -47,10 +37,7 @@ export function RevenueChart({
   }[];
 }) {
   return (
-    <Card
-      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] transition-all duration-300  hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
-      "
-    >
+    <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] transition-all duration-300  hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
       {/* Ambient Glow */}
       <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
         <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
@@ -70,10 +57,7 @@ export function RevenueChart({
 
         {/* RIGHT */}
         <div className="flex items-center gap-2">
-          <button
-            className="rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-1.5 text-xs font-medium  text-blue-400 backdrop-blur-md transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15
-            "
-          >
+          <button className="rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-1.5 text-xs font-medium  text-blue-400 backdrop-blur-md transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15">
             Monthly
           </button>
         </div>
@@ -172,21 +156,7 @@ export function InvoiceStatusChart({
     invStatusChart.draftedInvoices;
 
   return (
-    <Card
-      className="
-        group
-        relative
-        overflow-hidden
-        rounded-2xl
-        border border-white/10
-        bg-linear-to-b
-        from-[#0B1120]
-        to-[#050816]
-        transition-all duration-300
-        hover:border-blue-500/20
-        hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
-      "
-    >
+    <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] transition-all duration-300 hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
       {/* Ambient glow */}
       <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
         <div className="absolute left-0 top-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
@@ -210,14 +180,7 @@ export function InvoiceStatusChart({
           {invoiceData.map((item) => (
             <div
               key={item.name}
-              className="
-                flex items-center gap-2
-                rounded-full
-                border border-white/10
-                bg-white/3
-                px-3 py-1.5
-                backdrop-blur-md
-              "
+              className="flex items-center gap-2 rounded-full border border-white/10 bg-white/3 px-3 py-1.5 backdrop-blur-md"
             >
               <span
                 className="h-2.5 w-2.5 rounded-full"
@@ -456,21 +419,7 @@ export function PaymentMethodChart({ stats }: { stats: PaymentMethodStats }) {
   const isEmpty = stats.total === 0;
 
   return (
-    <Card
-      className="
-        group
-        relative
-        overflow-hidden
-        rounded-2xl
-        border border-white/10
-        bg-linear-to-b
-        from-[#0B1120]
-        to-[#050816]
-        transition-all duration-300
-        hover:border-blue-500/20
-        hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
-      "
-    >
+    <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] transition-all duration-300 hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
       {/* Ambient glow */}
       <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
         <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
@@ -490,15 +439,7 @@ export function PaymentMethodChart({ stats }: { stats: PaymentMethodStats }) {
 
       <CardContent className="relative">
         {isEmpty ? (
-          <div
-            className="
-              flex h-65 flex-col items-center justify-center
-              rounded-2xl
-              border border-dashed border-white/10
-              bg-white/3
-              text-center
-            "
-          >
+          <div className="flex h-65 flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/3 text-center">
             <div className="mb-3 rounded-full border border-white/10 bg-white/3 p-3">
               <div className="h-3 w-3 rounded-full bg-blue-400" />
             </div>
@@ -518,14 +459,7 @@ export function PaymentMethodChart({ stats }: { stats: PaymentMethodStats }) {
               {data.map((d) => (
                 <div
                   key={d.name}
-                  className="
-                    flex items-center gap-2
-                    rounded-full
-                    border border-white/10
-                    bg-white/3
-                    px-3 py-1.5
-                    backdrop-blur-md
-                  "
+                  className="flex items-center gap-2 rounded-full border border-white/10 bg-white/3 px-3 py-1.5 backdrop-blur-md"
                 >
                   <span
                     className="h-2.5 w-2.5 rounded-full"
@@ -645,21 +579,7 @@ export function ClientGrowthChart({
   const currentYear = new Date().getFullYear();
 
   return (
-    <Card
-      className="
-        group
-        relative
-        overflow-hidden
-        rounded-2xl
-        border border-white/10
-        bg-linear-to-b
-        from-[#0B1120]
-        to-[#050816]
-        transition-all duration-300
-        hover:border-blue-500/20
-        hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
-      "
-    >
+    <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] transition-all duration-300 hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
       {/* Ambient glow */}
       <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
         <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
@@ -679,16 +599,7 @@ export function ClientGrowthChart({
           </div>
 
           {/* RIGHT */}
-          <div
-            className="
-              inline-flex w-fit items-center gap-2
-              rounded-full
-              border border-blue-500/20
-              bg-blue-500/10
-              px-3 py-1.5
-              text-xs font-medium text-blue-400
-            "
-          >
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1.5 text-xs font-medium text-blue-400">
             <TrendingUp className="size-3.5" />
             {startMonth} – {endMonth} {currentYear}
           </div>
@@ -793,11 +704,6 @@ export function ClientGrowthChart({
 
 // ── New vs Returning Donut ────────────────────────────────────────
 
-// const clientTypeData = [
-//   { name: "New", value: 27 },
-//   { name: "Returning", value: 40 },
-// ];
-
 type clientPieChart = {
   newClientsThisMonth: number;
   newClientsDiff: number;
@@ -836,21 +742,7 @@ export function ClientTypeChart({
     clientPieChartData.oldClientsThisMonth;
 
   return (
-    <Card
-      className="
-        group
-        relative
-        overflow-hidden
-        rounded-2xl
-        border border-white/10
-        bg-linear-to-b
-        from-[#0B1120]
-        to-[#050816]
-        transition-all duration-300
-        hover:border-blue-500/20
-        hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
-      "
-    >
+    <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] transition-all duration-300 hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
       {/* Ambient Glow */}
       <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
         <div className="absolute left-0 top-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
@@ -874,14 +766,7 @@ export function ClientTypeChart({
           {formattedClientPieChart.map((d) => (
             <div
               key={d.name}
-              className="
-                flex items-center gap-2
-                rounded-full
-                border border-white/10
-                bg-white/3
-                px-3 py-1.5
-                backdrop-blur-md
-              "
+              className="flex items-center gap-2rounded-fullborder border-white/10bg-white/3px-3 py-1.5backdrop-blur-md"
             >
               <span
                 className="h-2.5 w-2.5 rounded-full"
@@ -901,14 +786,7 @@ export function ClientTypeChart({
         <div className="relative flex items-center justify-center">
           {/* CENTER INFO */}
           <div className="absolute z-10 flex flex-col items-center">
-            <div
-              className="
-                mb-2 flex h-10 w-10 items-center justify-center
-                rounded-full
-                border border-white/10
-                bg-white/3
-              "
-            >
+            <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/3">
               <Users2 className="size-4 text-blue-400" />
             </div>
 
@@ -956,14 +834,7 @@ export function ClientTypeChart({
         {/* METRICS */}
         <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
           {/* NEW */}
-          <div
-            className="
-              rounded-2xl
-              border border-blue-500/10
-              bg-blue-500/4
-              p-4
-            "
-          >
+          <div className="rounded-2xl border border-blue-500/10 bg-blue-500/4 p-4">
             <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
               New Clients
             </p>
@@ -985,14 +856,7 @@ export function ClientTypeChart({
           </div>
 
           {/* RETURNING */}
-          <div
-            className="
-              rounded-2xl
-              border border-emerald-500/10
-              bg-emerald-500/4
-              p-4
-            "
-          >
+          <div className="rounded-2xl border border-emerald-500/10 bg-emerald-500/4 p-4">
             <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
               Returning Clients
             </p>

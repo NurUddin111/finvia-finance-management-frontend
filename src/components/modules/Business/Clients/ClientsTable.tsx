@@ -16,11 +16,11 @@ const TABLE_HEADERS = [
 const statusConfig: Record<ClientStatus, { dot: string; badge: string }> = {
   ACTIVE: {
     dot: "bg-emerald-400",
-    badge: "bg-emerald-400/10 text-emerald-400",
+    badge: "border border-emerald-500/20 bg-emerald-500/10 text-emerald-400",
   },
   INACTIVE: {
     dot: "bg-zinc-400",
-    badge: "bg-zinc-400/10 text-zinc-400",
+    badge: "border border-zinc-500/20 bg-zinc-500/10 text-zinc-400",
   },
 };
 
@@ -29,9 +29,9 @@ const StatusBadge = ({ status }: { status: ClientStatus }) => {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium ${badge}`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium ${badge}`}
     >
-      <span className={`w-1.5 h-1.5 rounded-full ${dot}`} />
+      <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />
       {status}
     </span>
   );
@@ -40,22 +40,33 @@ const StatusBadge = ({ status }: { status: ClientStatus }) => {
 const InvoicePill = ({ count }: { count: number }) => {
   if (!count || count === 0) {
     return (
-      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[12px] font-semibold bg-white/5 text-white/20">
-        0
+      <span className="inline-flex items-center rounded-xl border border-white/10 bg-white/3 px-3 py-1 text-[11px] font-medium text-slate-500">
+        0 invoices
       </span>
     );
   }
+
   return (
-    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[12px] font-semibold bg-indigo-500/15 text-indigo-300">
-      {count}
+    <span className="inline-flex items-center rounded-xl border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-[11px] font-medium text-blue-400">
+      {count} invoices
     </span>
   );
 };
 
 const EmptyState = ({ colSpan }: { colSpan: number }) => (
   <tr>
-    <td colSpan={colSpan} className="py-16 text-center">
-      <p className="text-white/25 text-sm">No clients found!</p>
+    <td colSpan={colSpan} className="py-20 text-center">
+      <div className="flex flex-col items-center justify-center">
+        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/3">
+          <span className="text-xl">👥</span>
+        </div>
+
+        <p className="text-sm font-medium text-slate-300">No clients found</p>
+
+        <p className="mt-1 text-xs text-slate-500">
+          Client records will appear here
+        </p>
+      </div>
     </td>
   </tr>
 );
@@ -63,52 +74,84 @@ const EmptyState = ({ colSpan }: { colSpan: number }) => (
 export default function ClientsTable({ clients }: { clients: Client[] }) {
   return (
     <>
-      {/* ── Mobile cards ── */}
-      <div className="space-y-3 md:hidden">
+      {/* MOBILE */}
+      <div className="space-y-4 md:hidden">
         {clients.length === 0 ? (
-          <div className="rounded-xl border border-white/[0.07] bg-[#16161E] p-6 text-center text-white/25 text-sm">
-            No clients found!
+          <div className="rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-8">
+            <div className="flex flex-col items-center justify-center text-center">
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/3">
+                <span className="text-xl">👥</span>
+              </div>
+
+              <p className="text-sm font-medium text-slate-300">
+                No clients found
+              </p>
+
+              <p className="mt-1 text-xs text-slate-500">
+                Client records will appear here
+              </p>
+            </div>
           </div>
         ) : (
-          clients.map((client: Client) => (
+          clients.map((client: Client, idx: number) => (
             <div
               key={client.id}
-              className="w-full rounded-xl border border-white/[0.07] p-4 space-y-3"
+              className="rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-4 transition-all duration-300 hover:border-blue-500/20 hover:bg-white/2"
             >
-              {/* Client info */}
-              <div className="flex items-center gap-3">
-                <ClientAvatar name={client?.name} />
-                <div className="min-w-0">
-                  <p className="text-[13px] font-medium text-white truncate">
-                    {client?.name}
+              {/* TOP */}
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="relative">
+                    <ClientAvatar name={client?.name} />
+
+                    <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border border-[#050816] bg-blue-500 text-[9px] font-semibold text-white">
+                      {idx + 1}
+                    </div>
+                  </div>
+
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold text-white">
+                      {client?.name}
+                    </p>
+
+                    <p className="mt-1 truncate text-xs text-slate-400">
+                      {client?.email}
+                    </p>
+
+                    <p className="mt-1 text-[11px] text-slate-500">
+                      {client?.phone || "—"}
+                    </p>
+                  </div>
+                </div>
+
+                <StatusBadge status={client.status} />
+              </div>
+
+              {/* META */}
+              <div className="mt-4 grid grid-cols-2 gap-3 rounded-2xl border border-white/5 bg-white/2 p-3">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.18em] text-slate-500">
+                    Invoices
                   </p>
-                  <p className="text-[12px] text-white/40 truncate">
-                    {client?.email}
+
+                  <div className="mt-2">
+                    <InvoicePill count={client.totalInvoices ?? 0} />
+                  </div>
+                </div>
+
+                <div className="text-right">
+                  <p className="text-[10px] uppercase tracking-[0.18em] text-slate-500">
+                    Added
                   </p>
-                  <p className="text-[11px] text-white/25">
-                    {client?.phone || "—"}
+
+                  <p className="mt-2 text-xs text-slate-300">
+                    {client.formattedDate}
                   </p>
                 </div>
               </div>
 
-              {/* Meta row */}
-              <div className="flex justify-between text-[12px] border-t border-white/5 pt-3">
-                <div className="space-y-1.5">
-                  <p className="text-white/30">Status</p>
-                  <StatusBadge status={client.status} />
-                </div>
-                <div className="space-y-1.5">
-                  <p className="text-white/30">Invoices</p>
-                  <InvoicePill count={client.totalInvoices ?? 0} />
-                </div>
-                <div className="space-y-1.5 text-right">
-                  <p className="text-white/30">Added</p>
-                  <p className="text-white/50">{client.formattedDate}</p>
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="border-t border-white/5 pt-3">
+              {/* ACTIONS */}
+              <div className="mt-4 border-t border-white/5 pt-4">
                 <ClientActions client={client} />
               </div>
             </div>
@@ -116,15 +159,15 @@ export default function ClientsTable({ clients }: { clients: Client[] }) {
         )}
       </div>
 
-      {/* ── Desktop table ── */}
-      <div className="hidden md:block w-full overflow-x-auto border border-white/[0.07] rounded-[14px]">
+      {/* DESKTOP */}
+      <div className="hidden overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] md:block">
         <table className="w-full border-collapse">
-          <thead className="border-b border-white/[0.07]">
+          <thead className="border-b border-white/10 bg-white/2">
             <tr>
               {TABLE_HEADERS.map((h) => (
                 <th
                   key={h}
-                  className="px-4 py-3 text-left text-[11px] font-semibold tracking-[0.5px] uppercase text-white/30"
+                  className="px-6 py-4 text-left text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500"
                 >
                   {h}
                 </th>
@@ -139,52 +182,59 @@ export default function ClientsTable({ clients }: { clients: Client[] }) {
               clients.map((client: Client, idx: number) => (
                 <tr
                   key={client.id}
-                  className="border-b border-white/5 last:border-0 hover:bg-white/2 transition-colors duration-150"
+                  className="border-b border-white/4 transition-all duration-200 hover:bg-white/3 last:border-0"
                 >
-                  {/* Client */}
-                  <td className="px-4 py-3.5">
-                    <div className="flex items-center gap-3">
-                      <ClientAvatar name={client.name} />
+                  {/* CLIENT */}
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-4">
+                      <div className="relative">
+                        <ClientAvatar name={client.name} />
+
+                        <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border border-[#050816] bg-blue-500 text-[9px] font-semibold text-white">
+                          {idx + 1}
+                        </div>
+                      </div>
+
                       <div>
-                        <p className="text-[13px] font-medium text-white leading-none">
+                        <p className="text-sm font-medium text-white">
                           {client.name}
                         </p>
-                        <p className="text-[11px] text-white/25 mt-1">
-                          #{String(idx + 1).padStart(3, "0")}
+
+                        <p className="mt-1 text-xs text-slate-500">
+                          Client ID #{String(idx + 1).padStart(3, "0")}
                         </p>
                       </div>
                     </div>
                   </td>
 
-                  {/* Contact */}
-                  <td className="px-4 py-3.5">
-                    <p className="text-[12px] text-white/60 truncate">
-                      {client.email}
-                    </p>
-                    <p className="text-[11px] text-white/30 mt-0.5">
+                  {/* CONTACT */}
+                  <td className="px-6 py-4">
+                    <p className="text-sm text-slate-300">{client.email}</p>
+
+                    <p className="mt-1 text-xs text-slate-500">
                       {client.phone || "—"}
                     </p>
                   </td>
 
-                  {/* Status — hardcoded active until model is updated */}
-                  <td className="px-4 py-3.5">
+                  {/* STATUS */}
+                  <td className="px-6 py-4">
                     <StatusBadge status={client.status} />
                   </td>
 
-                  {/* Invoices */}
-                  <td className="px-4 py-3.5">
+                  {/* INVOICES */}
+                  <td className="px-6 py-4">
                     <InvoicePill count={client.totalInvoices ?? 0} />
                   </td>
 
-                  {/* Added */}
-                  <td className="px-4 py-3.5">
-                    <p className="text-[12px] text-white/40">
+                  {/* ADDED */}
+                  <td className="px-6 py-4">
+                    <p className="text-sm text-slate-400">
                       {client.formattedDate}
                     </p>
                   </td>
 
-                  {/* Actions */}
-                  <td className="px-4 py-3.5">
+                  {/* ACTIONS */}
+                  <td className="px-6 py-4">
                     <ClientActions client={client} />
                   </td>
                 </tr>

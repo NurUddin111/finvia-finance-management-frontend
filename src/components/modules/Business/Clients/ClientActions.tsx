@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+
+import { Pencil, Trash2 } from "lucide-react";
+
 import UpdateClientModal from "./EditClient";
 import DeleteClientModal from "./DeleteClientModal";
 
@@ -20,41 +22,42 @@ interface ClientActionsProps {
   };
 }
 
+const actionBtn =
+  "group flex h-9 w-9 items-center justify-center rounded-xl border transition-all duration-300";
+
 export default function ClientActions({ client }: ClientActionsProps) {
   const [open, setOpen] = useState<boolean>(false);
+
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
 
   return (
     <>
-      <div className="flex items-center gap-1.5">
-        {/* View — no modal yet, wire when ready */}
-        <button
-          title="View client"
-          className="w-7.5 h-7.5 rounded-[7px] flex items-center justify-center bg-white/5 text-white/40 hover:bg-white/10 hover:text-white transition-all duration-150"
-        >
-          <Eye size={14} />
-        </button>
-
-        {/* Edit — onClick from your original */}
+      <div className="flex items-center gap-2">
+        {/* EDIT */}
         <button
           title="Edit client"
           onClick={() => setOpen(true)}
-          className="w-7.5 h-7.5 rounded-[7px] flex items-center justify-center bg-indigo-500/15 text-indigo-300 hover:bg-indigo-500/30 hover:text-indigo-200 transition-all duration-150"
+          className={`${actionBtn} border-blue-500/20 bg-blue-500/10 text-blue-400 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.15)]`}
         >
-          <Pencil size={14} />
+          <Pencil
+            size={15}
+            className="transition-transform duration-300 group-hover:scale-110"
+          />
         </button>
 
-        {/* Delete — onClick from your original */}
+        {/* DELETE */}
         <button
           title="Delete client"
           onClick={() => setDeleteOpen(true)}
-          className="w-7.5 h-7.5 rounded-[7px] flex items-center justify-center bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-all duration-150"
+          className={`${actionBtn} border-red-500/20 bg-red-500/10 text-red-400 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300 hover:shadow-[0_0_20px_rgba(239,68,68,0.15)]`}
         >
-          <Trash2 size={14} />
+          <Trash2
+            size={15}
+            className="transition-transform duration-300 group-hover:scale-110"
+          />
         </button>
       </div>
 
-      {/* Your existing modals — untouched */}
       <UpdateClientModal
         open={open}
         onClose={() => setOpen(false)}

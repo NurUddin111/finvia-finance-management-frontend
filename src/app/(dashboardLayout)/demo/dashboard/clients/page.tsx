@@ -1,13 +1,15 @@
-// src/app/(dashboardLayout)/demo/dashboard/clients/page.tsx
 "use client";
 
 import { useState } from "react";
+
 import ClientStatCards from "@/components/modules/Business/Clients/ClientStatsCard";
+
 import DemoClientsHeader from "@/components/modules/Demo/Clients/DemoClientsHeader";
 import DemoClientsTable from "@/components/modules/Demo/Clients/DemoClientsTable";
-import { demoClients, demoClientsStats } from "@/data/demodata";
 import DemoClientToolbar from "@/components/modules/Demo/Clients/DemoClientsToolbar";
 import DemoPagination from "@/components/modules/Demo/DemoPagination";
+
+import { demoClients, demoClientsStats } from "@/data/demodata";
 
 const PAGE_SIZE = 10;
 
@@ -15,22 +17,29 @@ export default function DemoClientsPage() {
   const [page, setPage] = useState(1);
 
   const totalPages = Math.ceil(demoClients.length / PAGE_SIZE);
+
   const paginatedClients = demoClients.slice(
     (page - 1) * PAGE_SIZE,
     page * PAGE_SIZE,
   );
 
   return (
-    <div className="p-7 min-h-screen">
-      <DemoClientsHeader />
-      <ClientStatCards clientsStats={demoClientsStats} />
-      <DemoClientToolbar total={demoClients.length} />
-      <DemoClientsTable clients={paginatedClients} />
-      <DemoPagination
-        page={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-      />
+    <div className="min-h-screen bg-[#050816] rounded-2xl px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
+      <div className="mx-auto w-full max-w-400">
+        <DemoClientsHeader />
+
+        <ClientStatCards clientsStats={demoClientsStats} />
+
+        <DemoClientToolbar total={demoClients.length} />
+
+        <DemoClientsTable clients={paginatedClients} />
+
+        <DemoPagination
+          page={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
+      </div>
     </div>
   );
 }
