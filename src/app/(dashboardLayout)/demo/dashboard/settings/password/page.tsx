@@ -1,50 +1,95 @@
-// src/app/(dashboardLayout)/demo/dashboard/settings/password/page.tsx
 "use client";
 
 import { useState } from "react";
+
+import {
+  KeyRound,
+  Lock,
+  LockKeyhole,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
+
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Lock } from "lucide-react";
 
 export default function DemoPasswordPage() {
   const [showNudge, setShowNudge] = useState(false);
 
   return (
-    <div className="w-full max-w-5xl">
-      <Card>
-        <CardHeader className="border-b">
-          <h2 className="text-lg font-semibold">Password</h2>
-          <p className="text-sm text-muted-foreground">
-            Update your account password. For security reasons, this action
-            requires confirmation.
-          </p>
-        </CardHeader>
-
-        <CardContent className="pt-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h3 className="font-medium">Change Password</h3>
-              <p className="text-sm text-muted-foreground max-w-md">
-                Make sure your new password is strong and not used anywhere
-                else.
-              </p>
+    <div className="min-h-screen rounded-2xl bg-[#050816] px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
+        {/* HEADER */}
+        <div className="rounded-3xl border border-blue-500/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5 md:p-6">
+          <div className="flex items-start gap-4">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
+              <ShieldCheck className="size-6 text-blue-400" />
             </div>
 
+            <div>
+              <span className="rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-blue-400">
+                Demo Security
+              </span>
+
+              <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white">
+                Password Management
+              </h1>
+
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">
+                Explore how password and security management works in
+                Finvia&apos;s dashboard experience.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* CONTENT */}
+        <div className="rounded-3xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5 md:p-6">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            {/* LEFT */}
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
+                <LockKeyhole className="size-5 text-blue-400" />
+              </div>
+
+              <div>
+                <h2 className="text-lg font-semibold text-white">
+                  Change Password
+                </h2>
+
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">
+                  Make sure your password is secure, unique, and not used
+                  anywhere else for maximum account protection.
+                </p>
+              </div>
+            </div>
+
+            {/* RIGHT */}
             <div className="relative">
-              <Button variant="outline" onClick={() => setShowNudge((v) => !v)}>
-                Change Password
+              <Button
+                onClick={() => setShowNudge((v) => !v)}
+                className="group h-11 rounded-2xl border border-blue-500/20 bg-blue-500/10 px-5 text-sm font-medium text-blue-400 transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_25px_rgba(59,130,246,0.18)]"
+              >
+                <KeyRound className="size-4 transition-transform duration-300 group-hover:rotate-12" />
+
+                <span className="flex items-center gap-2">
+                  Change Password
+                  <Sparkles className="size-3.5 opacity-70" />
+                </span>
               </Button>
 
               {showNudge && (
-                <div className="absolute right-0 -top-12 z-50 flex items-center gap-2 rounded-xl border border-white/10 bg-card bg-red-950 px-4 py-2.5 shadow-xl text-sm text-muted-foreground whitespace-nowrap">
-                  <Lock size={13} className="text-primary shrink-0" />
-                  Sign up to change your password
+                <div className="absolute -top-14 right-0 z-50 flex items-center gap-2 rounded-2xl border border-blue-500/15 bg-[#0B1120] px-4 py-3 shadow-2xl whitespace-nowrap">
+                  <Lock className="size-3.5 shrink-0 text-blue-400" />
+
+                  <p className="text-xs font-medium text-blue-300">
+                    Sign up to change your password
+                  </p>
                 </div>
               )}
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

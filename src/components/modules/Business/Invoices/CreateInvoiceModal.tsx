@@ -295,11 +295,6 @@ export default function CreateInvoiceModal({
                       </div>
                     </div>
 
-                    {/* ↓ FIX: was `grid gap-5 lg:grid-cols-2`
-                         lg fires on the *viewport* width (1024px+), not the column width.
-                         Since the left column is ~55% of a 1280px modal, it's only ~700px —
-                         wide enough to comfortably hold 2 inputs. Removed the breakpoint prefix
-                         so it's always a 2-col grid inside this panel. */}
                     <div className="grid grid-cols-2 gap-5">
                       <div className="space-y-2">
                         <label className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">

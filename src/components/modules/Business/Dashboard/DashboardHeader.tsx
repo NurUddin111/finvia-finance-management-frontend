@@ -22,27 +22,20 @@ const DashboardHeader = async ({
   return (
     <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between mb-8">
       {/* LEFT SIDE */}
-      <div className="space-y-2">
+      <div className="space-y-4">
         <div className="flex items-center gap-2">
           <div className="flex items-center justify-center rounded-full border border-blue-500/20 bg-blue-500/10 p-1.5">
             <Sparkles className="size-4 text-blue-400" />
           </div>
 
-          <span className="text-xs font-medium tracking-[0.2em] uppercase text-blue-400">
-            Finvia Analytics
+          <span className="text-3xl font-medium tracking-[0.2em] uppercase text-blue-400">
+            Analytical Dashboard
           </span>
         </div>
-
-        <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-white">
-            Dashboard
-          </h1>
-
-          <p className="mt-1 text-sm text-slate-400 max-w-xl leading-relaxed">
-            Monitor revenue, invoices, payments, and client activity from one
-            central place.
-          </p>
-        </div>
+        <p className="mt-1 text-sm text-slate-400 max-w-xl leading-relaxed">
+          Monitor revenue, invoices, payments, and client activity from one
+          central place.
+        </p>
       </div>
 
       {/* RIGHT SIDE */}

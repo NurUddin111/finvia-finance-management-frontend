@@ -92,29 +92,57 @@ export default function SettingsAccordion({
       </Accordion>
 
       <Dialog open={openLogout} onOpenChange={setOpenLogout}>
-        <DialogContent className="max-w-sm bg-black">
-          <DialogHeader>
-            <DialogTitle className="text-red-600">Logout</DialogTitle>
-          </DialogHeader>
+        <DialogContent className="overflow-hidden border border-red-500/15 bg-[#050816] p-0 shadow-[0_30px_120px_rgba(0,0,0,0.65)] sm:max-w-sm">
+          {/* HEADER */}
+          <div className="border-b border-red-500/10 bg-linear-to-b from-[#140809] to-[#050816] px-5 py-5">
+            <DialogHeader>
+              <div className="mb-3 flex justify-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10">
+                  <LogOut className="size-5 text-red-400" />
+                </div>
+              </div>
 
-          <p className="text-sm text-muted-foreground">
-            Are you sure you want to log out from your account?
-          </p>
+              <DialogTitle className="text-center text-xl font-semibold tracking-tight text-white">
+                Logout
+              </DialogTitle>
 
-          <div className="mt-6 flex justify-end gap-3">
-            <Button variant="outline" onClick={() => setOpenLogout(false)}>
-              Cancel
-            </Button>
+              <p className="mt-1 text-center text-xs leading-relaxed text-slate-400">
+                Are you sure you want to log out from your account?
+              </p>
+            </DialogHeader>
+          </div>
 
-            <Button
-              variant="destructive"
-              onClick={async () => {
-                await logoutUser();
-                router.refresh();
-              }}
-            >
-              Logout
-            </Button>
+          {/* BODY */}
+          <div className="px-5 py-5">
+            <div className="rounded-2xl border border-red-500/15 bg-red-500/8 p-4">
+              <p className="text-sm leading-relaxed text-slate-300">
+                You will be signed out from your current session and redirected
+                to the login page.
+              </p>
+            </div>
+
+            {/* ACTIONS */}
+            <div className="mt-5 flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setOpenLogout(false)}
+                className="h-10 flex-1 rounded-xl border-white/10 bg-white/3 text-sm text-slate-300 hover:border-white/20 hover:bg-white/5 hover:text-white"
+              >
+                Cancel
+              </Button>
+
+              <Button
+                onClick={async () => {
+                  await logoutUser();
+
+                  router.refresh();
+                }}
+                className="h-10 flex-1 rounded-xl border border-red-500/20 bg-red-500/10 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300"
+              >
+                <LogOut className="size-4" />
+                Logout
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
