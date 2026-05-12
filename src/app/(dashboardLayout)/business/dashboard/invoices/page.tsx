@@ -2,10 +2,13 @@ import InvoicesFilters from "@/components/modules/Business/Invoices/InvoicesFilt
 import InvoicesHeader from "@/components/modules/Business/Invoices/InvoicesHeader";
 import InvoicesTable from "@/components/modules/Business/Invoices/InvoicesTable";
 import InvoicesStats from "@/components/modules/Business/Invoices/InvoicesStats";
+
 import Pagination from "@/components/shared/Pagination";
+
 import { getAllInvoices } from "@/services/business/invoices/getAllInvoices";
 import { getInvoiceStats } from "@/services/business/invoices/inoiceStats";
 import { updateInvStatus } from "@/services/business/invoices/updateStatus";
+
 import { Invoice, InvoiceStats } from "@/types/invoice";
 
 const InvoicePage = async ({
@@ -15,9 +18,10 @@ const InvoicePage = async ({
 }) => {
   const params = await searchParams;
 
-  // Fire all independent requests at the same time
+  // Run all requests together
   const [invoiceStatsRes, allInvoicesRes] = await Promise.all([
     getInvoiceStats(),
+
     getAllInvoices({
       page: params.page,
       search: params.search,
@@ -26,28 +30,42 @@ const InvoicePage = async ({
       order: params.order,
       year: params.year,
     }),
-    updateInvStatus(), // doesn't return anything we need, just runs in parallel
+
+    updateInvStatus(),
   ]);
 
   const invoiceStats = invoiceStatsRes.data as InvoiceStats;
+
   const allInvoices = allInvoicesRes.data as Invoice[];
+
   const meta = allInvoicesRes.meta;
 
   return (
-    <div className="space-y-6">
-      <InvoicesHeader />
-      <InvoicesStats invoiceStats={invoiceStats} />
-      <InvoicesFilters
-        total={meta?.total ?? 0}
-        availableYears={meta?.availableYears ?? []}
-      />
-      <InvoicesTable invoices={allInvoices} />
-      <Pagination
-        page={meta?.page ?? 1}
-        totalPages={meta?.totalPages ?? 1}
-        hasNextPage={meta?.hasNextPage ?? false}
-        hasPrevPage={meta?.hasPrevPage ?? false}
-      />
+    <div className="min-h-screen bg-[#050816] rounded-2xl px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
+      <div className="mx-auto flex w-full max-w-400 flex-col gap-6">
+        {/* Header */}
+        <InvoicesHeader />
+
+        {/* Stats */}
+        <InvoicesStats invoiceStats={invoiceStats} />
+
+        {/* Filters */}
+        <InvoicesFilters
+          total={meta?.total ?? 0}
+          availableYears={meta?.availableYears ?? []}
+        />
+
+        {/* Table */}
+        <InvoicesTable invoices={allInvoices} />
+
+        {/* Pagination */}
+        <Pagination
+          page={meta?.page ?? 1}
+          totalPages={meta?.totalPages ?? 1}
+          hasNextPage={meta?.hasNextPage ?? false}
+          hasPrevPage={meta?.hasPrevPage ?? false}
+        />
+      </div>
     </div>
   );
 };

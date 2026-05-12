@@ -6,12 +6,27 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+
 import { Button } from "@/components/ui/button";
+
 import InvoiceStatusBadge from "./InvoicesStatus";
+
 import InvoiceViewSkeleton from "./ViewInvSkeleton";
+
 import { sendInvoice } from "@/services/business/invoices/sendInv";
+
 import { useRouter } from "next/navigation";
+
 import { Invoice } from "@/types/invoice";
+
+import {
+  CalendarDays,
+  FileText,
+  ReceiptText,
+  SendHorizonal,
+  Download,
+  StickyNote,
+} from "lucide-react";
 
 export default function InvoiceViewModal({
   open,
@@ -25,65 +40,162 @@ export default function InvoiceViewModal({
   loading: boolean;
 }) {
   const router = useRouter();
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent
-        className=" w-[95vw] max-w-3xl max-h-[90vh] bg-black flex flex-col"
+        className="flex h-[92vh] w-[96vw] max-w-5xl flex-col overflow-hidden rounded-4xl border border-white/10 bg-[#050816] p-0 shadow-[0_25px_120px_rgba(0,0,0,0.75)]"
         onInteractOutside={(e) => e.preventDefault()}
       >
         <DialogTitle className="sr-only">View Invoice</DialogTitle>
 
-        <div className="flex-1 overflow-y-auto px-5 sm:px-6 py-6">
+        {/* HEADER */}
+        <DialogHeader className="shrink-0 border-b border-white/10 bg-[#081120] px-6 py-5">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+            <div className="flex items-start gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
+                <ReceiptText className="size-6 text-blue-400" />
+              </div>
+
+              <div className="min-w-0">
+                <h2 className="truncate text-3xl font-semibold tracking-tight text-white">
+                  {loading || !invoice
+                    ? "Loading Invoice..."
+                    : invoice.invoiceNumber}
+                </h2>
+
+                {!loading && invoice && (
+                  <p className="mt-1 truncate text-sm text-slate-400">
+                    Client: {invoice.client.email}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {!loading && invoice && (
+              <InvoiceStatusBadge status={invoice.status} />
+            )}
+          </div>
+        </DialogHeader>
+
+        {/* BODY */}
+        <div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto px-5 py-5 md:px-6 xl:px-7">
           {loading || !invoice ? (
             <InvoiceViewSkeleton />
           ) : (
-            <>
-              <DialogHeader className="space-y-2">
-                <div className="flex items-center justify-between gap-3">
-                  <h2 className="text-xl font-semibold truncate">
-                    Invoice {invoice.invoiceNumber}
-                  </h2>
-                  <InvoiceStatusBadge status={invoice.status} />
+            <div className="space-y-6">
+              {/* META */}
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="rounded-3xl border border-white/10 bg-[#0B1120] p-5">
+                  <div className="mb-4 flex items-center gap-2">
+                    <CalendarDays className="size-4 text-blue-400" />
+
+                    <h3 className="text-sm font-semibold text-white">
+                      Invoice Dates
+                    </h3>
+                  </div>
+
+                  <div className="space-y-4 text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500">Issue Date</span>
+
+                      <span className="font-medium text-white">
+                        {new Date(invoice.issueDate).toLocaleDateString()}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500">Due Date</span>
+
+                      <span className="font-medium text-white">
+                        {new Date(invoice.dueDate).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
-                <p className="text-sm text-muted-foreground truncate">
-                  Client: {invoice.client.email}
-                </p>
-              </DialogHeader>
+                <div className="rounded-3xl border border-white/10 bg-[#0B1120] p-5">
+                  <div className="mb-4 flex items-center gap-2">
+                    <FileText className="size-4 text-emerald-400" />
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm mt-6">
-                <div>
-                  <p className="text-muted-foreground">Issue Date</p>
-                  <p>{new Date(invoice.issueDate).toLocaleDateString()}</p>
-                </div>
+                    <h3 className="text-sm font-semibold text-white">
+                      Invoice Summary
+                    </h3>
+                  </div>
 
-                <div>
-                  <p className="text-muted-foreground">Due Date</p>
-                  <p>{new Date(invoice.dueDate).toLocaleDateString()}</p>
+                  <div className="space-y-4 text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500">Items</span>
+
+                      <span className="font-medium text-white">
+                        {invoice.items.length}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500">Currency</span>
+
+                      <span className="font-medium text-white">
+                        {invoice.currency}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="mt-6 border rounded-lg">
+              {/* TABLE */}
+              <div className="overflow-hidden rounded-3xl border border-white/10 bg-[#0B1120]">
+                <div className="border-b border-white/10 px-5 py-4">
+                  <h3 className="text-sm font-semibold text-white">
+                    Invoice Items
+                  </h3>
+
+                  <p className="mt-1 text-xs text-slate-500">
+                    Products and pricing breakdown
+                  </p>
+                </div>
+
                 <div className="overflow-x-auto">
-                  <table className="min-w-150 w-full text-sm">
-                    <thead className="bg-muted/50">
+                  <table className="min-w-full text-sm">
+                    <thead className="border-b border-white/10 bg-white/3">
                       <tr>
-                        <th className="p-3 text-left">Item</th>
-                        <th className="p-3 text-center">Qty</th>
-                        <th className="p-3 text-right">Rate</th>
-                        <th className="p-3 text-right">Total</th>
+                        <th className="px-5 py-4 text-left font-medium text-slate-400">
+                          Item
+                        </th>
+
+                        <th className="px-5 py-4 text-center font-medium text-slate-400">
+                          Qty
+                        </th>
+
+                        <th className="px-5 py-4 text-right font-medium text-slate-400">
+                          Rate
+                        </th>
+
+                        <th className="px-5 py-4 text-right font-medium text-slate-400">
+                          Total
+                        </th>
                       </tr>
                     </thead>
 
                     <tbody>
                       {invoice.items.map((item) => (
-                        <tr key={item.id} className="border-t">
-                          <td className="p-3 truncate">{item.name}</td>
-                          <td className="p-3 text-center">{item.quantity}</td>
-                          <td className="p-3 text-right">
+                        <tr
+                          key={item.id}
+                          className="border-b border-white/5 transition-colors hover:bg-white/2"
+                        >
+                          <td className="px-5 py-4 font-medium text-white">
+                            {item.name}
+                          </td>
+
+                          <td className="px-5 py-4 text-center text-slate-300">
+                            {item.quantity}
+                          </td>
+
+                          <td className="px-5 py-4 text-right text-slate-300">
                             {item.pricePerUnit}
                           </td>
-                          <td className="p-3 text-right font-medium">
+
+                          <td className="px-5 py-4 text-right font-semibold text-white">
                             {item.total}
                           </td>
                         </tr>
@@ -93,65 +205,98 @@ export default function InvoiceViewModal({
                 </div>
               </div>
 
-              <div className="mt-6 space-y-2 text-sm max-w-sm ml-auto">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Subtotal</span>
-                  <span>{invoice.subtotal}</span>
-                </div>
+              {/* TOTALS */}
+              <div className="ml-auto w-full max-w-md rounded-3xl border border-white/10 bg-[#0B1120] p-5">
+                <div className="space-y-4 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500">Subtotal</span>
 
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Tax</span>
-                  <span>{invoice.tax}</span>
-                </div>
+                    <span className="font-medium text-white">
+                      {invoice.subtotal}
+                    </span>
+                  </div>
 
-                <div className="flex justify-between font-semibold text-base border-t pt-2">
-                  <span>Total</span>
-                  <span>
-                    {invoice.total} {invoice.currency}
-                  </span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500">Tax</span>
+
+                    <span className="font-medium text-white">
+                      {invoice.tax}
+                    </span>
+                  </div>
+
+                  <div className="border-t border-white/10 pt-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-base font-medium text-slate-300">
+                        Total
+                      </span>
+
+                      <span className="text-3xl font-semibold tracking-tight text-white">
+                        {invoice.total} {invoice.currency}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
+              {/* NOTES */}
               {invoice.notes && (
-                <div className="mt-6 text-sm">
-                  <p className="text-muted-foreground">Notes</p>
-                  <p>{invoice.notes}</p>
+                <div className="rounded-3xl border border-white/10 bg-[#0B1120] p-5">
+                  <div className="mb-4 flex items-center gap-2">
+                    <StickyNote className="size-4 text-amber-400" />
+
+                    <h3 className="text-sm font-semibold text-white">Notes</h3>
+                  </div>
+
+                  <p className="text-sm leading-relaxed text-slate-400">
+                    {invoice.notes}
+                  </p>
                 </div>
               )}
-            </>
+            </div>
           )}
         </div>
 
+        {/* FOOTER */}
         {!loading && invoice && (
-          <div className="shrink-0 border-t px-5 sm:px-6 py-4 flex justify-end gap-3">
-            {invoice.invPdfUrl && (
-              <Button
-                variant="outline"
-                onClick={() => window.open(invoice.invPdfUrl, "_blank")}
-              >
-                View PDF
-              </Button>
-            )}
-
-            {invoice.status &&
-              invoice.status !== "SENT" &&
-              invoice.status !== "PAID" && (
+          <div className="shrink-0 border-t border-white/10 bg-[#081120] px-5 py-4 md:px-6 xl:px-7">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
+              {invoice.invPdfUrl && (
                 <Button
                   variant="outline"
-                  className="w-full sm:w-auto"
-                  onClick={async () => {
-                    await sendInvoice(invoice.id);
-                    onClose();
-                    router.refresh();
-                  }}
+                  onClick={() => window.open(invoice.invPdfUrl, "_blank")}
+                  className="h-12 rounded-2xl border-white/10 bg-white/3 px-5 text-slate-300 hover:bg-white/5"
                 >
-                  Send Invoice
+                  <Download size={15} className="mr-2" />
+                  View PDF
                 </Button>
               )}
 
-            <Button variant="outline" onClick={onClose}>
-              Close
-            </Button>
+              {invoice.status &&
+                invoice.status !== "SENT" &&
+                invoice.status !== "PAID" && (
+                  <Button
+                    onClick={async () => {
+                      await sendInvoice(invoice.id);
+
+                      onClose();
+
+                      router.refresh();
+                    }}
+                    className="h-12 rounded-2xl bg-blue-500 px-6 font-semibold text-white hover:bg-blue-400"
+                  >
+                    <SendHorizonal size={15} className="mr-2" />
+                    Send Invoice
+                  </Button>
+                )}
+
+              <Button
+                variant="outline"
+                onClick={onClose}
+                className="h-12 rounded-2xl border-white/10 bg-white/3 px-6 text-slate-300 hover:bg-white/5"
+              >
+                Close
+              </Button>
+            </div>
           </div>
         )}
       </DialogContent>
