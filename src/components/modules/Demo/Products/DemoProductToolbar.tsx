@@ -1,28 +1,34 @@
-// src/components/modules/Demo/Product/DemoProductToolbar.tsx
+"use client";
 
-import { Search } from "lucide-react";
+import { PackageSearch } from "lucide-react";
 
 const DemoProductToolbar = ({ total }: { total: number }) => {
   return (
-    <div className="flex flex-col gap-2.5 mb-4 md:flex-row md:items-center">
-      <div className="relative flex-1 opacity-50 cursor-not-allowed">
-        <Search
-          size={14}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-white/25 pointer-events-none"
-        />
-        <input
-          type="text"
-          disabled
-          placeholder="Search products by name…"
-          className="w-full border border-white/8 rounded-[9px] pl-9 pr-3 py-2 text-[13px] text-white placeholder:text-white/25 outline-none cursor-not-allowed"
-        />
+    <div className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-4 backdrop-blur-xl lg:flex-row lg:items-center lg:justify-between">
+      {/* LEFT */}
+      <div className="flex flex-1 flex-col gap-3 lg:flex-row lg:items-center">
+        {/* SEARCH */}
+        <div className="relative flex-1 opacity-50">
+          <PackageSearch
+            size={15}
+            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
+          />
+
+          <input
+            type="text"
+            disabled
+            placeholder="Search products by name..."
+            className="h-11 w-full cursor-not-allowed rounded-2xl border border-white/10 bg-white/3 pl-11 pr-4 text-sm text-white placeholder:text-slate-500 outline-none"
+          />
+        </div>
       </div>
 
-      <div className="flex items-center gap-2.5">
-        <div className="hidden md:block h-5 w-px bg-white/[0.07]" />
-        <span className="text-[12px] text-white/25 whitespace-nowrap tabular-nums">
-          {total} result{total !== 1 ? "s" : ""} found
-        </span>
+      {/* RIGHT */}
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="rounded-full border border-white/10 bg-white/3 px-3 py-1.5 text-xs font-medium text-slate-400">
+          {total} result
+          {total !== 1 ? "s" : ""} found
+        </div>
       </div>
     </div>
   );

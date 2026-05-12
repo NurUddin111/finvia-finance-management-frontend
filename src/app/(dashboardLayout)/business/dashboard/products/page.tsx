@@ -3,8 +3,10 @@ import ProductStatCards from "@/components/modules/Business/Product/ProductsStat
 import ProductTable from "@/components/modules/Business/Product/ProductsTable";
 import ProductToolbar from "@/components/modules/Business/Product/ProductToolbar";
 import Pagination from "@/components/shared/Pagination";
+
 import { getAllProducts } from "@/services/business/products/allProducts";
 import { getProductsStats } from "@/services/business/products/productsStats";
+
 import { Product, ProductStats } from "@/types/product";
 
 const ProductsPage = async ({
@@ -21,25 +23,39 @@ const ProductsPage = async ({
       sortBy: params.sortBy,
       order: params.order,
     }),
+
     getProductsStats(),
   ]);
 
   const products = allProductsRes.data as Product[];
+
   const productsStats = productsStatsRes.data as ProductStats;
+
   const meta = allProductsRes.meta;
 
   return (
-    <div className="p-7 min-h-screen space-y-6">
-      <ProductsHeader />
-      <ProductStatCards productStats={productsStats} />
-      <ProductToolbar total={meta?.total ?? 0} />
-      <ProductTable products={products} />
-      <Pagination
-        page={meta?.page ?? 1}
-        totalPages={meta?.totalPages ?? 1}
-        hasNextPage={meta?.hasNextPage ?? false}
-        hasPrevPage={meta?.hasPrevPage ?? false}
-      />
+    <div className="min-h-screen rounded-2xl bg-[#050816] px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
+      <div className="mx-auto flex w-full max-w-475 flex-col gap-6">
+        {/* Header */}
+        <ProductsHeader />
+
+        {/* Stats */}
+        <ProductStatCards productStats={productsStats} />
+
+        {/* Toolbar */}
+        <ProductToolbar total={meta?.total ?? 0} />
+
+        {/* Table */}
+        <ProductTable products={products} />
+
+        {/* Pagination */}
+        <Pagination
+          page={meta?.page ?? 1}
+          totalPages={meta?.totalPages ?? 1}
+          hasNextPage={meta?.hasNextPage ?? false}
+          hasPrevPage={meta?.hasPrevPage ?? false}
+        />
+      </div>
     </div>
   );
 };

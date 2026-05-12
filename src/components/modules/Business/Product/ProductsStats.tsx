@@ -1,62 +1,76 @@
-import React from "react";
-import { Package, Clock, DollarSign, Award } from "lucide-react";
+"use client";
+
+import { Package, DollarSign, Award, Clock3 } from "lucide-react";
+
 import { ProductStats } from "@/types/product";
 
-type DeltaType = "up" | "down" | "neutral" | "warn";
-
-interface StatCardProps {
-  label: string;
-  value: string | number;
-  delta?: string;
-  deltaType?: DeltaType;
-  icon: React.ReactNode;
-  iconBg: string;
-  iconColor: string;
+interface ProductStatsProps {
+  productStats: ProductStats;
 }
 
-const DELTA_CLASSES: Record<DeltaType, string> = {
-  up: "text-emerald-400",
-  down: "text-red-400",
-  warn: "text-orange-400",
-  neutral: "text-muted-foreground",
-};
+interface StatCardProps {
+  title: string;
+  value: string;
+  sub: string;
+  icon: React.ReactNode;
+  glow: string;
+  border: string;
+  text: string;
+  bg: string;
+}
 
-const StatCard: React.FC<StatCardProps> = ({
-  label,
+function StatCard({
+  title,
   value,
-  delta,
-  deltaType = "neutral",
+  sub,
   icon,
-  iconBg,
-  iconColor,
-}) => (
-  <div className="relative border border-white/[0.07] rounded-xl p-4 overflow-hidden min-w-40">
-    <div
-      className={`absolute -top-5 -right-5 w-16 h-16 rounded-full blur-2xl opacity-15 ${iconBg}`}
-    />
-
-    <div className="flex items-center justify-between mb-3">
-      <p className="text-xs text-muted-foreground tracking-wide truncate pr-2">
-        {label}
-      </p>
+  glow,
+  border,
+  text,
+  bg,
+}: StatCardProps) {
+  return (
+    <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
+      {/* Glow */}
       <div
-        className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${iconBg} ${iconColor}`}
-      >
-        {icon}
+        className={`absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-20 blur-3xl ${glow}`}
+      />
+
+      {/* Content */}
+      <div className="relative flex items-start justify-between gap-4">
+        <div className="min-w-0 space-y-3">
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
+            {title}
+          </p>
+
+          <div className="space-y-2">
+            <p className="truncate text-3xl font-semibold leading-none tracking-tight text-white">
+              {value}
+            </p>
+
+            <p className="text-xs leading-relaxed text-slate-400">{sub}</p>
+          </div>
+        </div>
+
+        {/* Icon */}
+        <div
+          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border ${border} ${bg} ${text}`}
+        >
+          {icon}
+        </div>
       </div>
     </div>
+  );
+}
 
-    <p className="text-2xl font-semibold text-foreground tracking-tight leading-none mb-1">
-      {value}
-    </p>
+const fmt = (n: number) =>
+  n >= 1_000_000
+    ? `${(n / 1_000_000).toFixed(2)}M`
+    : n >= 1_000
+      ? `${(n / 1_000).toFixed(1)}K`
+      : n.toFixed(2);
 
-    {delta && (
-      <p className={`text-xs truncate ${DELTA_CLASSES[deltaType]}`}>{delta}</p>
-    )}
-  </div>
-);
-
-const ProductStatCards = ({ productStats }: { productStats: ProductStats }) => {
+export default function ProductStatCards({ productStats }: ProductStatsProps) {
   const {
     totalProducts,
     currentMonthProducts,
@@ -66,67 +80,65 @@ const ProductStatCards = ({ productStats }: { productStats: ProductStats }) => {
     pendingOrdersValue,
   } = productStats;
 
-  const cards = [
+  const stats: StatCardProps[] = [
     {
-      label: "Total Products",
-      value: totalProducts,
-      delta: `${currentMonthProducts >= 0 ? "↑" : "↓"} ${Math.abs(currentMonthProducts)} this month`,
-      deltaType: (currentMonthProducts > 0 ? "up" : "neutral") as DeltaType,
-      icon: <Package size={13} />,
-      iconBg: "bg-indigo-500/20",
-      iconColor: "text-indigo-400",
+      title: "Total Products",
+      value: String(totalProducts),
+      sub: `${currentMonthProducts >= 0 ? "+" : "-"}${Math.abs(currentMonthProducts)} added this month`,
+      icon: <Package size={18} />,
+      glow: "bg-blue-500/20",
+      border: "border-blue-500/20",
+      text: "text-blue-400",
+      bg: "bg-blue-500/10",
     },
+
     {
-      label: "Total Earning",
-      value: `$${totalEarning.toLocaleString()}`,
-      delta: totalEarning > 0 ? "From paid invoices" : "No earnings yet",
-      deltaType: (totalEarning > 0 ? "up" : "neutral") as DeltaType,
-      icon: <DollarSign size={13} />,
-      iconBg: "bg-emerald-500/20",
-      iconColor: "text-emerald-400",
+      title: "Total Revenue",
+      value: `${fmt(totalEarning)} BDT`,
+      sub:
+        totalEarning > 0
+          ? "Revenue generated from product sales"
+          : "No revenue generated yet",
+      icon: <DollarSign size={18} />,
+      glow: "bg-emerald-500/20",
+      border: "border-emerald-500/20",
+      text: "text-emerald-400",
+      bg: "bg-emerald-500/10",
     },
+
     {
-      label: "Top Selling Product",
+      title: "Top Selling",
       value: topSellingProduct ? topSellingProduct.name : "No sales yet",
-      delta: topSellingProduct
+      sub: topSellingProduct
         ? `${topSellingProduct.totalSold} units sold`
-        : "Start invoicing products",
-      deltaType: (topSellingProduct ? "up" : "neutral") as DeltaType,
-      icon: <Award size={13} />,
-      iconBg: "bg-violet-500/20",
-      iconColor: "text-violet-400",
+        : "Start selling products",
+      icon: <Award size={18} />,
+      glow: "bg-violet-500/20",
+      border: "border-violet-500/20",
+      text: "text-violet-400",
+      bg: "bg-violet-500/10",
     },
+
     {
-      label: "Pending Orders",
-      value: pendingOrders,
-      delta:
+      title: "Pending Orders",
+      value: String(pendingOrders),
+      sub:
         pendingOrders > 0
-          ? `$${pendingOrdersValue.toLocaleString()} awaiting payment`
+          ? `${fmt(pendingOrdersValue)} BDT awaiting payment`
           : "No pending orders",
-      deltaType: (pendingOrders > 0 ? "warn" : "up") as DeltaType,
-      icon: <Clock size={13} />,
-      iconBg: "bg-orange-500/20",
-      iconColor: "text-orange-400",
+      icon: <Clock3 size={18} />,
+      glow: "bg-amber-500/20",
+      border: "border-amber-500/20",
+      text: "text-amber-400",
+      bg: "bg-amber-500/10",
     },
   ];
 
   return (
-    <div className="mb-6">
-      {/* Mobile: horizontal scroll */}
-      <div className="flex gap-3 overflow-x-auto pb-1 lg:hidden scrollbar-none">
-        {cards.map((card) => (
-          <StatCard key={card.label} {...card} />
-        ))}
-      </div>
-
-      {/* Desktop: 4-col grid */}
-      <div className="hidden lg:grid lg:grid-cols-4 gap-3">
-        {cards.map((card) => (
-          <StatCard key={card.label} {...card} />
-        ))}
-      </div>
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
+      {stats.map((stat) => (
+        <StatCard key={stat.title} {...stat} />
+      ))}
     </div>
   );
-};
-
-export default ProductStatCards;
+}
