@@ -1,7 +1,7 @@
 "use client";
 
-import { FileText, TrendingUp, Clock, Calendar } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { FileText, TrendingUp, Clock3, CalendarDays } from "lucide-react";
+
 import { InvoiceStats } from "@/types/invoice";
 
 interface InvoicesStatsProps {
@@ -13,31 +13,48 @@ interface StatCardProps {
   value: string;
   sub: string;
   icon: React.ReactNode;
-  iconBg: string;
-  accent: string;
+  glow: string;
+  border: string;
+  text: string;
+  bg: string;
 }
 
-function StatCard({ title, value, sub, icon, iconBg, accent }: StatCardProps) {
+function StatCard({
+  title,
+  value,
+  sub,
+  icon,
+  glow,
+  border,
+  text,
+  bg,
+}: StatCardProps) {
   return (
-    <div className="relative rounded-xl border bg-card p-5 overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
-      <div className={cn("absolute top-0 left-0 right-0 h-0.5", accent)} />
+    <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
+      {/* Glow */}
+      <div
+        className={`absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-20 blur-3xl ${glow}`}
+      />
 
-      <div className="flex items-start justify-between gap-3">
-        <div className="space-y-3 min-w-0">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
+      {/* Content */}
+      <div className="relative flex items-start justify-between gap-4">
+        <div className="min-w-0 space-y-3">
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
             {title}
           </p>
-          <p className="text-2xl font-semibold tracking-tight truncate">
-            {value}
-          </p>
-          <p className="text-xs text-muted-foreground">{sub}</p>
+
+          <div className="space-y-2">
+            <p className="truncate text-3xl font-semibold leading-none tracking-tight text-white">
+              {value}
+            </p>
+
+            <p className="text-xs leading-relaxed text-slate-400">{sub}</p>
+          </div>
         </div>
 
+        {/* Icon */}
         <div
-          className={cn(
-            "shrink-0 flex items-center justify-center rounded-lg w-10 h-10",
-            iconBg,
-          )}
+          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border ${border} ${bg} ${text}`}
         >
           {icon}
         </div>
@@ -67,38 +84,46 @@ export default function InvoicesStats({ invoiceStats }: InvoicesStatsProps) {
       title: "Total Invoices",
       value: String(totalInvoices),
       sub: `${draftedInvoices} draft${draftedInvoices !== 1 ? "s" : ""} pending`,
-      icon: <FileText size={18} className="text-violet-400" />,
-      iconBg: "bg-violet-500/10",
-      accent: "bg-violet-500/60",
+      icon: <FileText size={18} />,
+      glow: "bg-violet-500/20",
+      border: "border-violet-500/20",
+      text: "text-violet-400",
+      bg: "bg-violet-500/10",
     },
     {
       title: "Total Revenue",
       value: `${fmt(totalRevenue)} BDT`,
       sub: "Across all invoices",
-      icon: <TrendingUp size={18} className="text-blue-400" />,
-      iconBg: "bg-blue-500/10",
-      accent: "bg-blue-500/60",
+      icon: <TrendingUp size={18} />,
+      glow: "bg-blue-500/20",
+      border: "border-blue-500/20",
+      text: "text-blue-400",
+      bg: "bg-blue-500/10",
     },
     {
       title: "This Month",
       value: `${fmt(thisMonth.earnings)} BDT`,
       sub: `${thisMonth.paidCount} invoice${thisMonth.paidCount !== 1 ? "s" : ""} paid this month`,
-      icon: <Calendar size={18} className="text-emerald-400" />,
-      iconBg: "bg-emerald-500/10",
-      accent: "bg-emerald-500/60",
+      icon: <CalendarDays size={18} />,
+      glow: "bg-emerald-500/20",
+      border: "border-emerald-500/20",
+      text: "text-emerald-400",
+      bg: "bg-emerald-500/10",
     },
     {
       title: "Outstanding",
       value: `${fmt(outstanding.amount)} BDT`,
       sub: `${outstanding.count} invoice${outstanding.count !== 1 ? "s" : ""} awaiting payment`,
-      icon: <Clock size={18} className="text-amber-400" />,
-      iconBg: "bg-amber-500/10",
-      accent: "bg-amber-500/60",
+      icon: <Clock3 size={18} />,
+      glow: "bg-amber-500/20",
+      border: "border-amber-500/20",
+      text: "text-amber-400",
+      bg: "bg-amber-500/10",
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
       {stats.map((stat) => (
         <StatCard key={stat.title} {...stat} />
       ))}

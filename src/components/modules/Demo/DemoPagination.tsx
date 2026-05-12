@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Lock } from "lucide-react";
+import { ChevronLeft, ChevronRight, Navigation} from "lucide-react";
 
 type DemoPaginationProps = {
   page: number;
@@ -23,8 +23,8 @@ const DemoPagination = ({
           Page {page} of {totalPages}
         </div>
 
-        <div className="hidden items-center gap-2 rounded-xl border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-medium text-blue-400 sm:flex">
-          <Lock size={12} />
+        <div className="hidden items-center gap-2 rounded-xl border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-medium text-green-400 sm:flex">
+          <Navigation size={12} />
           Demo navigation enabled
         </div>
       </div>

@@ -476,6 +476,8 @@ export const demoInvoiceStats: InvoiceStats = {
 };
 
 // ── Invoices (15 entries → 2 pages at 10 per page) ────────────────
+// Replace the demoInvoices array in src/data/demoData.ts
+
 export const demoInvoices: Invoice[] = [
   {
     id: "inv-1",
@@ -497,7 +499,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-04-25T10:00:00Z",
     updatedAt: "2026-05-02T14:00:00Z",
-    client: { email: "tanvir.hossain@gmail.com" },
+    client: { email: "tanvir.hossain@gmail.com", name: "Tanvir Hossain" },
     items: [
       {
         id: "item-1",
@@ -528,7 +530,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-04-28T09:00:00Z",
     updatedAt: "2026-04-28T09:00:00Z",
-    client: { email: "nusrat.islam@outlook.com" },
+    client: { email: "nusrat.islam@outlook.com", name: "Nusrat Islam" },
     items: [
       {
         id: "item-2",
@@ -559,7 +561,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-04-20T11:00:00Z",
     updatedAt: "2026-05-01T10:00:00Z",
-    client: { email: "mahbub.rahman@yahoo.com" },
+    client: { email: "mahbub.rahman@yahoo.com", name: "Mahbub Rahman" },
     items: [
       {
         id: "item-3a",
@@ -597,7 +599,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-04-10T08:00:00Z",
     updatedAt: "2026-04-10T08:00:00Z",
-    client: { email: "sadia.khan@gmail.com" },
+    client: { email: "sadia.khan@gmail.com", name: "Sadia Khan" },
     items: [
       {
         id: "item-4",
@@ -628,7 +630,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-04-08T13:00:00Z",
     updatedAt: "2026-04-09T09:00:00Z",
-    client: { email: "rafiq.ahmed@gmail.com" },
+    client: { email: "rafiq.ahmed@gmail.com", name: "Rafiq Ahmed" },
     items: [
       {
         id: "item-5",
@@ -659,7 +661,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-03-28T10:00:00Z",
     updatedAt: "2026-04-03T15:00:00Z",
-    client: { email: "farhana.begum@hotmail.com" },
+    client: { email: "farhana.begum@hotmail.com", name: "Farhana Begum" },
     items: [
       {
         id: "item-6",
@@ -690,7 +692,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-03-20T09:00:00Z",
     updatedAt: "2026-03-20T09:00:00Z",
-    client: { email: "karim.uddin@gmail.com" },
+    client: { email: "karim.uddin@gmail.com", name: "Karim Uddin" },
     items: [
       {
         id: "item-7",
@@ -721,7 +723,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-04-30T11:00:00Z",
     updatedAt: "2026-04-30T11:00:00Z",
-    client: { email: "jahangir.alam@gmail.com" },
+    client: { email: "jahangir.alam@gmail.com", name: "Jahangir Alam" },
     items: [
       {
         id: "item-8a",
@@ -759,7 +761,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-05-01T09:00:00Z",
     updatedAt: "2026-05-01T09:00:00Z",
-    client: { email: "rezaul.karim@outlook.com" },
+    client: { email: "rezaul.karim@outlook.com", name: "Rezaul Karim" },
     items: [
       {
         id: "item-9",
@@ -790,7 +792,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-04-15T10:00:00Z",
     updatedAt: "2026-04-21T14:00:00Z",
-    client: { email: "nasrin.sultana@gmail.com" },
+    client: { email: "nasrin.sultana@gmail.com", name: "Nasrin Sultana" },
     items: [
       {
         id: "item-10",
@@ -821,7 +823,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-05-02T09:30:00Z",
     updatedAt: "2026-05-02T09:30:00Z",
-    client: { email: "imran.hossain@yahoo.com" },
+    client: { email: "imran.hossain@yahoo.com", name: "Imran Hossain" },
     items: [
       {
         id: "item-11",
@@ -852,7 +854,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-04-22T10:00:00Z",
     updatedAt: "2026-05-05T12:00:00Z",
-    client: { email: "shakil.ahmed@outlook.com" },
+    client: { email: "shakil.ahmed@outlook.com", name: "Shakil Ahmed" },
     items: [
       {
         id: "item-12a",
@@ -890,7 +892,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-05-05T08:00:00Z",
     updatedAt: "2026-05-05T08:00:00Z",
-    client: { email: "poly.akter@gmail.com" },
+    client: { email: "poly.akter@gmail.com", name: "Poly Akter" },
     items: [
       {
         id: "item-13",
@@ -921,7 +923,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-04-05T11:00:00Z",
     updatedAt: "2026-04-12T16:00:00Z",
-    client: { email: "farhana.begum@hotmail.com" },
+    client: { email: "farhana.begum@hotmail.com", name: "Farhana Begum" },
     items: [
       {
         id: "item-14",
@@ -952,7 +954,7 @@ export const demoInvoices: Invoice[] = [
     paymentToken: null,
     createdAt: "2026-05-06T09:00:00Z",
     updatedAt: "2026-05-06T09:00:00Z",
-    client: { email: "mahbub.rahman@yahoo.com" },
+    client: { email: "mahbub.rahman@yahoo.com", name: "Mahbub Rahman" },
     items: [
       {
         id: "item-15",

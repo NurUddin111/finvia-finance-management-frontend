@@ -2,21 +2,38 @@
 
 import { useEffect, useState } from "react";
 import { useActionState } from "react";
+
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Trash, ChevronsUpDown, Check, PackageSearch } from "lucide-react";
+
+import {
+  Trash2,
+  ChevronsUpDown,
+  Check,
+  PackageSearch,
+  ReceiptText,
+  Mail,
+  Clock3,
+  StickyNote,
+  Plus,
+  CreditCard,
+  Wallet,
+} from "lucide-react";
+
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+
 import {
   Command,
   CommandEmpty,
@@ -25,14 +42,18 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { cn } from "@/lib/utils";
-import { createInvoice } from "@/services/business/invoices/createInv";
-import InvoiceActionModal from "./InvActions";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { getAllProducts } from "@/services/business/products/allProducts";
 
-/* ================= TYPES ================= */
+import { cn } from "@/lib/utils";
+
+import { createInvoice } from "@/services/business/invoices/createInv";
+
+import InvoiceActionModal from "./InvActions";
+
+import { useRouter } from "next/navigation";
+
+import { toast } from "sonner";
+
+import { getAllProducts } from "@/services/business/products/allProducts";
 
 type PaymentMethod = "ONLINE" | "CASH";
 
@@ -58,12 +79,19 @@ const EMPTY_ITEM: Item = {
 const PAYMENT_METHODS: {
   value: PaymentMethod;
   label: string;
+  icon: React.ReactNode;
 }[] = [
-  { value: "ONLINE", label: "Online" },
-  { value: "CASH", label: "Cash" },
+  {
+    value: "ONLINE",
+    label: "Online",
+    icon: <CreditCard size={15} />,
+  },
+  {
+    value: "CASH",
+    label: "Cash",
+    icon: <Wallet size={15} />,
+  },
 ];
-
-/* ================= COMPONENT ================= */
 
 export default function CreateInvoiceModal({
   open,
@@ -73,69 +101,36 @@ export default function CreateInvoiceModal({
   onClose: () => void;
 }) {
   const router = useRouter();
+
   const [state, formAction, isPending] = useActionState(createInvoice, null);
 
-  // Payment method
   const [method, setMethod] = useState<PaymentMethod>("ONLINE");
 
-  // InvoiceActionModal — only for ONLINE
   const [confirmDismissed, setConfirmDismissed] = useState(false);
+
   const invoiceId = state?.success ? (state.data?.id ?? null) : null;
+
   const showConfirm = !!invoiceId && !confirmDismissed && method === "ONLINE";
 
-  // Form state
   const [email, setEmail] = useState("");
+
   const [dueDays, setDueDays] = useState(3);
+
   const [taxRate, setTaxRate] = useState(0);
+
   const [notes, setNotes] = useState("");
+
   const [items, setItems] = useState<Item[]>([{ ...EMPTY_ITEM }]);
 
-  // Product combobox
   const [products, setProducts] = useState<Product[]>([]);
+
   const [productsLoading, setProductsLoading] = useState(false);
+
   const [openComboboxIndex, setOpenComboboxIndex] = useState<number | null>(
     null,
   );
+
   const [search, setSearch] = useState("");
-
-  /* ================= EFFECTS ================= */
-
-  // Debounced product fetch
-  useEffect(() => {
-    if (!open) return;
-    const timer = setTimeout(() => {
-      setProductsLoading(true);
-      getAllProducts({ search: search.trim() || undefined })
-        .then((res) => {
-          if (res.success) setProducts(res.data ?? []);
-        })
-        .finally(() => setProductsLoading(false));
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [open, search]);
-
-  // Handle server action response
-  useEffect(() => {
-    if (!state) return;
-
-    if (state.success) {
-      if (method === "CASH") {
-        // Receipt already sent by backend — close and reset immediately
-        toast.success("Receipt sent successfully!");
-        onClose();
-        resetForm();
-        router.refresh();
-      } else {
-        toast.success("Invoice created successfully!");
-        // InvoiceActionModal takes over for ONLINE
-      }
-    } else {
-      toast.error(state.error || "Failed to create invoice!");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
-
-  /* ================= HELPERS ================= */
 
   const resetForm = () => {
     setEmail("");
@@ -149,16 +144,55 @@ export default function CreateInvoiceModal({
     setOpenComboboxIndex(null);
   };
 
-  /* ================= CALCULATIONS ================= */
+  useEffect(() => {
+    if (!open) return;
+
+    const timer = setTimeout(() => {
+      setProductsLoading(true);
+
+      getAllProducts({
+        search: search.trim() || undefined,
+      })
+        .then((res) => {
+          if (res.success) {
+            setProducts(res.data ?? []);
+          }
+        })
+        .finally(() => setProductsLoading(false));
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [open, search]);
+
+  useEffect(() => {
+    if (!state) return;
+
+    if (state.success) {
+      if (method === "CASH") {
+        toast.success("Receipt sent successfully!");
+
+        onClose();
+
+        setTimeout(() => {
+          resetForm();
+          router.refresh();
+        }, 0);
+      } else {
+        toast.success("Invoice created successfully!");
+      }
+    } else {
+      toast.error(state.error || "Failed to create invoice!");
+    }
+  }, [method, onClose, router, state]);
 
   const subtotal = items.reduce(
     (sum, i) => sum + i.pricePerUnit * i.quantity,
     0,
   );
-  const taxAmount = (subtotal * taxRate) / 100;
-  const total = subtotal + taxAmount;
 
-  /* ================= ITEM HELPERS ================= */
+  const taxAmount = (subtotal * taxRate) / 100;
+
+  const total = subtotal + taxAmount;
 
   const updateItem = <K extends keyof Item>(
     index: number,
@@ -166,357 +200,501 @@ export default function CreateInvoiceModal({
     value: Item[K],
   ) => {
     const copy = [...items];
-    copy[index] = { ...copy[index], [key]: value };
+
+    copy[index] = {
+      ...copy[index],
+      [key]: value,
+    };
+
     setItems(copy);
   };
 
   const selectProduct = (index: number, product: Product) => {
     const copy = [...items];
-    copy[index] = { ...copy[index], productId: product.id, name: product.name };
+
+    copy[index] = {
+      ...copy[index],
+      productId: product.id,
+      name: product.name,
+    };
+
     setItems(copy);
+
     setOpenComboboxIndex(null);
+
     setSearch("");
   };
 
   const openCombobox = (index: number) => {
     setSearch("");
+
     setOpenComboboxIndex(index);
   };
 
   const addItem = () => setItems([...items, { ...EMPTY_ITEM }]);
+
   const removeItem = (index: number) =>
     setItems(items.filter((_, i) => i !== index));
-
-  /* ================= UI ================= */
 
   return (
     <>
       <Dialog open={open} onOpenChange={onClose}>
         <DialogContent
-          className="w-[95vw] max-w-[95vw] sm:max-w-6xl h-[90vh] flex flex-col bg-black"
+          className="top-[50%] flex h-[94vh] w-[97vw]! max-w-375! translate-y-[-50%] flex-col overflow-hidden rounded-[34px] border border-white/10 bg-[#050816] p-0 shadow-[0_25px_120px_rgba(0,0,0,0.75)]"
           onInteractOutside={(e) => e.preventDefault()}
         >
-          {/* HEADER */}
-          <DialogHeader className="shrink-0 border-b pb-4">
-            <DialogTitle className="text-xl font-semibold">
-              New Invoice
-            </DialogTitle>
-          </DialogHeader>
+          <form action={formAction} className="flex min-h-0 flex-1 flex-col">
+            {/* HEADER */}
+            <DialogHeader className="shrink-0 border-b border-white/10 bg-[#081120] px-6 py-5 xl:px-8">
+              <div className="flex items-start justify-between gap-5">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
+                    <ReceiptText className="size-6 text-blue-400" />
+                  </div>
 
-          {/* FORM */}
-          <form
-            action={formAction}
-            className="flex-1 overflow-y-auto py-6 space-y-6"
-          >
-            <input type="hidden" name="items" value={JSON.stringify(items)} />
-            <input type="hidden" name="method" value={method} />
+                  <div>
+                    <DialogTitle className="text-left text-3xl font-semibold tracking-tight text-white">
+                      Create Invoice
+                    </DialogTitle>
 
-            {/* Top row: Client Email + Payment Method */}
-            <div className="flex flex-col sm:flex-row sm:items-end gap-4 max-w-2xl">
-              <div className="space-y-1 flex-1">
-                <label className="text-sm font-medium">Client Email</label>
-                <Input
-                  name="email"
-                  placeholder="client@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-
-              {/* Payment Method Toggle */}
-              {/* <div className="space-y-1">
-                <label className="text-sm font-medium">Payment Method</label>
-                <div className="flex gap-2">
-                  {PAYMENT_METHODS.map(({ value, label, icon }) => (
-                    <button
-                      key={value}
-                      type="button"
-                      onClick={() => setMethod(value)}
-                      className={cn(
-                        "flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200",
-                        method === value
-                          ? "bg-primary text-primary-foreground border-primary shadow-[0_0_0_1px_rgba(124,106,242,0.4)]"
-                          : "border-border text-muted-foreground hover:border-foreground hover:text-foreground",
-                      )}
-                    >
-                      {icon}
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </div> */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Payment Method</label>
-                <div className="flex gap-3">
-                  {PAYMENT_METHODS.map(({ value, label }) => (
-                    <button
-                      key={value}
-                      type="button"
-                      onClick={() => setMethod(value)}
-                      className={cn(
-                        "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium border-2 transition-all duration-200",
-                        method === value
-                          ? "border-emerald-500 bg-emerald-500/10 text-emerald-400"
-                          : "border-border bg-transparent text-muted-foreground hover:border-muted-foreground hover:text-foreground",
-                      )}
-                    >
-                      {/* Radio dot */}
-                      <span
-                        className={cn(
-                          "w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all",
-                          method === value
-                            ? "border-emerald-500"
-                            : "border-muted-foreground",
-                        )}
-                      >
-                        {method === value && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 block" />
-                        )}
-                      </span>
-                      {label}
-                    </button>
-                  ))}
+                    <p className="mt-1 text-sm text-slate-400">
+                      Generate and send a professional invoice to your client.
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </DialogHeader>
 
-            {/* Line Items */}
-            <div className="border rounded-lg">
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead className="bg-muted/50">
-                    <tr>
-                      <th className="p-3 text-left min-w-55">Product</th>
-                      <th className="p-3 w-28 text-left">Qty</th>
-                      <th className="p-3 w-36 text-left">Rate</th>
-                      <th className="p-3 text-right w-32">Amount</th>
-                      <th className="p-3 w-10" />
-                    </tr>
-                  </thead>
+            {/* BODY */}
+            <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 md:px-6 xl:px-8 xl:py-7 custom-scrollbar">
+              <input type="hidden" name="items" value={JSON.stringify(items)} />
 
-                  <tbody>
-                    {items.map((item, i) => (
-                      <tr key={i} className="border-t">
-                        {/* Product combobox */}
-                        <td className="p-3">
-                          <Popover
-                            open={openComboboxIndex === i}
-                            onOpenChange={(isOpen) =>
-                              isOpen
-                                ? openCombobox(i)
-                                : setOpenComboboxIndex(null)
-                            }
+              <input type="hidden" name="method" value={method} />
+
+              {/* ↓ FIX: was `flex flex-col gap-6 2xl:grid 2xl:grid-cols-[minmax(0,1fr)_360px]`
+                   The 2xl breakpoint (1536px) was too aggressive — the modal is max-w-[1500px]
+                   so the two-column layout rarely ever activated. Lowered to xl (1280px). */}
+              <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_360px]">
+                {/* LEFT */}
+                <div className="space-y-6">
+                  {/* CLIENT */}
+                  <div className="rounded-[28px] border border-white/10 bg-[#0B1120] p-5 md:p-6">
+                    <div className="mb-6 flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400">
+                        <Mail size={18} />
+                      </div>
+
+                      <div>
+                        <h3 className="text-base font-semibold text-white">
+                          Client Information
+                        </h3>
+
+                        <p className="text-xs text-slate-500">
+                          Invoice recipient details
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* ↓ FIX: was `grid gap-5 lg:grid-cols-2`
+                         lg fires on the *viewport* width (1024px+), not the column width.
+                         Since the left column is ~55% of a 1280px modal, it's only ~700px —
+                         wide enough to comfortably hold 2 inputs. Removed the breakpoint prefix
+                         so it's always a 2-col grid inside this panel. */}
+                    <div className="grid grid-cols-2 gap-5">
+                      <div className="space-y-2">
+                        <label className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">
+                          Client Email
+                        </label>
+
+                        <Input
+                          name="email"
+                          placeholder="client@email.com"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="h-13 rounded-2xl border-white/10 bg-white/3 px-4 text-sm text-white placeholder:text-slate-500 focus-visible:ring-0"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">
+                          Due Days
+                        </label>
+
+                        <div className="relative">
+                          <Clock3 className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
+
+                          <Input
+                            name="dueDays"
+                            type="number"
+                            value={dueDays}
+                            onChange={(e) => setDueDays(Number(e.target.value))}
+                            className="h-13 rounded-2xl border-white/10 bg-white/3 pl-11 text-white focus-visible:ring-0"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 space-y-2">
+                      <label className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">
+                        Payment Method
+                      </label>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        {PAYMENT_METHODS.map(({ value, label, icon }) => (
+                          <button
+                            key={value}
+                            type="button"
+                            onClick={() => setMethod(value)}
+                            className={cn(
+                              "flex h-13 items-center justify-center gap-2 rounded-2xl border text-sm font-medium transition-all duration-300",
+                              method === value
+                                ? "border-emerald-500/30 bg-emerald-500 text-black"
+                                : "border-white/10 bg-white/3 text-slate-400 hover:border-white/20 hover:bg-white/5",
+                            )}
                           >
-                            <PopoverTrigger asChild>
+                            {icon}
+                            {label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ITEMS */}
+                  <div className="rounded-[28px] border border-white/10 bg-[#0B1120] p-5 md:p-6">
+                    <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                      <div>
+                        <h3 className="text-base font-semibold text-white">
+                          Invoice Items
+                        </h3>
+
+                        <p className="mt-1 text-xs text-slate-500">
+                          Add products and pricing details
+                        </p>
+                      </div>
+
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={addItem}
+                        className="h-11 rounded-2xl border-white/10 bg-white/3 px-5 text-sm text-slate-300 hover:border-blue-500/20 hover:bg-blue-500/10 hover:text-blue-400"
+                      >
+                        <Plus size={14} className="mr-2" />
+                        Add Item
+                      </Button>
+                    </div>
+
+                    <div className="space-y-4">
+                      {items.map((item, i) => (
+                        <div
+                          key={i}
+                          className="rounded-3xl border border-white/10 bg-[#081120] p-4 md:p-5"
+                        >
+                          {/* ↓ FIX: was `grid gap-4 xl:grid-cols-[minmax(0,1.4fr)_120px_140px_auto]`
+                               xl also fires on viewport width. Since the left column is ~700px at xl,
+                               this inner grid would never activate at the column level. Lowered to md
+                               so the 4-col item row appears as soon as the modal is medium-sized. */}
+                          <div className="grid gap-4 md:grid-cols-[minmax(0,1.4fr)_120px_140px_auto]">
+                            {/* PRODUCT */}
+                            <div className="space-y-2">
+                              <label className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">
+                                Product
+                              </label>
+
+                              <Popover
+                                open={openComboboxIndex === i}
+                                onOpenChange={(isOpen) =>
+                                  isOpen
+                                    ? openCombobox(i)
+                                    : setOpenComboboxIndex(null)
+                                }
+                              >
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="h-13 w-full justify-between rounded-2xl border-white/10 bg-white/3 px-4 font-normal text-slate-300 hover:bg-white/5"
+                                  >
+                                    <span
+                                      className={cn(
+                                        "truncate",
+                                        !item.name && "text-slate-500",
+                                      )}
+                                    >
+                                      {item.name || "Select product"}
+                                    </span>
+
+                                    <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+                                  </Button>
+                                </PopoverTrigger>
+
+                                <PopoverContent className="w-[320px] rounded-2xl border-white/10 bg-[#0B1120] p-0">
+                                  <Command shouldFilter={false}>
+                                    <CommandInput
+                                      placeholder="Search products..."
+                                      value={search}
+                                      onValueChange={setSearch}
+                                    />
+
+                                    <CommandList>
+                                      {productsLoading ? (
+                                        <CommandEmpty>
+                                          Searching...
+                                        </CommandEmpty>
+                                      ) : products.length === 0 ? (
+                                        <CommandEmpty>
+                                          <div className="flex flex-col items-center gap-2 py-5 text-slate-500">
+                                            <PackageSearch size={22} />
+                                            No products found
+                                          </div>
+                                        </CommandEmpty>
+                                      ) : (
+                                        <CommandGroup>
+                                          {products.map((product) => (
+                                            <CommandItem
+                                              key={product.id}
+                                              value={product.id}
+                                              onSelect={() =>
+                                                selectProduct(i, product)
+                                              }
+                                            >
+                                              <Check
+                                                className={cn(
+                                                  "mr-2 h-4 w-4",
+                                                  item.productId === product.id
+                                                    ? "opacity-100"
+                                                    : "opacity-0",
+                                                )}
+                                              />
+
+                                              {product.name}
+                                            </CommandItem>
+                                          ))}
+                                        </CommandGroup>
+                                      )}
+                                    </CommandList>
+                                  </Command>
+                                </PopoverContent>
+                              </Popover>
+                            </div>
+
+                            {/* QTY */}
+                            <div className="space-y-2">
+                              <label className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">
+                                Qty
+                              </label>
+
+                              <Input
+                                type="number"
+                                min={1}
+                                value={item.quantity}
+                                onChange={(e) =>
+                                  updateItem(
+                                    i,
+                                    "quantity",
+                                    Number(e.target.value),
+                                  )
+                                }
+                                className="h-13 rounded-2xl border-white/10 bg-white/3 text-white"
+                              />
+                            </div>
+
+                            {/* RATE */}
+                            <div className="space-y-2">
+                              <label className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">
+                                Rate
+                              </label>
+
+                              <Input
+                                type="number"
+                                min={0}
+                                value={item.pricePerUnit}
+                                onChange={(e) =>
+                                  updateItem(
+                                    i,
+                                    "pricePerUnit",
+                                    Number(e.target.value),
+                                  )
+                                }
+                                className="h-13 rounded-2xl border-white/10 bg-white/3 text-white"
+                              />
+                            </div>
+
+                            {/* AMOUNT */}
+                            <div className="flex items-end justify-between gap-4 md:justify-end">
+                              <div className="text-right">
+                                <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">
+                                  Amount
+                                </p>
+
+                                <p className="mt-2 text-xl font-semibold text-white">
+                                  $
+                                  {(item.quantity * item.pricePerUnit).toFixed(
+                                    2,
+                                  )}
+                                </p>
+                              </div>
+
                               <Button
                                 type="button"
-                                variant="outline"
-                                role="combobox"
-                                aria-expanded={openComboboxIndex === i}
-                                className="w-full justify-between font-normal"
+                                variant="ghost"
+                                size="icon"
+                                disabled={items.length === 1}
+                                onClick={() => removeItem(i)}
+                                className="h-12 w-12 rounded-2xl text-red-400 hover:bg-red-500/10 hover:text-red-300"
                               >
-                                <span
-                                  className={cn(
-                                    "truncate",
-                                    !item.name && "text-muted-foreground",
-                                  )}
-                                >
-                                  {item.name || "Select product"}
-                                </span>
-                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                <Trash2 size={16} />
                               </Button>
-                            </PopoverTrigger>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
 
-                            <PopoverContent
-                              className="w-65 p-0 bg-gray-950"
-                              align="start"
-                            >
-                              <Command shouldFilter={false}>
-                                <CommandInput
-                                  placeholder="Search products..."
-                                  value={search}
-                                  onValueChange={setSearch}
-                                />
-                                <CommandList>
-                                  {productsLoading ? (
-                                    <CommandEmpty>Searching...</CommandEmpty>
-                                  ) : products.length === 0 ? (
-                                    <CommandEmpty>
-                                      <div className="flex flex-col items-center gap-2 py-2 text-muted-foreground">
-                                        <PackageSearch size={20} />
-                                        <span>No products found</span>
-                                      </div>
-                                    </CommandEmpty>
-                                  ) : (
-                                    <CommandGroup>
-                                      {products.map((product) => (
-                                        <CommandItem
-                                          key={product.id}
-                                          value={product.id}
-                                          onSelect={() =>
-                                            selectProduct(i, product)
-                                          }
-                                        >
-                                          <Check
-                                            className={cn(
-                                              "mr-2 h-4 w-4 shrink-0",
-                                              item.productId === product.id
-                                                ? "opacity-100"
-                                                : "opacity-0",
-                                            )}
-                                          />
-                                          {product.name}
-                                        </CommandItem>
-                                      ))}
-                                    </CommandGroup>
-                                  )}
-                                </CommandList>
-                              </Command>
-                            </PopoverContent>
-                          </Popover>
-                        </td>
+                {/* RIGHT */}
+                <div className="lg:sticky lg:top-0 lg:h-fit">
+                  <div className="space-y-6">
+                    {/* SUMMARY */}
+                    {/* ↓ FIX: was `2xl:sticky 2xl:top-0` — matched the old broken breakpoint */}
+                    <div className="rounded-[28px] border border-white/10 bg-[#0B1120] p-5 md:p-6">
+                      <div className="mb-6">
+                        <h3 className="text-base font-semibold text-white">
+                          Invoice Summary
+                        </h3>
 
-                        {/* Quantity */}
-                        <td className="p-3">
+                        <p className="mt-1 text-xs text-slate-500">
+                          Real-time invoice preview
+                        </p>
+                      </div>
+
+                      <div className="space-y-5">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-slate-400">Subtotal</span>
+
+                          <span className="font-medium tabular-nums text-white">
+                            ${subtotal.toFixed(2)}
+                          </span>
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">
+                            Tax Rate
+                          </label>
+
                           <Input
-                            type="number"
-                            min={1}
-                            value={item.quantity}
-                            onChange={(e) =>
-                              updateItem(i, "quantity", Number(e.target.value))
-                            }
-                          />
-                        </td>
-
-                        {/* Rate */}
-                        <td className="p-3">
-                          <Input
+                            name="taxRate"
                             type="number"
                             min={0}
-                            value={item.pricePerUnit}
-                            onChange={(e) =>
-                              updateItem(
-                                i,
-                                "pricePerUnit",
-                                Number(e.target.value),
-                              )
-                            }
+                            max={100}
+                            value={taxRate}
+                            onChange={(e) => setTaxRate(Number(e.target.value))}
+                            className="h-12 rounded-2xl border-white/10 bg-white/3 text-white"
                           />
-                        </td>
+                        </div>
 
-                        {/* Amount */}
-                        <td className="p-3 text-right font-medium tabular-nums">
-                          ${(item.quantity * item.pricePerUnit).toFixed(2)}
-                        </td>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-slate-400">Tax</span>
 
-                        {/* Remove */}
-                        <td className="p-3">
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => removeItem(i)}
-                            disabled={items.length === 1}
-                          >
-                            <Trash size={16} />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                          <span className="font-medium tabular-nums text-white">
+                            ${taxAmount.toFixed(2)}
+                          </span>
+                        </div>
+
+                        <div className="border-t border-white/10 pt-5">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-slate-300">
+                              Total
+                            </span>
+
+                            <span className="text-4xl font-semibold tracking-tight text-white">
+                              ${total.toFixed(2)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* NOTES */}
+                    <div className="rounded-[28px] border border-white/10 bg-[#0B1120] p-5 md:p-6">
+                      <div className="mb-4 flex items-center gap-2">
+                        <StickyNote className="size-4 text-amber-400" />
+
+                        <h3 className="text-base font-semibold text-white">
+                          Notes
+                        </h3>
+                      </div>
+
+                      <Textarea
+                        name="notes"
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                        placeholder="Add payment instructions or invoice notes..."
+                        className="min-h-40 rounded-2xl border-white/10 bg-white/3 text-white placeholder:text-slate-500"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <Button
-                type="button"
-                variant="ghost"
-                className="m-3"
-                onClick={addItem}
-              >
-                + Add Line Item
-              </Button>
+              {!isPending && state?.success === false && (
+                <p className="mt-5 text-center text-sm text-red-400">
+                  {state.error}
+                </p>
+              )}
             </div>
 
-            {/* Bottom Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4 max-w-md">
-                <div>
-                  <label className="text-sm font-medium">Due Days</label>
-                  <Input
-                    name="dueDays"
-                    type="number"
-                    value={dueDays}
-                    onChange={(e) => setDueDays(Number(e.target.value))}
-                  />
+            {/* FOOTER */}
+            <div className="shrink-0 border-t border-white/10 bg-[#081120] px-5 py-4 md:px-6 xl:px-8">
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div className="text-xs text-slate-500">
+                  {items.length} item
+                  {items.length !== 1 ? "s" : ""} added •{" "}
+                  {method === "CASH" ? "Receipt Mode" : "Invoice Mode"}
                 </div>
-                <div>
-                  <label className="text-sm font-medium">Notes</label>
-                  <Textarea
-                    name="notes"
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                  />
+
+                <div className="flex items-center gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={onClose}
+                    className="h-12 rounded-2xl border-white/10 bg-white/3 px-6 text-slate-300 hover:bg-white/5"
+                  >
+                    Cancel
+                  </Button>
+
+                  <Button
+                    type="submit"
+                    disabled={isPending}
+                    className="h-12 rounded-2xl bg-blue-500 px-7 text-sm font-semibold text-white hover:bg-blue-400"
+                  >
+                    {isPending
+                      ? method === "CASH"
+                        ? "Sending Receipt..."
+                        : "Creating Invoice..."
+                      : method === "CASH"
+                        ? "Send Receipt"
+                        : "Create Invoice"}
+                  </Button>
                 </div>
               </div>
-
-              <div className="border rounded-lg p-4 space-y-3 max-w-md md:ml-auto">
-                <div className="flex justify-between text-sm">
-                  <span>Subtotal</span>
-                  <span className="tabular-nums">${subtotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between items-center gap-3 text-sm">
-                  <span>Tax Rate (%)</span>
-                  <Input
-                    name="taxRate"
-                    type="number"
-                    min={0}
-                    max={100}
-                    className="w-24"
-                    value={taxRate}
-                    onChange={(e) => setTaxRate(Number(e.target.value))}
-                  />
-                </div>
-                <div className="flex justify-between font-semibold text-lg border-t pt-2">
-                  <span>Total</span>
-                  <span className="tabular-nums">${total.toFixed(2)}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Error */}
-            {!isPending && state?.success === false && (
-              <p className="text-sm text-red-500 text-center">{state.error}</p>
-            )}
-
-            {/* Footer */}
-            <div className="shrink-0 border-t pt-4 flex justify-end gap-3 bg-background">
-              <Button
-                type="submit"
-                disabled={isPending}
-                className="w-full md:w-auto h-11 rounded-full bg-primary px-6 text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 shadow-[0_0_0_1px_rgba(124,106,242,0.25),0_12px_45px_rgba(124,106,242,0.3)] hover:shadow-[0_0_0_1px_rgba(124,106,242,0.4),0_18px_60px_rgba(124,106,242,0.4)]"
-              >
-                {isPending
-                  ? method === "CASH"
-                    ? "Sending receipt..."
-                    : "Creating invoice..."
-                  : method === "CASH"
-                    ? "Send Receipt"
-                    : "Create Invoice"}
-              </Button>
             </div>
           </form>
         </DialogContent>
       </Dialog>
 
-      {/* Only mounts for ONLINE — cash never reaches here */}
       {invoiceId && (
         <InvoiceActionModal
           open={showConfirm}
           invoiceId={invoiceId}
           onClose={() => {
             setConfirmDismissed(true);
+
             onClose();
+
             resetForm();
+
             router.refresh();
           }}
         />

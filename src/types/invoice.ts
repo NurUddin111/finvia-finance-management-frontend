@@ -30,6 +30,7 @@ export interface Invoice {
   updatedAt: string;
   client: {
     email: string;
+    name: string;
   };
   items: InvoiceItem[];
 }
