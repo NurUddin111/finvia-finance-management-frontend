@@ -11,36 +11,36 @@ import { cn } from "@/lib/utils";
 const navItems = [
   {
     label: "Dashboard",
-    href: "/business/dashboard",
+    href: "/demo/dashboard",
     icon: Home,
   },
 
   {
     label: "Clients",
-    href: "/business/dashboard/clients",
+    href: "/demo/dashboard/clients",
     icon: Users,
   },
 
   {
     label: "Invoices",
-    href: "/business/dashboard/invoices",
+    href: "/demo/dashboard/invoices",
     icon: FileText,
   },
 
   {
     label: "Products",
-    href: "/business/dashboard/products",
+    href: "/demo/dashboard/products",
     icon: PackageSearch,
   },
 
   {
     label: "Settings",
-    href: "/business/dashboard/settings",
+    href: "/demo/dashboard/settings",
     icon: Settings,
   },
 ];
 
-export default function BusinessBottomNav() {
+export default function DemoBusinessBottomNav() {
   const pathname = usePathname();
 
   return (
@@ -54,7 +54,7 @@ export default function BusinessBottomNav() {
 
           const isActive =
             pathname === item.href ||
-            (item.href !== "/business/dashboard" &&
+            (item.href !== "/demo/dashboard" &&
               pathname.startsWith(`${item.href}/`));
 
           return (

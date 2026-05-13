@@ -37,14 +37,33 @@ export function SidebarItem({
     <Link
       href={href}
       className={cn(
-        "flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
+        "group relative flex h-12 items-center gap-3 overflow-hidden rounded-2xl border px-4 text-sm font-medium transition-all duration-300",
+
         isActive
-          ? "bg-white/10 border border-white/20 text-white"
-          : "text-muted-foreground hover:bg-white/5 hover:text-white",
+          ? "border-blue-500/20 bg-blue-500/10 text-white shadow-[0_0_30px_rgba(59,130,246,0.12)]"
+          : "border-transparent text-slate-400 hover:border-white/8 hover:bg-white/4 hover:text-white",
       )}
     >
-      <Icon size={18} className="shrink-0" />
-      <span className="truncate">{label}</span>
+      {/* ACTIVE GLOW */}
+      {isActive && (
+        <div className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-full bg-blue-400" />
+      )}
+
+      {/* ICON */}
+      <div
+        className={cn(
+          "flex h-8 w-8 items-center justify-center rounded-xl border transition-all duration-300",
+
+          isActive
+            ? "border-blue-500/20 bg-blue-500/10 text-blue-400"
+            : "border-white/8 bg-white/4 text-slate-500 group-hover:text-slate-300",
+        )}
+      >
+        <Icon size={16} />
+      </div>
+
+      {/* LABEL */}
+      <span className="truncate tracking-[0.01em]">{label}</span>
     </Link>
   );
 }

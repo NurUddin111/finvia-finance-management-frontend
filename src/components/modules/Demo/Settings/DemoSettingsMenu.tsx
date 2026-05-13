@@ -1,28 +1,56 @@
+// src/components/modules/Demo/Settings/DemoSettingsMenu.tsx
 "use client";
 
 import Link from "next/link";
+
 import { usePathname } from "next/navigation";
+
+import { useState } from "react";
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+
 import { Settings, User, Building2, Shield, LogOut, Lock } from "lucide-react";
-import { useState } from "react";
+
+import { cn } from "@/lib/utils";
+
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+
 import { Button } from "@/components/ui/button";
 
 const settingsItems = [
-  { label: "Profile", slug: "profile", icon: User },
-  { label: "Business", slug: "business", icon: Building2 },
-  { label: "Account", slug: "account", icon: Shield },
-  { label: "Password", slug: "password", icon: Lock },
+  {
+    label: "Profile",
+    slug: "profile",
+    icon: User,
+  },
+
+  {
+    label: "Business",
+    slug: "business",
+    icon: Building2,
+  },
+
+  {
+    label: "Account",
+    slug: "account",
+    icon: Shield,
+  },
+
+  {
+    label: "Password",
+    slug: "password",
+    icon: Lock,
+  },
 ];
 
 interface SettingsAccordionProps {
@@ -33,8 +61,11 @@ export default function DemoSettingsAccordion({
   basePath = "/demo/dashboard/settings",
 }: SettingsAccordionProps) {
   const pathname = usePathname();
+
   const isSettingsRoute = pathname.startsWith(basePath);
+
   const [openLogout, setOpenLogout] = useState(false);
+
   const [showNudge, setShowNudge] = useState(false);
 
   return (
@@ -45,50 +76,92 @@ export default function DemoSettingsAccordion({
         defaultValue={isSettingsRoute ? "settings" : undefined}
       >
         <AccordionItem value="settings" className="border-none">
+          {/* TRIGGER */}
           <AccordionTrigger
-            className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm no-underline hover:no-underline ${
+            className={cn(
+              "group relative flex h-12 items-center rounded-2xl border px-4 text-sm font-medium no-underline transition-all duration-300 hover:no-underline",
+
               isSettingsRoute
-                ? "bg-white/10 border border-white/20 text-white"
-                : "text-muted-foreground hover:bg-white/5 hover:text-white"
-            }`}
+                ? "border-blue-500/20 bg-blue-500/10 text-white shadow-[0_0_30px_rgba(59,130,246,0.12)]"
+                : "border-transparent text-slate-400 hover:border-white/8 hover:bg-white/4 hover:text-white",
+            )}
           >
+            {/* ACTIVE BAR */}
+            {isSettingsRoute && (
+              <div className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-full bg-blue-400" />
+            )}
+
             <div className="flex items-center gap-3">
-              <Settings size={18} className="shrink-0" />
-              <span className="font-medium">Settings</span>
+              {/* ICON */}
+              <div
+                className={cn(
+                  "flex h-8 w-8 items-center justify-center rounded-xl border transition-all duration-300",
+
+                  isSettingsRoute
+                    ? "border-blue-500/20 bg-blue-500/10 text-blue-400"
+                    : "border-white/8 bg-white/4 text-slate-500 group-hover:text-slate-300",
+                )}
+              >
+                <Settings size={16} />
+              </div>
+
+              <span className="truncate">Settings</span>
             </div>
           </AccordionTrigger>
 
-          <AccordionContent className="mt-1 space-y-1 pl-9">
+          {/* CONTENT */}
+          <AccordionContent className="mt-2 space-y-2 pl-5">
             {settingsItems.map((item) => {
-              const isActive = pathname.endsWith(item.slug);
               const Icon = item.icon;
+
+              const isActive = pathname.endsWith(item.slug);
 
               return (
                 <Link
                   key={item.slug}
                   href={`${basePath}/${item.slug}`}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
+                  className={cn(
+                    "group flex h-11 items-center gap-3 rounded-2xl border px-4 text-sm transition-all duration-300",
+
                     isActive
-                      ? "bg-white/10 text-white"
-                      : "text-muted-foreground hover:bg-white/5 hover:text-white"
-                  }`}
+                      ? "border-blue-500/15 bg-blue-500/8 text-white"
+                      : "border-transparent text-slate-500 hover:border-white/8 hover:bg-white/3 hover:text-slate-300",
+                  )}
                 >
-                  <Icon size={16} className="shrink-0" />
-                  <span>{item.label}</span>
+                  {/* ICON */}
+                  <div
+                    className={cn(
+                      "flex h-7 w-7 items-center justify-center rounded-lg border transition-all duration-300",
+
+                      isActive
+                        ? "border-blue-500/15 bg-blue-500/10 text-blue-400"
+                        : "border-white/8 bg-white/4 text-slate-500 group-hover:text-slate-300",
+                    )}
+                  >
+                    <Icon size={14} />
+                  </div>
+
+                  <span className="truncate">{item.label}</span>
                 </Link>
               );
             })}
+
+            {/* LOGOUT */}
             <button
               onClick={() => setOpenLogout(true)}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-500 hover:bg-red-500/10"
+              className="group flex h-11 w-full items-center gap-3 rounded-2xl border border-transparent px-4 text-sm text-red-400 transition-all duration-300 hover:border-red-500/15 hover:bg-red-500/8 hover:text-red-300"
             >
-              <LogOut size={16} />
-              Logout
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-red-500/15 bg-red-500/10">
+                <LogOut size={14} />
+              </div>
+
+              <span>Logout</span>
             </button>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
 
+      {/* LOGOUT MODAL */}
       <Dialog open={openLogout} onOpenChange={setOpenLogout}>
         <DialogContent className="overflow-hidden border border-red-500/15 bg-[#050816] p-0 shadow-[0_30px_120px_rgba(0,0,0,0.65)] sm:max-w-sm">
           {/* HEADER */}
@@ -114,8 +187,7 @@ export default function DemoSettingsAccordion({
           <div className="px-5 py-5">
             <div className="rounded-2xl border border-red-500/15 bg-red-500/8 p-4">
               <p className="text-sm leading-relaxed text-slate-300">
-                You will be signed out from your current session and redirected
-                to the login page.
+                Demo mode does not allow logout functionality.
               </p>
             </div>
 
