@@ -7,13 +7,13 @@ export async function proxy(request: NextRequest) {
   const accessToken = request.cookies.get("accessToken")?.value;
   const creationToken = request.cookies.get("creationToken")?.value;
   const verifiedCreationToken = request.cookies.get(
-    "verifiedCreationToken"
+    "verifiedCreationToken",
   )?.value;
 
   const protectedStartsWith = ["/admin", "/business", "/onboarding"];
 
   const isProtectedRoute = protectedStartsWith.some((route) =>
-    pathname.startsWith(route)
+    pathname.startsWith(route),
   );
 
   if (!accessToken && isProtectedRoute) {
@@ -32,7 +32,7 @@ export async function proxy(request: NextRequest) {
     try {
       const decoded = jwt.verify(
         accessToken,
-        process.env.JWT_ACCESS_SECRET as string
+        process.env.JWT_ACCESS_SECRET as string,
       ) as JwtPayload;
 
       const role = decoded.role as string | undefined;
@@ -40,13 +40,13 @@ export async function proxy(request: NextRequest) {
       if (pathname === "/login" || pathname === "/") {
         if (role === "ADMIN") {
           return NextResponse.redirect(
-            new URL("/admin/dashboard", request.url)
+            new URL("/admin/dashboard", request.url),
           );
         }
 
         if (role === "BUSINESS_OWNER" || role === "BUSINESS_ADMIN") {
           return NextResponse.redirect(
-            new URL("/business/dashboard", request.url)
+            new URL("/business/dashboard", request.url),
           );
         }
 
