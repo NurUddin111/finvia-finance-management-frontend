@@ -7,12 +7,12 @@ interface BadgeStyle {
 }
 
 const STATUS_STYLES: Record<ClientStatus, BadgeStyle> = {
-  active: {
+  ACTIVE: {
     wrapper: "bg-emerald-400/10 text-emerald-400",
     dot: "bg-emerald-400",
     label: "Active",
   },
-  inactive: {
+  INACTIVE: {
     wrapper: "bg-white/5 text-white/30",
     dot: "bg-white/20",
     label: "Inactive",
@@ -24,7 +24,7 @@ interface ClientStatusBadgeProps {
 }
 
 const ClientStatusBadge: React.FC<ClientStatusBadgeProps> = ({ status }) => {
-  const style = STATUS_STYLES[status] ?? STATUS_STYLES.inactive;
+  const style = STATUS_STYLES[status] ?? STATUS_STYLES.INACTIVE;
 
   return (
     <span

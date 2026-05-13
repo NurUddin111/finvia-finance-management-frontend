@@ -40,33 +40,62 @@ const StatCard: React.FC<StatCardProps> = ({
   iconBg,
   iconColor,
 }) => (
-  <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
+  <div
+    className="
+      group
+      relative
+      overflow-hidden
+      rounded-2xl
+      border border-white/10
+      bg-linear-to-b
+      from-[#0B1120]
+      to-[#050816]
+      p-4 sm:p-5
+      transition-all duration-300
+      hover:-translate-y-1
+      hover:border-blue-500/20
+      hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
+    "
+  >
     {/* Glow */}
     <div
-      className={`absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-20 blur-3xl ${iconBg}`}
+      className={`
+        absolute -right-10 -top-10
+        h-28 w-28 rounded-full
+        opacity-20 blur-3xl
+        transition-transform duration-500
+        group-hover:scale-110
+        ${iconBg}
+      `}
     />
 
-    <div className="relative flex items-start justify-between">
-      <div className="space-y-3">
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
+    <div className="relative flex items-start justify-between gap-4">
+      <div className="min-w-0 flex-1 space-y-2">
+        <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">
           {label}
         </p>
 
-        <div className="space-y-2">
-          <p className="text-4xl font-semibold leading-none tracking-tight text-white">
-            {value}
-          </p>
+        <p className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">
+          {value}
+        </p>
 
-          {delta && (
-            <p className={`text-xs font-medium ${DELTA_CLASSES[deltaType]}`}>
-              {delta}
-            </p>
-          )}
-        </div>
+        {delta && (
+          <p className={`text-xs font-medium ${DELTA_CLASSES[deltaType]}`}>
+            {delta}
+          </p>
+        )}
       </div>
 
       <div
-        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 backdrop-blur-md ${iconBg} ${iconColor}`}
+        className={`
+          flex size-10 shrink-0 items-center justify-center
+          rounded-xl border border-white/10
+          backdrop-blur-md
+          transition-all duration-300
+          group-hover:scale-105
+          ${iconBg}
+          ${iconColor}
+        `}
       >
         {icon}
       </div>
@@ -93,28 +122,28 @@ const InvoiceStatsCards = ({ invoiceStats }: InvoicesStatsProps) => {
       value: totalInvoices,
       delta:
         draftedInvoices > 0
-          ? `${draftedInvoices} draft${draftedInvoices !== 1 ? "s" : ""} pending`
+          ? `${draftedInvoices} drafts pending`
           : "No drafts pending",
       deltaType: (draftedInvoices > 0 ? "warn" : "up") as DeltaType,
-      icon: <FileText size={16} />,
+      icon: <FileText size={18} />,
       iconBg: "bg-violet-500/10",
       iconColor: "text-violet-400",
     },
     {
-      label: "Total Revenue",
+      label: "Revenue",
       value: `${fmt(totalRevenue)} BDT`,
       delta: "Across all invoices",
       deltaType: "up" as DeltaType,
-      icon: <TrendingUp size={16} />,
+      icon: <TrendingUp size={18} />,
       iconBg: "bg-blue-500/10",
       iconColor: "text-blue-400",
     },
     {
       label: "This Month",
       value: `${fmt(thisMonth.earnings)} BDT`,
-      delta: `${thisMonth.paidCount} invoice${thisMonth.paidCount !== 1 ? "s" : ""} paid this month`,
+      delta: `${thisMonth.paidCount} paid this month`,
       deltaType: (thisMonth.paidCount > 0 ? "up" : "neutral") as DeltaType,
-      icon: <CalendarDays size={16} />,
+      icon: <CalendarDays size={18} />,
       iconBg: "bg-emerald-500/10",
       iconColor: "text-emerald-400",
     },
@@ -126,9 +155,9 @@ const InvoiceStatsCards = ({ invoiceStats }: InvoicesStatsProps) => {
           ? `${outstanding.count} awaiting payment`
           : "No outstanding invoices",
       deltaType: (outstanding.count > 0 ? "warn" : "up") as DeltaType,
-      icon: <Clock3 size={16} />,
-      iconBg: "bg-amber-500/10",
-      iconColor: "text-amber-400",
+      icon: <Clock3 size={18} />,
+      iconBg: "bg-orange-500/10",
+      iconColor: "text-orange-400",
     },
   ];
 

@@ -113,3 +113,35 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.16);
 }
+
+/* --------------------------------------------------
+   Selection
+   -------------------------------------------------- */
+
+::selection {
+  background: rgba(59, 130, 246, 0.35);
+  color: white;
+}
+
+/* --------------------------------------------------
+   Smooth Rendering
+   -------------------------------------------------- */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* --------------------------------------------------
+   Glass Utility
+   -------------------------------------------------- */
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}

@@ -1,33 +1,80 @@
-import { ArrowRight } from "lucide-react";
+"use client";
+
+import { useRouter } from "next/navigation";
+
+import { ArrowRight, Sparkles } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 
 export default function FinalCTASection() {
-  return (
-    <section className="w-full py-20 sm:py-28">
-      <div className="container mx-auto px-4">
-        <div className=" mx-auto max-w-3xl rounded-2xl border border-white/10 bg-white/5 px-6 sm:px-8 py-12 sm:py-16 text-center">
-          <p className="mb-3 text-xs uppercase tracking-wider text-muted-foreground">
-            Ready when you are
-          </p>
+  const router = useRouter();
 
-          <h2 className="text-2xl font-semibold sm:text-3xl">
-            Start using Finvia today
+  return (
+    <section className="relative overflow-hidden px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+      {/* BACKGROUND */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute left-1/2 top-1/2 h-105 w-105 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/10 blur-3xl" />
+
+        <div className="absolute right-0 top-0 h-80 w-[320px] rounded-full bg-violet-500/10 blur-3xl" />
+      </div>
+
+      <div className="relative mx-auto max-w-5xl">
+        <div className="overflow-hidden rounded-[36px] border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-7 text-center shadow-[0_30px_120px_rgba(0,0,0,0.45)] sm:p-10 lg:p-14">
+          {/* BADGE */}
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2">
+            <Sparkles className="size-4 text-blue-400" />
+
+            <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-blue-400">
+              Ready When You Are
+            </span>
+          </div>
+
+          {/* HEADING */}
+          <h2 className="text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+            Start managing your business
+            <br />
+            <span className="bg-linear-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
+              with Finvia today
+            </span>
           </h2>
 
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            No setup complexity. No credit card required. Just a simple way to
-            manage invoices and payments.
+          {/* DESCRIPTION */}
+          <p className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-slate-400 sm:text-base">
+            No complicated setup. No overwhelming workflow. Just a clean, modern
+            workspace to manage invoices, clients, payments, and business
+            growth.
           </p>
 
-          <div className="mt-8">
-            <Button size="lg" className="rounded-full px-8 w-full sm:w-auto">
-              Create free account
-              <ArrowRight className="ml-2 h-4 w-4" />
+          {/* CTA */}
+          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button
+              onClick={() =>
+                router.push("/signup", {
+                  scroll: false,
+                })
+              }
+              className="group h-13 w-full rounded-2xl border border-blue-500/20 bg-blue-500/10 px-8 text-sm font-medium text-blue-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.18)] sm:w-auto"
+            >
+              Create Free Account
+              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={() =>
+                router.push("/demo/dashboard", {
+                  scroll: false,
+                })
+              }
+              className="h-13 w-full rounded-2xl border border-white/10 bg-white/3 px-8 text-sm font-medium text-slate-300 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:text-white sm:w-auto"
+            >
+              Explore Demo
             </Button>
           </div>
 
-          <p className="mt-6 text-xs text-muted-foreground">
-            Free forever for basic usage · Cancel anytime
+          {/* FOOTER TEXT */}
+          <p className="mt-7 text-xs leading-relaxed text-slate-500 sm:text-sm">
+            No credit card required · Free onboarding · Cancel anytime
           </p>
         </div>
       </div>

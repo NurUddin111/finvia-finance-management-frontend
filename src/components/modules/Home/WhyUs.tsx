@@ -1,77 +1,166 @@
-import { Clock, Zap, ShieldCheck, LineChart } from "lucide-react";
+"use client";
+
+import {
+  Clock3,
+  LineChart,
+  ShieldCheck,
+  Sparkles,
+  TrendingUp,
+  Zap,
+} from "lucide-react";
 
 export default function WhyFinviaSection() {
   return (
-    <section className="w-full py-20 sm:py-28">
-      <div className="container mx-auto px-4">
-        <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
-          {/* LEFT — TEXT */}
-          <div>
-            <p className="mb-3 text-xs uppercase tracking-wider text-primary">
-              Why Finvia?
-            </p>
+    <section
+      id="benefits"
+      className="relative overflow-hidden px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-32"
+    >
+      {/* BACKGROUND */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute left-0 top-1/3 h-80 w-[320px] rounded-full bg-blue-500/8 blur-3xl" />
 
-            <h2 className="text-4xl font-bold tracking-tight leading-tight">
-              Focus on growth, not paperwork
-            </h2>
+        <div className="absolute right-0 top-0 h-80 w-[320px] rounded-full bg-violet-500/10 blur-3xl" />
+      </div>
 
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
-              Manual admin work kills productivity. Finvia streamlines your
-              operations so you can scale your business without scaling your
-              workload.
-            </p>
+      <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-2 lg:items-center lg:gap-16">
+        {/* LEFT */}
+        <div>
+          {/* BADGE */}
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2">
+            <Sparkles className="size-4 text-blue-400" />
 
-            <div className="mt-12 grid gap-8 sm:grid-cols-2">
-              <Benefit
-                icon={Clock}
-                title="Save 10+ hours per week"
-                description="Automate invoicing, reminders, and data entry so you can focus on what matters."
-              />
-              <Benefit
-                icon={Zap}
-                title="Get paid 2× faster"
-                description="Online payments and automated follow-ups reduce overdue invoices."
-              />
-              <Benefit
-                icon={ShieldCheck}
-                title="Bank-grade security"
-                description="Your data is encrypted and protected using industry standards."
-              />
-              <Benefit
-                icon={LineChart}
-                title="Real-time insights"
-                description="Make smarter decisions with clear revenue and client reports."
-              />
-            </div>
+            <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-blue-400">
+              Why Finvia
+            </span>
           </div>
 
-          {/* RIGHT — VISUAL CARD */}
-          <div className="relative rounded-2xl bg-white/2 p-6 sm:p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)]">
-            <div className="space-y-6 sm:space-y-8">
-              {[1, 2, 3].map((i) => (
+          {/* HEADING */}
+          <h2 className="text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+            Focus on growth,
+            <br />
+            <span className="bg-linear-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
+              not paperwork
+            </span>
+          </h2>
+
+          {/* DESCRIPTION */}
+          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-slate-400 sm:text-base">
+            Finvia helps modern businesses reduce manual work, organize
+            operations, and manage invoices, clients, and payments from one
+            powerful workspace.
+          </p>
+
+          {/* BENEFITS */}
+          <div className="mt-12 grid gap-5 sm:grid-cols-2">
+            <Benefit
+              icon={Clock3}
+              title="Save 10+ hours weekly"
+              description="Automate invoicing, reminders, and repetitive admin tasks."
+              color="border-blue-500/20 bg-blue-500/10 text-blue-400"
+            />
+
+            <Benefit
+              icon={Zap}
+              title="Get paid faster"
+              description="Reduce overdue invoices with streamlined payment workflows."
+              color="border-violet-500/20 bg-violet-500/10 text-violet-400"
+            />
+
+            <Benefit
+              icon={ShieldCheck}
+              title="Secure & reliable"
+              description="Built with modern infrastructure and protected business data."
+              color="border-emerald-500/20 bg-emerald-500/10 text-emerald-400"
+            />
+
+            <Benefit
+              icon={LineChart}
+              title="Real-time insights"
+              description="Track revenue, payments, and client performance instantly."
+              color="border-amber-500/20 bg-amber-500/10 text-amber-400"
+            />
+          </div>
+        </div>
+
+        {/* RIGHT VISUAL */}
+        <div className="relative">
+          {/* GLOW */}
+          <div className="absolute inset-0 rounded-[36px] bg-blue-500/10 blur-3xl" />
+
+          {/* CARD */}
+          <div className="relative overflow-hidden rounded-4xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5 shadow-[0_30px_120px_rgba(0,0,0,0.45)] sm:p-6 lg:p-7">
+            {/* TOP */}
+            <div className="flex items-center justify-between border-b border-white/10 pb-5">
+              <div>
+                <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
+                  Revenue Overview
+                </p>
+
+                <h3 className="mt-2 text-2xl font-semibold tracking-tight text-white">
+                  $12,450.00
+                </h3>
+              </div>
+
+              <div className="flex items-center gap-2 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-3 py-2">
+                <TrendingUp className="size-4 text-emerald-400" />
+
+                <span className="text-sm font-medium text-emerald-400">
+                  +18.2%
+                </span>
+              </div>
+            </div>
+
+            {/* LIST */}
+            <div className="mt-6 space-y-4">
+              {[1, 2, 3].map((item) => (
                 <div
-                  key={i}
-                  className="flex items-center justify-between rounded-xl bg-white/3 px-5 sm:px-6 py-4 sm:py-5"
+                  key={item}
+                  className="flex items-center justify-between rounded-3xl border border-white/5 bg-white/3 p-4 transition-all duration-300 hover:border-blue-500/10 hover:bg-blue-500/3"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="h-11 w-11 rounded-full bg-white/8" />
-                    <div className="space-y-2">
-                      <div className="h-3 w-36 rounded bg-white/8" />
-                      <div className="h-3 w-24 rounded bg-white/6" />
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
+                      <div className="h-4 w-4 rounded-full bg-blue-400" />
+                    </div>
+
+                    <div>
+                      <div className="h-3 w-28 rounded-full bg-white/10" />
+
+                      <div className="mt-2 h-2 w-20 rounded-full bg-white/5" />
                     </div>
                   </div>
 
-                  <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-400">
-                    Paid
-                  </span>
+                  <div className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1">
+                    <span className="text-xs font-medium text-emerald-400">
+                      Paid
+                    </span>
+                  </div>
                 </div>
               ))}
+            </div>
 
-              <div className="h-px w-full bg-white/6" />
+            {/* FOOTER */}
+            <div className="mt-6 rounded-3xl border border-white/5 bg-white/3 p-5">
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
+                    Monthly Growth
+                  </p>
 
-              <div className="flex items-center justify-between pt-2 text-sm">
-                <span className="text-muted-foreground">Total Revenue</span>
-                <span className="text-lg font-semibold">$12,450.00</span>
+                  <h4 className="mt-2 text-3xl font-semibold tracking-tight text-white">
+                    32%
+                  </h4>
+                </div>
+
+                {/* BARS */}
+                <div className="flex items-end gap-2">
+                  <div className="h-10 w-3 rounded-full bg-white/10" />
+
+                  <div className="h-14 w-3 rounded-full bg-blue-500/40" />
+
+                  <div className="h-20 w-3 rounded-full bg-blue-400" />
+
+                  <div className="h-12 w-3 rounded-full bg-violet-500/50" />
+                </div>
               </div>
             </div>
           </div>
@@ -81,25 +170,38 @@ export default function WhyFinviaSection() {
   );
 }
 
-/* ---------- Helper ---------- */
+/* ---------------------------------- */
+/* BENEFIT */
+/* ---------------------------------- */
 
 function Benefit({
   icon: Icon,
   title,
   description,
+  color,
 }: {
   icon: React.ElementType;
+
   title: string;
+
   description: string;
+
+  color: string;
 }) {
   return (
-    <div className="flex gap-4">
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/15">
-        <Icon className="h-5 w-5 text-primary" />
+    <div className="group rounded-3xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/15 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
+      <div
+        className={`flex h-12 w-12 items-center justify-center rounded-2xl border ${color}`}
+      >
+        <Icon className="size-5" />
       </div>
-      <div>
-        <h3 className="text-base font-semibold leading-tight">{title}</h3>
-        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+
+      <div className="mt-5">
+        <h3 className="text-lg font-semibold tracking-tight text-white">
+          {title}
+        </h3>
+
+        <p className="mt-2 text-sm leading-relaxed text-slate-400">
           {description}
         </p>
       </div>

@@ -1,91 +1,123 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { LogOut } from "lucide-react";
+
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
-import { logoutUser } from "@/services/auth/logout";
+
 import { useRouter } from "next/navigation";
+
+import { Building2, LogOut, Sparkles } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+import { logoutUser } from "@/services/auth/logout";
 
 export default function OnboardingNav() {
   const [openLogout, setOpenLogout] = useState(false);
+
   const router = useRouter();
+
   return (
-    <header className="h-16 border-b border-border">
-      <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6">
-        <Link
-          href="/"
-          className="text-lg font-semibold tracking-tight text-foreground"
-        >
-          Finvia<span className="text-primary">•</span>
-        </Link>
+    <>
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#050816]/80 backdrop-blur-2xl">
+        <div className="mx-auto flex h-18 w-full max-w-7xl items-center justify-between px-4 sm:px-6">
+          {/* LEFT */}
+          <Link href="/" className="group flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10 transition-all duration-300 group-hover:border-blue-400/30 group-hover:bg-blue-500/15">
+              <Building2 className="size-5 text-blue-400" />
+            </div>
 
-        <div className="flex items-center gap-3">
-          <Button
-            onClick={() => setOpenLogout(true)}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-500 hover:bg-red-500/10"
-          >
-            <LogOut size={16} />
-            Logout
-          </Button>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-lg font-semibold tracking-tight text-white">
+                  Finvia
+                </h1>
+
+                <Sparkles className="size-3.5 text-blue-400" />
+              </div>
+
+              <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                Business Workspace
+              </p>
+            </div>
+          </Link>
+
+          {/* RIGHT */}
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={() => setOpenLogout(true)}
+              className="group h-11 rounded-2xl border border-red-500/15 bg-red-500/8 px-5 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/30 hover:bg-red-500/12 hover:text-red-300 hover:shadow-[0_0_30px_rgba(239,68,68,0.12)]"
+            >
+              <LogOut className="size-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
+              Logout
+            </Button>
+          </div>
         </div>
-        <Dialog open={openLogout} onOpenChange={setOpenLogout}>
-          <DialogContent className="overflow-hidden border border-red-500/15 bg-[#050816] p-0 shadow-[0_30px_120px_rgba(0,0,0,0.65)] sm:max-w-sm">
-            {/* HEADER */}
-            <div className="border-b border-red-500/10 bg-linear-to-b from-[#140809] to-[#050816] px-5 py-5">
-              <DialogHeader>
-                <div className="mb-3 flex justify-center">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10">
-                    <LogOut className="size-5 text-red-400" />
-                  </div>
+      </header>
+
+      {/* LOGOUT MODAL */}
+      <Dialog open={openLogout} onOpenChange={setOpenLogout}>
+        <DialogContent className="overflow-hidden border border-red-500/15 bg-[#050816] p-0 shadow-[0_30px_120px_rgba(0,0,0,0.65)] sm:max-w-sm">
+          {/* HEADER */}
+          <div className="border-b border-red-500/10 bg-linear-to-b from-[#140809] to-[#050816] px-5 py-5">
+            <DialogHeader>
+              <div className="mb-3 flex justify-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10">
+                  <LogOut className="size-5 text-red-400" />
                 </div>
-
-                <DialogTitle className="text-center text-xl font-semibold tracking-tight text-white">
-                  Logout
-                </DialogTitle>
-
-                <p className="mt-1 text-center text-xs leading-relaxed text-slate-400">
-                  Are you sure you want to log out from your account?
-                </p>
-              </DialogHeader>
-            </div>
-
-            {/* BODY */}
-            <div className="px-5 py-5">
-              <div className="rounded-2xl border border-red-500/15 bg-red-500/8 p-4">
-                <p className="text-sm leading-relaxed text-slate-300">
-                  You will be signed out from your current session and
-                  redirected to the login page.
-                </p>
               </div>
 
-              {/* ACTIONS */}
-              <div className="mt-5 flex gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setOpenLogout(false)}
-                  className="h-10 flex-1 rounded-xl border-white/10 bg-white/3 text-sm text-slate-300 hover:border-white/20 hover:bg-white/5 hover:text-white"
-                >
-                  Cancel
-                </Button>
+              <DialogTitle className="text-center text-xl font-semibold tracking-tight text-white">
+                Logout
+              </DialogTitle>
 
-                <Button
-                  onClick={async () => {
-                    await logoutUser();
+              <p className="mt-1 text-center text-xs leading-relaxed text-slate-400">
+                Are you sure you want to log out from your account?
+              </p>
+            </DialogHeader>
+          </div>
 
-                    router.refresh();
-                  }}
-                  className="h-10 flex-1 rounded-xl border border-red-500/20 bg-red-500/10 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300"
-                >
-                  <LogOut className="size-4" />
-                  Logout
-                </Button>
-              </div>
+          {/* BODY */}
+          <div className="px-5 py-5">
+            <div className="rounded-2xl border border-red-500/15 bg-red-500/8 p-4">
+              <p className="text-sm leading-relaxed text-slate-300">
+                You will be signed out from your current session and redirected
+                to the login page.
+              </p>
             </div>
-          </DialogContent>
-        </Dialog>
-      </div>
-    </header>
+
+            {/* ACTIONS */}
+            <div className="mt-5 flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setOpenLogout(false)}
+                className="h-10 flex-1 rounded-xl border-white/10 bg-white/3 text-sm text-slate-300 hover:border-white/20 hover:bg-white/5 hover:text-white"
+              >
+                Cancel
+              </Button>
+
+              <Button
+                onClick={async () => {
+                  await logoutUser();
+
+                  router.refresh();
+                }}
+                className="h-10 flex-1 rounded-xl border border-red-500/20 bg-red-500/10 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300"
+              >
+                <LogOut className="size-4" />
+                Logout
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

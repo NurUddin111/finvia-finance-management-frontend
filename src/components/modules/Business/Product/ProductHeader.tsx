@@ -1,46 +1,66 @@
 "use client";
 
 import { useState } from "react";
-
 import { PackagePlus, Boxes } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-
 import CreateInvoiceModal from "../Invoices/CreateInvoiceModal";
 
 export default function ProductsHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+    <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
       {/* LEFT */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center rounded-full border border-blue-500/20 bg-blue-500/10 p-1.5">
-            <Boxes className="size-4 text-blue-400" />
+      <div className="space-y-3">
+        {/* Title row */}
+        <div className="flex items-center gap-3">
+          {/* Icon */}
+          <div className="relative">
+            <div className="absolute -inset-2 rounded-full bg-blue-500/10 blur-md opacity-60" />
+            <div className="relative flex size-9 items-center justify-center rounded-xl border border-blue-500/20 bg-blue-500/10">
+              <Boxes className="size-4 text-blue-400" />
+            </div>
           </div>
 
-          <span className="text-3xl font-medium uppercase tracking-[0.2em] text-blue-400">
+          {/* Title */}
+          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-white">
             Product Management
-          </span>
+          </h1>
         </div>
 
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">
+        {/* Description */}
+        <p className="max-w-2xl text-sm leading-relaxed text-slate-400">
           Organize, manage, and monitor your product catalog, inventory,
-          pricing, stock availability, and product performance across your
-          business.
+          pricing, stock availability, and performance across your business.
         </p>
       </div>
 
       {/* RIGHT */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+      <div className="flex items-center gap-3">
         <Button
           onClick={() => setOpen(true)}
-          className="group h-11 rounded-2xl border border-blue-500/20 bg-blue-500/10 px-5 text-sm font-medium text-blue-400 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.18)]"
+          className="
+            group
+            h-10
+            rounded-xl
+            border border-blue-500/20
+            bg-blue-500/10
+            px-4
+            text-sm font-medium
+            text-blue-400
+            backdrop-blur-md
+            transition-all duration-300
+            hover:-translate-y-0.5
+            hover:border-blue-400/40
+            hover:bg-blue-500/15
+            hover:text-blue-300
+            hover:shadow-[0_0_25px_rgba(59,130,246,0.15)]
+          "
         >
           <PackagePlus
             size={16}
-            className="transition-transform duration-300 group-hover:scale-110"
+            className="mr-2 transition-transform duration-300 group-hover:scale-110"
           />
           Add Product
         </Button>

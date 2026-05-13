@@ -135,17 +135,20 @@ export function InvoiceStatusChart({
   const invoiceData = [
     {
       name: "Paid",
-      value: invStatusChart.paidInvoices,
+      value: invStatusChart.paidInvPer,
+      count: invStatusChart.paidInvoices,
       fill: "#22c55e",
     },
     {
       name: "Sent",
-      value: invStatusChart.pendingInvoices,
+      value: invStatusChart.pendingInvPer,
+      count: invStatusChart.pendingInvoices,
       fill: "#3b82f6",
     },
     {
       name: "Draft",
-      value: invStatusChart.draftedInvoices,
+      value: invStatusChart.draftedInvPer,
+      count: invStatusChart.draftedInvoices,
       fill: "#f59e0b",
     },
   ];
@@ -154,6 +157,8 @@ export function InvoiceStatusChart({
     invStatusChart.paidInvoices +
     invStatusChart.pendingInvoices +
     invStatusChart.draftedInvoices;
+
+  const isEmpty = totalInvoices === 0;
 
   return (
     <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] transition-all duration-300 hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
@@ -175,78 +180,89 @@ export function InvoiceStatusChart({
       </CardHeader>
 
       <CardContent className="relative">
-        {/* LEGEND */}
-        <div className="mb-6 flex flex-wrap gap-3">
-          {invoiceData.map((item) => (
-            <div
-              key={item.name}
-              className="flex items-center gap-2 rounded-full border border-white/10 bg-white/3 px-3 py-1.5 backdrop-blur-md"
-            >
-              <span
-                className="h-2.5 w-2.5 rounded-full"
-                style={{ background: item.fill }}
-              />
-
-              <span className="text-xs font-medium text-slate-300">
-                {item.name}
-              </span>
-
-              <span className="text-xs text-slate-500">
-                {item.name === "Paid"
-                  ? invStatusChart.paidInvPer
-                  : item.name === "Sent"
-                    ? invStatusChart.pendingInvPer
-                    : invStatusChart.draftedInvPer}
-                %
-              </span>
+        {isEmpty ? (
+          <div className="flex h-65 flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/3 text-center">
+            <div className="mb-3 rounded-full border border-white/10 bg-white/3 p-3">
+              <div className="h-3 w-3 rounded-full bg-blue-400" />
             </div>
-          ))}
-        </div>
 
-        {/* CHART */}
-        <div className="relative flex items-center justify-center">
-          {/* CENTER INFO */}
-          <div className="absolute z-10 flex flex-col items-center">
-            <span className="text-3xl font-semibold tracking-tight text-white">
-              {totalInvoices}
-            </span>
+            <p className="text-sm font-medium text-slate-300">
+              No invoice data yet
+            </p>
 
-            <span className="text-xs uppercase tracking-[0.2em] text-slate-500">
-              Invoices
-            </span>
+            <p className="mt-1 text-xs text-slate-500">
+              Invoice analytics will appear here
+            </p>
           </div>
+        ) : (
+          <>
+            {/* LEGEND */}
+            <div className="mb-6 flex flex-wrap gap-3">
+              {invoiceData.map((item) => (
+                <div
+                  key={item.name}
+                  className="flex items-center gap-2 rounded-full border border-white/10 bg-white/3 px-3 py-1.5 backdrop-blur-md"
+                >
+                  <span
+                    className="h-2.5 w-2.5 rounded-full"
+                    style={{ background: item.fill }}
+                  />
 
-          <ResponsiveContainer width="100%" height={240}>
-            <PieChart>
-              <Pie
-                data={invoiceData}
-                cx="50%"
-                cy="50%"
-                innerRadius={70}
-                outerRadius={92}
-                paddingAngle={3}
-                dataKey="value"
-                stroke="rgba(255,255,255,0.04)"
-                strokeWidth={2}
-              />
+                  <span className="text-xs font-medium text-slate-300">
+                    {item.name}
+                  </span>
 
-              <Tooltip
-                formatter={(v, n) => [`${v ?? 0} invoices`, String(n)]}
-                contentStyle={{
-                  background: "rgba(15,23,42,0.95)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: "14px",
-                  backdropFilter: "blur(10px)",
-                  fontSize: 12,
-                  color: "white",
-                }}
-                labelStyle={{
-                  color: "rgba(148,163,184,0.9)",
-                }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
+                  <span className="text-xs text-slate-500">{item.value}%</span>
+                </div>
+              ))}
+            </div>
+
+            {/* CHART */}
+            <div className="relative flex items-center justify-center">
+              {/* CENTER INFO */}
+              <div className="absolute z-10 flex flex-col items-center">
+                <span className="text-3xl font-semibold tracking-tight text-white">
+                  {totalInvoices}
+                </span>
+
+                <span className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                  Invoices
+                </span>
+              </div>
+
+              <ResponsiveContainer width="100%" height={240}>
+                <PieChart>
+                  <Pie
+                    data={invoiceData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={70}
+                    outerRadius={92}
+                    paddingAngle={3}
+                    dataKey="count"
+                    stroke="rgba(255,255,255,0.04)"
+                    strokeWidth={2}
+                  />
+
+                  <Tooltip
+                    formatter={(v, n) => [`${v ?? 0} invoices`, String(n)]}
+                    contentStyle={{
+                      background: "rgba(15,23,42,0.95)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: "14px",
+                      backdropFilter: "blur(10px)",
+                      fontSize: 12,
+                      color: "white",
+                    }}
+                    labelStyle={{
+                      color: "rgba(148,163,184,0.9)",
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </>
+        )}
       </CardContent>
     </Card>
   );
@@ -744,7 +760,7 @@ export function ClientTypeChart({
           {formattedClientPieChart.map((d) => (
             <div
               key={d.name}
-              className="flex items-center gap-2 rounded-full border border-white/10 bg-white/3px-3 p-1.5 backdrop-blur-md"
+              className="flex items-center gap-2 rounded-full border border-white/10 bg-white/3 px-3 py-1.5 backdrop-blur-md"
             >
               <span
                 className="h-2.5 w-2.5 rounded-full"

@@ -1,87 +1,152 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { XCircle, CheckCircle } from "lucide-react";
+"use client";
+
+import { CheckCircle2, Sparkles, XCircle } from "lucide-react";
 
 export default function ProblemSolutionSection() {
   return (
-    <section className="w-full py-16 sm:py-20">
-      <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="mx-auto mb-12 max-w-2xl text-center">
-          <p className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">
-            The problem & the fix
-          </p>
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            From chaos to clarity
+    <section className="relative overflow-hidden px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+      {/* BACKGROUND */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute left-0 top-1/3 h-70 w-70 rounded-full bg-red-500/6 blur-3xl" />
+
+        <div className="absolute right-0 top-1/4 h-80 w-[320px] rounded-full bg-blue-500/8 blur-3xl" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl">
+        {/* HEADER */}
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2">
+            <Sparkles className="size-4 text-blue-400" />
+
+            <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-blue-400">
+              The Problem & The Solution
+            </span>
+          </div>
+
+          <h2 className="text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+            From messy workflows
+            <br />
+            <span className="bg-linear-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
+              to organized business operations
+            </span>
           </h2>
-          <p className="mt-4 text-sm text-muted-foreground">
-            Managing invoices and clients shouldn’t feel confusing or messy.
+
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-slate-400 sm:text-base">
+            Most businesses still manage invoices, payments, and client records
+            manually. Finvia brings everything together into one clean, modern
+            workspace.
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="grid gap-8 md:grid-cols-2">
-          {/* Problems */}
-          <Card className="border border-muted bg-background/40">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <XCircle className="h-5 w-5 text-destructive" />
-                Common Problems
-              </CardTitle>
-            </CardHeader>
+        {/* GRID */}
+        <div className="mt-14 grid gap-5 lg:grid-cols-2">
+          {/* PROBLEMS */}
+          <div className="group relative overflow-hidden rounded-4xl border border-red-500/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-6 transition-all duration-300 hover:border-red-500/20 hover:shadow-[0_0_50px_rgba(239,68,68,0.08)] sm:p-7 lg:p-8">
+            {/* GLOW */}
+            <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-red-500/10 blur-3xl" />
 
-            <CardContent className="space-y-3">
+            {/* TOP */}
+            <div className="relative flex items-start gap-4">
+              <div className="flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10">
+                <XCircle className="size-6 text-red-400" />
+              </div>
+
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.18em] text-red-400">
+                  Common Problems
+                </p>
+
+                <h3 className="mt-2 text-2xl font-semibold tracking-tight text-white">
+                  Business chaos
+                </h3>
+
+                <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                  Scattered invoices, manual calculations, and unclear payment
+                  tracking slow down productivity and create unnecessary stress.
+                </p>
+              </div>
+            </div>
+
+            {/* ITEMS */}
+            <div className="relative mt-8 space-y-4">
               <ProblemItem text="Invoices scattered across WhatsApp, Excel, and PDFs" />
+
               <ProblemItem text="No clear idea who has paid and who hasn’t" />
+
               <ProblemItem text="Clients repeatedly asking for invoice copies" />
+
               <ProblemItem text="Manual calculations causing mistakes and stress" />
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
-          {/* Solution */}
-          <Card className="border border-primary/20 bg-background/60 shadow-[0_0_40px_-18px_rgba(124,106,242,0.35)]">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <CheckCircle className="h-5 w-5 text-primary" />
-                Our Solution
-              </CardTitle>
-            </CardHeader>
+          {/* SOLUTION */}
+          <div className="group relative overflow-hidden rounded-4xl border border-blue-500/15 bg-linear-to-b from-[#0B1120] to-[#050816] p-6 transition-all duration-300 hover:border-blue-500/25 hover:shadow-[0_0_60px_rgba(59,130,246,0.12)] sm:p-7 lg:p-8">
+            {/* GLOW */}
+            <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-blue-500/12 blur-3xl" />
 
-            <CardContent className="space-y-3">
+            {/* TOP */}
+            <div className="relative flex items-start gap-4">
+              <div className="flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
+                <CheckCircle2 className="size-6 text-blue-400" />
+              </div>
+
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.18em] text-blue-400">
+                  Finvia Solution
+                </p>
+
+                <h3 className="mt-2 text-2xl font-semibold tracking-tight text-white">
+                  Complete clarity
+                </h3>
+
+                <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                  A modern workspace that helps you manage invoices, clients,
+                  products, and payments with confidence and simplicity.
+                </p>
+              </div>
+            </div>
+
+            {/* ITEMS */}
+            <div className="relative mt-8 space-y-4">
               <SolutionItem text="All invoices organized in one clean dashboard" />
-              <SolutionItem text="Real-time payment status at a glance" />
-              <SolutionItem text="Auto-generated, shareable invoices for clients" />
-              <SolutionItem text="Accurate totals with zero manual calculations" />
-            </CardContent>
-          </Card>
-        </div>
 
-        {/* CTA */}
-        <div className="mt-10 text-center">
-          <button className="text-sm font-medium text-primary hover:underline underline-offset-4">
-            See how it works →
-          </button>
+              <SolutionItem text="Real-time payment status at a glance" />
+
+              <SolutionItem text="Auto-generated, shareable invoices for clients" />
+
+              <SolutionItem text="Accurate totals with zero manual calculations" />
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-/* ---------- Helpers ---------- */
+/* ---------------------------------- */
+/* HELPERS */
+/* ---------------------------------- */
 
 function ProblemItem({ text }: { text: string }) {
   return (
-    <div className="flex items-start gap-3">
-      <XCircle className="mt-0.5 h-4 w-4 text-destructive shrink-0" />
-      <p className="text-sm leading-relaxed text-muted-foreground">{text}</p>
+    <div className="flex items-start gap-3 rounded-2xl border border-white/5 bg-white/2 p-4 transition-all duration-300 hover:border-red-500/10 hover:bg-red-500/3">
+      <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-500/10">
+        <XCircle className="size-3.5 text-red-400" />
+      </div>
+
+      <p className="text-sm leading-relaxed text-slate-300">{text}</p>
     </div>
   );
 }
 
 function SolutionItem({ text }: { text: string }) {
   return (
-    <div className="flex items-start gap-3">
-      <CheckCircle className="mt-0.5 h-4 w-4 text-primary shrink-0" />
-      <p className="text-sm leading-relaxed text-muted-foreground">{text}</p>
+    <div className="flex items-start gap-3 rounded-2xl border border-white/5 bg-white/2 p-4 transition-all duration-300 hover:border-blue-500/10 hover:bg-blue-500/3">
+      <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-500/10">
+        <CheckCircle2 className="size-3.5 text-blue-400" />
+      </div>
+
+      <p className="text-sm leading-relaxed text-slate-300">{text}</p>
     </div>
   );
 }
