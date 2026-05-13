@@ -265,21 +265,7 @@ export function TopProductsChart({
   }));
 
   return (
-    <Card
-      className="
-        group
-        relative
-        overflow-hidden
-        rounded-2xl
-        border border-white/10
-        bg-linear-to-b
-        from-[#0B1120]
-        to-[#050816]
-        transition-all duration-300
-        hover:border-blue-500/20
-        hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
-      "
-    >
+    <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] transition-all duration-300 hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
       {/* Ambient glow */}
       <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
         <div className="absolute bottom-0 right-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
@@ -299,15 +285,7 @@ export function TopProductsChart({
 
       <CardContent className="relative">
         {data.length === 0 ? (
-          <div
-            className="
-              flex h-65 flex-col items-center justify-center
-              rounded-2xl
-              border border-dashed border-white/10
-              bg-white/2
-              text-center
-            "
-          >
+          <div className="flex h-65 flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/2 text-center">
             <div className="mb-3 rounded-full border border-white/10 bg-white/3 p-3">
               <div className="h-3 w-3 rounded-full bg-blue-400" />
             </div>
@@ -766,7 +744,7 @@ export function ClientTypeChart({
           {formattedClientPieChart.map((d) => (
             <div
               key={d.name}
-              className="flex items-center gap-2rounded-fullborder border-white/10bg-white/3px-3 py-1.5backdrop-blur-md"
+              className="flex items-center gap-2 rounded-full border border-white/10 bg-white/3px-3 p-1.5 backdrop-blur-md"
             >
               <span
                 className="h-2.5 w-2.5 rounded-full"
