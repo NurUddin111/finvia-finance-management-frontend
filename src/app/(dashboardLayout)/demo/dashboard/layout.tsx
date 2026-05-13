@@ -1,4 +1,4 @@
-import BusinessBottomNav from "@/components/modules/Business/BottomNav";
+import DemoBusinessBottomNav from "@/components/modules/Demo/DemoBusinessBottomNav";
 
 import DemoSideBar from "@/components/modules/Demo/DemoSideBar";
 
@@ -24,7 +24,7 @@ export default function DemoDashboardLayout({
       </div>
 
       {/* MOBILE NAV */}
-      <BusinessBottomNav />
+      <DemoBusinessBottomNav />
     </div>
   );
 }

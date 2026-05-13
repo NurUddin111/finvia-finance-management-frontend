@@ -4,36 +4,60 @@ import SettingsAccordion from "./Settings/SettingsMenu";
 
 const BusinessSideBar = () => {
   return (
-    <aside className="hidden md:flex w-64 shrink-0 border-r bg-background">
-      <div className="flex h-full w-full flex-col px-4 py-6">
-        <BusinessBrand />
+    <aside className="hidden w-72 shrink-0 border-r border-white/8 bg-[#030712] md:flex">
+      <div className="flex h-full w-full flex-col px-5 py-6">
+        {/* BRAND */}
+        <div className="mb-8">
+          <BusinessBrand />
+        </div>
 
-        {/* Navigation */}
-        <nav className="mt-2 flex flex-col gap-1">
+        {/* SECTION LABEL */}
+        <div className="mb-3 px-3">
+          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-slate-500">
+            Workspace
+          </p>
+        </div>
+
+        {/* NAVIGATION */}
+        <nav className="flex flex-col gap-2">
           <SidebarItem
             label="Dashboard"
             icon="dashboard"
             href="/business/dashboard"
           />
+
           <SidebarItem
             label="Clients"
             icon="clients"
             href="/business/dashboard/clients"
           />
+
           <SidebarItem
             label="Invoices"
             icon="invoices"
             href="/business/dashboard/invoices"
           />
+
           <SidebarItem
             label="Products"
             icon="products"
             href="/business/dashboard/products"
           />
+
           <SettingsAccordion />
         </nav>
 
-        <div className="flex-1" />
+        {/* BOTTOM */}
+        <div className="mt-auto pt-6">
+          <div className="rounded-3xl border border-blue-500/10 bg-linear-to-b from-blue-500/10 to-transparent p-4">
+            <p className="text-sm font-medium text-white">Finvia Pro</p>
+
+            <p className="mt-1 text-xs leading-relaxed text-slate-400">
+              Manage invoices, clients, products and business analytics from one
+              workspace.
+            </p>
+          </div>
+        </div>
       </div>
     </aside>
   );
