@@ -14,10 +14,9 @@ import { Input } from "@/components/ui/input";
 
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 
-import { login } from "@/services/auth/login";
-
 import { toast } from "sonner";
 import GoogleIcon from "@/components/shared/icons/Google";
+import { login } from "@/services/auth.services";
 
 export default function LoginModal() {
   const router = useRouter();

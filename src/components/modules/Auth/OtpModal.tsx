@@ -15,8 +15,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-
-import { verifyOtp } from "@/services/auth/signupVerify";
+import { verifyOtp } from "@/services/auth.services";
 
 export default function SignUpVerifyModal() {
   const router = useRouter();

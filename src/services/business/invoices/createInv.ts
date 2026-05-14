@@ -1,71 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-import { cookies } from "next/headers";
+import { serverFetch } from "@/lib/serverFetch";
 
 export const createInvoice = async (currentState: any, formData: FormData) => {
-  try {
-    const itemsRaw = formData.get("items");
-    const items = itemsRaw ? JSON.parse(itemsRaw as string) : [];
-    const method = formData.get("method") as "ONLINE" | "CASH";
+  const itemsRaw = formData.get("items");
+  const method = formData.get("method") as "ONLINE" | "CASH";
 
-    const payload: Record<string, any> = {
-      email: formData.get("email"),
-      dueDays: Number(formData.get("dueDays")) || 3,
-      taxRate: Number(formData.get("taxRate")) || 0,
-      method,
-      items,
-    };
+  const payload: Record<string, any> = {
+    email: formData.get("email"),
+    dueDays: Number(formData.get("dueDays")) || 3,
+    taxRate: Number(formData.get("taxRate")) || 0,
+    method,
+    items: itemsRaw ? JSON.parse(itemsRaw as string) : [],
+  };
 
-    const notes = formData.get("notes");
-    if (notes) payload.notes = notes;
+  const notes = formData.get("notes");
+  if (notes) payload.notes = notes;
 
-    // ── Validation ────────────────────────────────────────────────────────────
-    if (!payload.email) {
-      return { success: false, error: "Email is required" };
-    }
-
-    if (!["ONLINE", "CASH"].includes(method)) {
-      return { success: false, error: "Invalid payment method" };
-    }
-
-    if (!Array.isArray(payload.items) || payload.items.length === 0) {
-      return { success: false, error: "At least one item is required" };
-    }
-
-    const hasInvalidItem = payload.items.some((item: any) => !item.productId);
-    if (hasInvalidItem) {
-      return {
-        success: false,
-        error: "All items must have a product selected",
-      };
-    }
-
-    // ── Request ───────────────────────────────────────────────────────────────
-    const cookieStore = await cookies();
-    const cookieHeader = cookieStore.toString();
-
-    const res = await fetch("http://localhost:1126/api/v1/invoice/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: cookieHeader,
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const result = await res.json();
-
-    if (!res.ok) {
-      return {
-        success: false,
-        error: result?.message || "Failed to create invoice",
-      };
-    }
-
-    return result;
-  } catch (error) {
-    console.error(error);
-    return { success: false, error: "Something went wrong" };
+  if (!payload.email) return { success: false, error: "Email is required" };
+  if (!["ONLINE", "CASH"].includes(method))
+    return { success: false, error: "Invalid payment method" };
+  if (!payload.items.length)
+    return { success: false, error: "At least one item is required" };
+  if (payload.items.some((item: any) => !item.productId)) {
+    return { success: false, error: "All items must have a product selected" };
   }
+
+  return serverFetch("/invoice/create", { method: "POST", body: payload });
 };

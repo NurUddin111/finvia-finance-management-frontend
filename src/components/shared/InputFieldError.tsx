@@ -1,9 +1,10 @@
-import { getInputFieldError, IInputErrorState } from "@/lib/getInputFieldError";
+import { getInputFieldError } from "@/lib/getInputFieldError";
 import { FieldDescription } from "../ui/field";
+import { ActionResult } from "@/types/actions";
 
 interface InputFieldErrorProps {
   field: string;
-  state: IInputErrorState;
+  state: ActionResult | null;
 }
 
 const InputFieldError = ({ field, state }: InputFieldErrorProps) => {
