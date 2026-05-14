@@ -1,23 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { Mail, User2, X } from "lucide-react";
-
 import { useActionState } from "react";
-
 import { Input } from "@/components/ui/input";
-
 import { Button } from "@/components/ui/button";
-
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-
-import { signup } from "@/services/auth/signup";
-
 import InputFieldError from "@/components/shared/InputFieldError";
 import GoogleIcon from "@/components/shared/icons/Google";
+import { signup } from "@/services/auth.services";
 
 export default function SignUpEmailModal() {
   const [state, formAction, isPending] = useActionState(signup, null);

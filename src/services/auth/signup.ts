@@ -35,7 +35,7 @@ export const signup = async (currentState: any, formData: FormData) => {
       body: newFormData,
     });
 
-    const result = res.json();
+    const result = await res.json();
 
     const setCookieHeaders = res.headers.getSetCookie();
 

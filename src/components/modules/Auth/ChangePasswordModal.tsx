@@ -1,29 +1,19 @@
 "use client";
 
 import { useEffect } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { useActionState } from "react";
-
 import { ShieldCheck, LockKeyhole, KeyRound, Sparkles } from "lucide-react";
-
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
-
 import { Field, FieldGroup } from "@/components/ui/field";
-
-import { changePassword } from "@/services/auth/changePasssword";
-
-import { logoutUser } from "@/services/auth/logout";
+import { changePassword, logoutUser } from "@/services/auth.services";
 
 export default function ChangePasswordModal({
   open,

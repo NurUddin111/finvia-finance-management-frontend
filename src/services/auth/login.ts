@@ -40,7 +40,7 @@ export const login = async (currentState: any, formData: FormData) => {
       }
     );
 
-    const result = res.json();
+    const result =await res.json();
 
     const setCookieHeaders = res.headers.getSetCookie();
 

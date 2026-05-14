@@ -2,7 +2,6 @@
 
 import React from "react";
 import { FileText, TrendingUp, Clock3, CalendarDays } from "lucide-react";
-
 import { InvoiceStats } from "@/types/invoice";
 
 type DeltaType = "up" | "down" | "neutral" | "warn";
@@ -40,33 +39,10 @@ const StatCard: React.FC<StatCardProps> = ({
   iconBg,
   iconColor,
 }) => (
-  <div
-    className="
-      group
-      relative
-      overflow-hidden
-      rounded-2xl
-      border border-white/10
-      bg-linear-to-b
-      from-[#0B1120]
-      to-[#050816]
-      p-4 sm:p-5
-      transition-all duration-300
-      hover:-translate-y-1
-      hover:border-blue-500/20
-      hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
-    "
-  >
+  <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
     {/* Glow */}
     <div
-      className={`
-        absolute -right-10 -top-10
-        h-28 w-28 rounded-full
-        opacity-20 blur-3xl
-        transition-transform duration-500
-        group-hover:scale-110
-        ${iconBg}
-      `}
+      className={`absolute -right-10 -top-10 h-28 w-28 rounded-full opacity-20 blur-3xl transition-transform duration-500 group-hover:scale-110 ${iconBg}`}
     />
 
     <div className="relative flex items-start justify-between gap-4">
@@ -87,15 +63,7 @@ const StatCard: React.FC<StatCardProps> = ({
       </div>
 
       <div
-        className={`
-          flex size-10 shrink-0 items-center justify-center
-          rounded-xl border border-white/10
-          backdrop-blur-md
-          transition-all duration-300
-          group-hover:scale-105
-          ${iconBg}
-          ${iconColor}
-        `}
+        className={`flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/10 backdrop-blur-md transition-all duration-300 group-hover:scale-105 ${iconBg} ${iconColor}`}
       >
         {icon}
       </div>

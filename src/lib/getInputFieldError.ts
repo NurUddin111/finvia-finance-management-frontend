@@ -1,18 +1,12 @@
-export interface IInputErrorState {
-  success: boolean;
-  errors: {
-    field: string;
-    message: string;
-  }[];
-}
+import { ActionResult } from "@/types/actions";
+
 export const getInputFieldError = (
   fieldName: string,
-  state: IInputErrorState
+  state: ActionResult | null,
 ) => {
-  if (state && state.errors) {
+  if (state?.errors) {
     const error = state.errors.find((err) => err.field === fieldName);
     return error ? error.message : null;
-  } else {
-    return null;
   }
+  return null;
 };
