@@ -1,18 +1,34 @@
+import { IBusiness } from "./business";
+import { IInvoice } from "./invoice";
+
 export type ClientStatus = "ACTIVE" | "INACTIVE";
 
-export interface Client {
+export interface IClient {
   id: string;
   name: string;
   email: string;
-  phone: string;
-  address: string;
-  status: ClientStatus;
+  phone: string | null;
+  address: string | null;
   totalInvoices: number;
   totalSpent: number;
-  isDeleted: false;
+  status: ClientStatus;
+  isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
-  formattedDate: string;
+
+  links?: IBusinessClient[];
+  invoices?: IInvoice[];
+}
+
+export interface IBusinessClient {
+  id: string;
+  businessId: string;
+  clientId: string;
+  createdAt: Date;
+  updatedAt: Date;
+
+  business?: IBusiness;
+  client?: IClient;
 }
 
 export interface ClientsStats {

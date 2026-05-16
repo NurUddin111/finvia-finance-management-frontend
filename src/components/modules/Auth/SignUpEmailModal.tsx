@@ -12,15 +12,15 @@ import GoogleIcon from "@/components/shared/icons/Google";
 import { signup } from "@/services/auth.services";
 
 export default function SignUpEmailModal() {
+  // null = initial state (no submission yet)
+  // state = ActionResult<null> | null after each submission
   const [state, formAction, isPending] = useActionState(signup, null);
 
   const router = useRouter();
 
   useEffect(() => {
     if (state?.success) {
-      router.push("/signup/verify", {
-        scroll: false,
-      });
+      router.push("/signup/verify", { scroll: false });
     }
   }, [state, router]);
 
@@ -72,6 +72,7 @@ export default function SignUpEmailModal() {
                   />
                 </div>
 
+                {/* reads state.errors, finds the "name" field error if any */}
                 <InputFieldError field="name" state={state} />
               </Field>
 
@@ -94,14 +95,15 @@ export default function SignUpEmailModal() {
                   />
                 </div>
 
+                {/* reads state.errors, finds the "email" field error if any */}
                 <InputFieldError field="email" state={state} />
               </Field>
 
-              {/* ERROR */}
-              {!isPending && state?.success === false && (
+              {/* GLOBAL ERROR — shown when API call itself fails (not field errors) */}
+              {!isPending && state?.success === false && !state.errors && (
                 <div className="rounded-2xl border border-red-500/15 bg-red-500/8 px-4 py-3">
                   <p className="text-sm text-red-400">
-                    {state.error || "Something went wrong. Please try again."}
+                    {state.error ?? "Something went wrong. Please try again."}
                   </p>
                 </div>
               )}
@@ -130,11 +132,9 @@ export default function SignUpEmailModal() {
               {/* DIVIDER */}
               <div className="flex items-center gap-3 pt-1">
                 <div className="h-px flex-1 bg-white/10" />
-
                 <span className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
                   OR
                 </span>
-
                 <div className="h-px flex-1 bg-white/10" />
               </div>
 

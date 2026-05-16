@@ -1,4 +1,7 @@
-export interface Product {
+import { IBusiness } from "./business";
+import { IInvoiceItem } from "./invoice";
+
+export interface IProduct {
   id: string;
   businessId: string;
   name: string;
@@ -6,8 +9,10 @@ export interface Product {
   totalEarning: number;
   pendingOrder: number;
   isDeleted: boolean;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
+  business?: IBusiness;
+  invoiceItems?: IInvoiceItem[];
 }
 
 export interface ProductStats {

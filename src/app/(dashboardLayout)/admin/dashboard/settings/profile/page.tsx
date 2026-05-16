@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { updateProfile } from "@/services/user/updateProfile";
-import { getMyProfile } from "@/services/user/getMe";
+import { getMe } from "@/services/auth.services";
 
 type ProfileForm = {
   name: string;
@@ -36,15 +36,15 @@ export default function EditProfilePage() {
 
   const [state, formAction, isPending] = useActionState(
     updateProfile.bind(null, userId),
-    null
+    null,
   );
 
   /* ================= FETCH PROFILE ================= */
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const res = await getMyProfile();
-      if (res?.success) {
+      const res = await getMe();
+      if (res?.data) {
         setUserId(res.data.id);
         setForm({
           name: res.data.name ?? "",

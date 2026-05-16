@@ -45,50 +45,48 @@ export const signupVerificationZodSchemaValidation = z.object({
   otp: z.string().min(6, "OTP must be at least 6 characters long"),
 });
 
-export const signupPasswordZodSchemaValidation = z.object({
-  password: z
+const passwordField = (label: string) =>
+  z
     .string({
       error: (issue) =>
-        issue.input === undefined ? "Password is required" : "Invalid Password",
+        issue.input === undefined ? `${label} is required` : `Invalid ${label}`,
     })
     .min(8, {
       error: (issue) => {
         if (issue.code === "too_small") {
-          return `Password must be ${issue.minimum} characters long!`;
+          return `${label} must be ${issue.minimum} characters long!`;
         }
       },
     })
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
       {
-        error: () => {
-          return "Password must contain at least 1 uppercase, 1 lowercase, 1 number, 1 special character.";
-        },
-      }
-    ),
+        error: () =>
+          `${label} must contain at least 1 uppercase, 1 lowercase, 1 number, 1 special character.`,
+      },
+    );
+
+export const signupPasswordZodSchemaValidation = z.object({
+  password: passwordField("Password"),
 });
 
+export const changePasswordZodSchemaValidation = z
+  .object({
+    oldPass: passwordField("Old password"),
+    newPass: passwordField("New password"),
+    confirmNewPass: passwordField("Confirm password"),
+  })
+  .refine((data) => data.newPass === data.confirmNewPass, {
+    message: "Passwords do not match",
+    path: ["confirmNewPass"],
+  })
+  .refine((data) => data.oldPass !== data.newPass, {
+    message: "New password must be different from old password",
+    path: ["newPass"],
+  });
+
 export const loginZodSchemaValidation = z.object({
-  password: z
-    .string({
-      error: (issue) =>
-        issue.input === undefined ? "Password is required" : "Invalid Password",
-    })
-    .min(8, {
-      error: (issue) => {
-        if (issue.code === "too_small") {
-          return `Password must be ${issue.minimum} characters long!`;
-        }
-      },
-    })
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      {
-        error: () => {
-          return "Password must contain at least 1 uppercase, 1 lowercase, 1 number, 1 special character.";
-        },
-      }
-    ),
+  password: passwordField("Password"),
   email: z
     .email({
       error: (issue) =>

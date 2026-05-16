@@ -17,11 +17,10 @@ import {
 
 import { getMyBusiness } from "@/services/business/getMyBusiness";
 
-import { getMyProfile } from "@/services/user/getMe";
-
 import { deleteMyAccount } from "@/services/user/deleteAccount";
 
 import { deleteMyBusiness } from "@/services/business/deleteBusiness";
+import { getMe } from "@/services/auth.services";
 
 export default function AccountPage() {
   const router = useRouter();
@@ -40,9 +39,9 @@ export default function AccountPage() {
 
   useEffect(() => {
     const fetchIds = async () => {
-      const profileRes = await getMyProfile();
+      const profileRes = await getMe();
 
-      if (profileRes?.success) {
+      if (profileRes?.data) {
         setUserId(profileRes.data.id);
       }
 

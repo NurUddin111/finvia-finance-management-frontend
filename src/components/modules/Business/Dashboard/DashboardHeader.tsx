@@ -15,7 +15,7 @@ const DashboardHeader = async ({
 }: {
   name: string;
   role: string;
-  avatar: string;
+  avatar: string | null;
 }) => {
   const formattedRole = formatRole(role);
 
@@ -60,7 +60,7 @@ const DashboardHeader = async ({
 
         <div className="relative flex items-center gap-3">
           <Avatar className="size-11 border border-white/10 shadow-lg">
-            <AvatarImage src={avatar} alt={name} />
+            {avatar && <AvatarImage src={avatar} alt={name} />}
 
             <AvatarFallback className="bg-slate-900 text-slate-300">
               <CircleUser aria-hidden="true" className="opacity-70" size={22} />

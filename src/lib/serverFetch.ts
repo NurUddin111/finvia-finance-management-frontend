@@ -12,12 +12,12 @@ interface FetchOptions {
   withCookies?: boolean;
   cache?: RequestCache;
   headers?: Record<string, string>;
-  onResponse?: (res: Response) => Promise<void>; 
+  onResponse?: (res: Response) => Promise<void>;
 }
 
-export type FetchResult = ActionResult;
+export type FetchResult<T = Record<string, unknown>> = ActionResult<T>;
 
-export async function serverFetch(
+export async function serverFetch<T = Record<string, unknown>>(
   endpoint: string,
   {
     method = "GET",
@@ -27,7 +27,7 @@ export async function serverFetch(
     headers: extraHeaders,
     onResponse,
   }: FetchOptions = {},
-): Promise<ActionResult> {
+): Promise<ActionResult<T>> {
   const headers: Record<string, string> = { ...extraHeaders };
 
   if (body) headers["Content-Type"] = "application/json";
@@ -52,10 +52,9 @@ export async function serverFetch(
     return { success: false, error: json?.message ?? "Something went wrong" };
   }
 
-  return { success: true, data: json.data, message: json.message };
+  return { success: true, data: json.data as T, message: json.message };
 }
 
-// Parses Set-Cookie headers from backend response and stores them in Next.js cookie store
 export async function forwardResponseCookies(
   res: Response,
   tokenNames: string[],
@@ -81,7 +80,6 @@ export async function forwardResponseCookies(
   }
 }
 
-// Clears one or more cookies
 export async function clearCookies(names: string[]): Promise<void> {
   const cookieStore = await cookies();
   names.forEach((name) =>
