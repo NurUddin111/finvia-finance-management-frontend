@@ -4,7 +4,7 @@ import { ActionResult } from "@/types/actions";
 
 interface InputFieldErrorProps {
   field: string;
-  state: ActionResult<unknown> | null; // unknown — works with any action's state
+  state: ActionResult<unknown> | null;
 }
 
 const InputFieldError = ({ field, state }: InputFieldErrorProps) => {

@@ -1,42 +1,34 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { ArrowLeft, Eye, EyeOff, Lock } from "lucide-react";
-
 import { useActionState } from "react";
-
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
-
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-
+import InputFieldError from "@/components/shared/InputFieldError";
 import { toast } from "sonner";
 import { signupPassword } from "@/services/auth.services";
 
 export default function SignUpPasswordModal() {
   const router = useRouter();
-
   const [showPassword, setShowPassword] = useState(false);
-
   const [state, formAction, isPending] = useActionState(signupPassword, null);
 
   useEffect(() => {
-    if (state) {
-      if (state?.success) {
-        toast.success("Registered account successfully!");
+    if (!state) return;
 
-        router.push("/login", {
-          scroll: false,
-        });
-      }
+    if (state.success) {
+      toast.success("Registered account successfully!");
+      router.push("/login", { scroll: false });
+      return;
+    }
 
-      if (!state?.success) {
-        toast.error("Account creation failed!");
-      }
+    // FIX: only toast on API failure, not Zod field errors
+    // field errors are already shown inline via InputFieldError
+    if (!state.success && !state.errors) {
+      toast.error(state.error ?? "Account creation failed!");
     }
   }, [state, router]);
 
@@ -95,16 +87,19 @@ export default function SignUpPasswordModal() {
                   </button>
                 </div>
 
+                {/* Zod field error */}
+                <InputFieldError field="password" state={state} />
+
                 <p className="mt-2 text-xs leading-relaxed text-slate-500">
                   Use at least 8 characters for better security.
                 </p>
               </Field>
 
-              {/* ERROR */}
-              {!isPending && state?.success === false && (
+              {/* GLOBAL ERROR — API failure only */}
+              {!isPending && state?.success === false && !state.errors && (
                 <div className="rounded-2xl border border-red-500/15 bg-red-500/8 px-4 py-3">
                   <p className="text-sm text-red-400">
-                    {state.error || "Failed to create your account."}
+                    {state.error ?? "Failed to create your account."}
                   </p>
                 </div>
               )}

@@ -1,53 +1,44 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { AlertTriangle, Building2, ShieldAlert, Trash2 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-import { getMyBusiness } from "@/services/business/getMyBusiness";
-
-import { deleteMyAccount } from "@/services/user/deleteAccount";
-
-import { deleteMyBusiness } from "@/services/business/deleteBusiness";
-import { getMe } from "@/services/auth.services";
+import { deleteMyAccount, getMe } from "@/services/auth.services";
+import {
+  deleteMyBusiness,
+  getMyBusiness,
+} from "@/services/business/business.services";
 
 export default function AccountPage() {
   const router = useRouter();
 
   const [userId, setUserId] = useState<string>("");
-
   const [businessId, setBusinessId] = useState<string>("");
-
   const [openAccount, setOpenAccount] = useState(false);
-
   const [openBusiness, setOpenBusiness] = useState(false);
 
-  const [loading, setLoading] = useState(false);
+  // FIX: split into two loading states so they don't interfere
+  const [loadingAccount, setLoadingAccount] = useState(false);
+  const [loadingBusiness, setLoadingBusiness] = useState(false);
 
   /* FETCH IDS */
-
   useEffect(() => {
     const fetchIds = async () => {
       const profileRes = await getMe();
-
       if (profileRes?.data) {
         setUserId(profileRes.data.id);
       }
 
       const businessRes = await getMyBusiness();
-
-      if (businessRes?.success) {
+      // FIX: check businessRes.data explicitly to narrow type
+      if (businessRes?.success && businessRes.data) {
         setBusinessId(businessRes.data.id);
       }
     };
@@ -56,15 +47,12 @@ export default function AccountPage() {
   }, []);
 
   /* ACTIONS */
-
   const handleDeleteAccount = async () => {
     if (!userId) return;
 
-    setLoading(true);
-
+    setLoadingAccount(true);
     const res = await deleteMyAccount(userId);
-
-    setLoading(false);
+    setLoadingAccount(false);
 
     if (res?.success) {
       router.push("/login");
@@ -74,13 +62,12 @@ export default function AccountPage() {
   const handleDeleteBusiness = async () => {
     if (!businessId) return;
 
-    setLoading(true);
-
+    setLoadingBusiness(true);
     const res = await deleteMyBusiness(businessId);
-
-    setLoading(false);
+    setLoadingBusiness(false);
 
     if (res?.success) {
+      setOpenBusiness(false);
       router.refresh();
     }
   };
@@ -136,7 +123,7 @@ export default function AccountPage() {
               </div>
 
               <Button
-                disabled={!businessId}
+                disabled={!businessId || loadingBusiness}
                 onClick={() => setOpenBusiness(true)}
                 className="h-11 rounded-2xl border border-red-500/20 bg-red-500/10 px-5 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300 hover:shadow-[0_0_25px_rgba(239,68,68,0.18)]"
               >
@@ -167,7 +154,7 @@ export default function AccountPage() {
               </div>
 
               <Button
-                disabled={!userId}
+                disabled={!userId || loadingAccount}
                 onClick={() => setOpenAccount(true)}
                 className="h-11 rounded-2xl border border-red-500/20 bg-red-500/10 px-5 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300 hover:shadow-[0_0_25px_rgba(239,68,68,0.18)]"
               >
@@ -212,17 +199,18 @@ export default function AccountPage() {
               <Button
                 variant="outline"
                 onClick={() => setOpenBusiness(false)}
+                disabled={loadingBusiness}
                 className="h-11 flex-1 rounded-2xl border-white/10 bg-white/3 text-slate-300 hover:border-white/20 hover:bg-white/5 hover:text-white"
               >
                 Cancel
               </Button>
 
               <Button
-                disabled={loading}
+                disabled={loadingBusiness}
                 onClick={handleDeleteBusiness}
                 className="h-11 flex-1 rounded-2xl border border-red-500/20 bg-red-500/10 text-red-400 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300"
               >
-                {loading ? "Deleting..." : "Delete"}
+                {loadingBusiness ? "Deleting..." : "Delete"}
               </Button>
             </div>
           </div>
@@ -262,17 +250,18 @@ export default function AccountPage() {
               <Button
                 variant="outline"
                 onClick={() => setOpenAccount(false)}
+                disabled={loadingAccount}
                 className="h-11 flex-1 rounded-2xl border-white/10 bg-white/3 text-slate-300 hover:border-white/20 hover:bg-white/5 hover:text-white"
               >
                 Cancel
               </Button>
 
               <Button
-                disabled={loading}
+                disabled={loadingAccount}
                 onClick={handleDeleteAccount}
                 className="h-11 flex-1 rounded-2xl border border-red-500/20 bg-red-500/10 text-red-400 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300"
               >
-                {loading ? "Deleting..." : "Delete"}
+                {loadingAccount ? "Deleting..." : "Delete"}
               </Button>
             </div>
           </div>

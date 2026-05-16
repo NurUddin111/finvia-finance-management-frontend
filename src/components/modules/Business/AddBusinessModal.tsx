@@ -1,11 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { useActionState } from "react";
-
 import {
   Building2,
   Globe,
@@ -15,18 +12,14 @@ import {
   Sparkles,
   ImageIcon,
 } from "lucide-react";
-
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
-
 import {
   Select,
   SelectContent,
@@ -34,40 +27,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-
-import { createBusiness } from "@/services/business/createBusiness";
-
+import InputFieldError from "@/components/shared/InputFieldError";
 import { toast } from "sonner";
+import { createBusiness } from "@/services/business/business.services";
 
 export default function AddBusinessModal({
   open,
   onClose,
 }: {
   open: boolean;
-
   onClose: () => void;
 }) {
   const router = useRouter();
-
   const [state, formAction, isPending] = useActionState(createBusiness, null);
 
   useEffect(() => {
-    if (state) {
-      if (state?.success) {
-        onClose();
+    if (!state) return;
 
-        toast.success("Business workspace created successfully!");
+    if (state.success) {
+      onClose();
+      toast.success("Business workspace created successfully!");
+      router.push("/business/dashboard", { scroll: false });
+      return;
+    }
 
-        router.push("/business/dashboard", {
-          scroll: false,
-        });
-      }
-
-      if (!state?.success) {
-        toast.error("Failed to create business workspace!");
-      }
+    // FIX: only toast on API failure, not Zod field errors
+    if (!state.errors) {
+      toast.error(state.error ?? "Failed to create business workspace!");
     }
   }, [state, router, onClose]);
 
@@ -80,7 +67,6 @@ export default function AddBusinessModal({
       >
         {/* HEADER */}
         <div className="relative overflow-hidden border-b border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] px-6 py-6 md:px-8">
-          {/* GLOW */}
           <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
 
           <DialogHeader className="relative">
@@ -92,7 +78,6 @@ export default function AddBusinessModal({
               <div>
                 <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1">
                   <Sparkles className="size-3.5 text-blue-400" />
-
                   <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-blue-400">
                     Workspace Setup
                   </span>
@@ -121,7 +106,6 @@ export default function AddBusinessModal({
             <div className="rounded-3xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5">
               <div className="mb-5 flex items-center gap-2">
                 <Building2 className="size-4 text-blue-400" />
-
                 <p className="text-sm font-medium uppercase tracking-[0.18em] text-white">
                   Business Information
                 </p>
@@ -136,13 +120,13 @@ export default function AddBusinessModal({
 
                   <div className="relative">
                     <Building2 className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
-
                     <Input
                       name="name"
                       placeholder="Finvia Ltd"
                       className="h-12 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                     />
                   </div>
+                  <InputFieldError field="name" state={state} />
                 </Field>
 
                 {/* EMAIL */}
@@ -153,7 +137,6 @@ export default function AddBusinessModal({
 
                   <div className="relative">
                     <Mail className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
-
                     <Input
                       name="email"
                       type="email"
@@ -161,6 +144,7 @@ export default function AddBusinessModal({
                       className="h-12 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                     />
                   </div>
+                  <InputFieldError field="email" state={state} />
                 </Field>
 
                 {/* CATEGORY */}
@@ -176,32 +160,23 @@ export default function AddBusinessModal({
 
                     <SelectContent className="border-white/10 bg-[#0B1120] text-white">
                       <SelectItem value="AGENCY">Agency</SelectItem>
-
                       <SelectItem value="ECOMMERCE">E-commerce</SelectItem>
-
                       <SelectItem value="RESTAURANT">Restaurant</SelectItem>
-
                       <SelectItem value="FREELANCER">Freelancer</SelectItem>
-
                       <SelectItem value="SERVICE_PROVIDER">
                         Service Provider
                       </SelectItem>
-
                       <SelectItem value="RETAIL">Retail</SelectItem>
-
                       <SelectItem value="SOFTWARE_COMPANY">
                         Software Company
                       </SelectItem>
-
                       <SelectItem value="EDUCATION">Education</SelectItem>
-
                       <SelectItem value="HEALTHCARE">Healthcare</SelectItem>
-
                       <SelectItem value="REAL_ESTATE">Real Estate</SelectItem>
-
                       <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
+                  <InputFieldError field="category" state={state} />
                 </Field>
               </div>
             </div>
@@ -210,7 +185,6 @@ export default function AddBusinessModal({
             <div className="rounded-3xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5">
               <div className="mb-5 flex items-center gap-2">
                 <Globe className="size-4 text-violet-400" />
-
                 <p className="text-sm font-medium uppercase tracking-[0.18em] text-white">
                   Additional Information
                 </p>
@@ -225,13 +199,13 @@ export default function AddBusinessModal({
 
                   <div className="relative">
                     <Phone className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
-
                     <Input
                       name="phone"
                       placeholder="+8801XXXXXXXXX"
                       className="h-12 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                     />
                   </div>
+                  <InputFieldError field="phone" state={state} />
                 </Field>
 
                 {/* WEBSITE */}
@@ -242,13 +216,13 @@ export default function AddBusinessModal({
 
                   <div className="relative">
                     <Globe className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
-
                     <Input
                       name="website"
                       placeholder="https://example.com"
                       className="h-12 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                     />
                   </div>
+                  <InputFieldError field="website" state={state} />
                 </Field>
 
                 {/* ADDRESS */}
@@ -259,13 +233,13 @@ export default function AddBusinessModal({
 
                   <div className="relative">
                     <MapPin className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
-
                     <Input
                       name="address"
                       placeholder="Dhaka, Bangladesh"
                       className="h-12 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                     />
                   </div>
+                  <InputFieldError field="address" state={state} />
                 </Field>
 
                 {/* LOGO */}
@@ -276,21 +250,23 @@ export default function AddBusinessModal({
 
                   <div className="relative">
                     <ImageIcon className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
-
                     <Input
                       name="logoUrl"
                       placeholder="https://logo.png"
                       className="h-12 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                     />
                   </div>
+                  <InputFieldError field="logoUrl" state={state} />
                 </Field>
               </div>
             </div>
 
-            {/* ERROR */}
-            {!isPending && state?.success === false && (
+            {/* GLOBAL ERROR — API failure only */}
+            {!isPending && state?.success === false && !state.errors && (
               <div className="rounded-2xl border border-red-500/15 bg-red-500/10 px-4 py-3">
-                <p className="text-sm text-red-400">{state.error}</p>
+                <p className="text-sm text-red-400">
+                  {state.error ?? "Failed to create business workspace."}
+                </p>
               </div>
             )}
 
@@ -310,7 +286,6 @@ export default function AddBusinessModal({
                 className="group h-12 rounded-2xl border border-blue-500/20 bg-blue-500/10 px-7 text-sm font-medium text-blue-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.18)]"
               >
                 <Building2 className="size-4 transition-transform duration-300 group-hover:scale-110" />
-
                 {isPending ? "Creating Workspace..." : "Create Workspace"}
               </Button>
             </div>

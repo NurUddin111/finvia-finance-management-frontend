@@ -1,43 +1,35 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { Eye, EyeOff, Lock, Mail, X } from "lucide-react";
-
 import { useActionState } from "react";
-
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
-
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-
+import InputFieldError from "@/components/shared/InputFieldError";
 import { toast } from "sonner";
 import GoogleIcon from "@/components/shared/icons/Google";
 import { login } from "@/services/auth.services";
 
 export default function LoginModal() {
   const router = useRouter();
-
   const [showPassword, setShowPassword] = useState(false);
-
   const [state, formAction, isPending] = useActionState(login, null);
 
   useEffect(() => {
-    if (state) {
-      if (state?.success) {
-        toast.success("Logged in successfully!");
+    if (!state) return;
 
-        router.refresh();
-      }
+    if (state.success) {
+      toast.success("Logged in successfully!");
+      router.refresh(); // ✅ refresh to pick up new session cookies
+      return;
+    }
 
-      if (!state?.success) {
-        toast.error("Failed to login!");
-
-        router.refresh();
-      }
+    // FIX: don't refresh on failure — it clears the form state
+    // FIX: only toast on API failure, not Zod field errors
+    if (!state.errors) {
+      toast.error(state.error ?? "Failed to login!");
     }
   }, [state, router]);
 
@@ -88,6 +80,8 @@ export default function LoginModal() {
                     className="h-11 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
                 </div>
+
+                <InputFieldError field="email" state={state} />
               </Field>
 
               {/* PASSWORD */}
@@ -120,13 +114,15 @@ export default function LoginModal() {
                     )}
                   </button>
                 </div>
+
+                <InputFieldError field="password" state={state} />
               </Field>
 
-              {/* ERROR */}
-              {!isPending && state?.success === false && (
+              {/* GLOBAL ERROR — API failure only */}
+              {!isPending && state?.success === false && !state.errors && (
                 <div className="rounded-2xl border border-red-500/15 bg-red-500/8 px-4 py-3">
                   <p className="text-sm text-red-400">
-                    {state.error || "Incorrect email or password."}
+                    {state.error ?? "Incorrect email or password."}
                   </p>
                 </div>
               )}
@@ -142,7 +138,7 @@ export default function LoginModal() {
 
               {/* FOOTER */}
               <p className="pt-1 text-center text-sm text-slate-500">
-                Don’t have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <button
                   type="button"
                   onClick={() => router.push("/signup")}
@@ -155,11 +151,9 @@ export default function LoginModal() {
               {/* DIVIDER */}
               <div className="flex items-center gap-3 pt-1">
                 <div className="h-px flex-1 bg-white/10" />
-
                 <span className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
                   OR
                 </span>
-
                 <div className="h-px flex-1 bg-white/10" />
               </div>
 
