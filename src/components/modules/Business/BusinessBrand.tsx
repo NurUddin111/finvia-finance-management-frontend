@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getMyBusiness } from "@/services/business/getMyBusiness";
+import { getMyBusiness } from "@/services/business/business.services";
 import Image from "next/image";
 
 export default async function BusinessBrand() {

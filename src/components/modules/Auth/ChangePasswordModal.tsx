@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldGroup } from "@/components/ui/field";
+import InputFieldError from "@/components/shared/InputFieldError";
 import { changePassword, logoutUser } from "@/services/auth.services";
 
 export default function ChangePasswordModal({
@@ -20,21 +21,23 @@ export default function ChangePasswordModal({
   onClose,
 }: {
   open: boolean;
-
   onClose: () => void;
 }) {
   const router = useRouter();
-
   const [state, formAction, isPending] = useActionState(changePassword, null);
 
   useEffect(() => {
-    if (state?.success) {
+    if (!state?.success) return;
+
+    // FIX: logoutUser is async — must be awaited inside an inner async fn
+    // FIX: router.refresh() after logout completes, not before
+    const handleSuccess = async () => {
       onClose();
-
-      logoutUser();
-
+      await logoutUser();
       router.refresh();
-    }
+    };
+
+    handleSuccess();
   }, [state, onClose, router]);
 
   return (
@@ -71,7 +74,6 @@ export default function ChangePasswordModal({
               <div className="rounded-2xl border border-white/10 bg-white/2 p-3.5">
                 <div className="mb-2 flex items-center gap-2">
                   <LockKeyhole className="size-3.5 text-blue-400" />
-
                   <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white">
                     Current Password
                   </p>
@@ -84,6 +86,7 @@ export default function ChangePasswordModal({
                     placeholder="Current password"
                     className="h-10 rounded-xl border border-white/10 bg-white/3 px-3 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
+                  <InputFieldError field="oldPass" state={state} />
                 </Field>
               </div>
 
@@ -91,7 +94,6 @@ export default function ChangePasswordModal({
               <div className="rounded-2xl border border-white/10 bg-white/2 p-3.5">
                 <div className="mb-2 flex items-center gap-2">
                   <KeyRound className="size-3.5 text-emerald-400" />
-
                   <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white">
                     New Password
                   </p>
@@ -104,6 +106,7 @@ export default function ChangePasswordModal({
                     placeholder="New password"
                     className="h-10 rounded-xl border border-white/10 bg-white/3 px-3 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
+                  <InputFieldError field="newPass" state={state} />
                 </Field>
               </div>
 
@@ -111,7 +114,6 @@ export default function ChangePasswordModal({
               <div className="rounded-2xl border border-white/10 bg-white/2 p-3.5">
                 <div className="mb-2 flex items-center gap-2">
                   <ShieldCheck className="size-3.5 text-violet-400" />
-
                   <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white">
                     Confirm Password
                   </p>
@@ -124,13 +126,16 @@ export default function ChangePasswordModal({
                     placeholder="Confirm password"
                     className="h-10 rounded-xl border border-white/10 bg-white/3 px-3 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
+                  <InputFieldError field="confirmNewPass" state={state} />
                 </Field>
               </div>
 
-              {/* ERROR */}
-              {!isPending && state?.success === false && (
+              {/* GLOBAL ERROR — API failure only */}
+              {!isPending && state?.success === false && !state.errors && (
                 <div className="rounded-xl border border-red-500/15 bg-red-500/10 px-3 py-2">
-                  <p className="text-xs text-red-400">{state.error}</p>
+                  <p className="text-xs text-red-400">
+                    {state.error ?? "Failed to update password."}
+                  </p>
                 </div>
               )}
 
@@ -151,7 +156,6 @@ export default function ChangePasswordModal({
                   className="group h-10 flex-1 rounded-xl border border-blue-500/20 bg-blue-500/10 text-sm font-medium text-blue-400 transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300"
                 >
                   <Sparkles className="size-3.5 transition-transform duration-300 group-hover:rotate-12" />
-
                   {isPending ? "Updating..." : "Update"}
                 </Button>
               </div>

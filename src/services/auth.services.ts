@@ -14,6 +14,7 @@ import {
   signupPasswordZodSchemaValidation,
   loginZodSchemaValidation,
   changePasswordZodSchemaValidation,
+  UpdateUserZodSchemaValidation,
 } from "@/zod/auth.validation";
 
 export const signup = async (
@@ -40,7 +41,7 @@ export const signup = async (
 };
 
 export const verifyOtp = async (
-  currentState: ActionResult<null>,
+  currentState: ActionResult<null> | null,
   formData: FormData,
 ): Promise<ActionResult<null>> => {
   const payload = { otp: formData.get("otp") };
@@ -61,7 +62,7 @@ export const verifyOtp = async (
 };
 
 export const signupPassword = async (
-  currentState: ActionResult<null>,
+  currentState: ActionResult<null> | null,
   formData: FormData,
 ): Promise<ActionResult<null>> => {
   const payload = { password: formData.get("password") };
@@ -81,7 +82,7 @@ export const signupPassword = async (
 };
 
 export const login = async (
-  currentState: ActionResult<null>,
+  currentState: ActionResult<null> | null,
   formData: FormData,
 ): Promise<ActionResult<null>> => {
   const payload = {
@@ -107,8 +108,47 @@ export const getMe = async (): Promise<ActionResult<IUser>> => {
   return serverFetch<IUser>("/user/my-profile", { cache: "no-store" });
 };
 
+export const updateProfile = async (
+  currentState: ActionResult<null> | null,
+  formData: FormData,
+): Promise<ActionResult<null>> => {
+  const userId = formData.get("userId") as string;
+  if (!userId) return { success: false, error: "User ID is missing" };
+
+  const payload = {
+    name: formData.get("name") || undefined,
+    phone: formData.get("phone") || undefined,
+    picture: formData.get("picture") || undefined,
+    address: formData.get("address") || undefined,
+  };
+
+  (Object.keys(payload) as (keyof typeof payload)[]).forEach((key) => {
+    if (payload[key] === "" || payload[key] === null) {
+      payload[key] = undefined;
+    }
+  });
+
+  if (!payload.name && !payload.phone && !payload.picture && !payload.address) {
+    return { success: true };
+  }
+
+  const validationResult = zodValidator(
+    payload,
+    UpdateUserZodSchemaValidation.partial(),
+  );
+
+  if (!validationResult.success) {
+    return { success: false, errors: validationResult.errors };
+  }
+
+  return serverFetch<null>(`/user/edit/${userId}`, {
+    method: "PATCH",
+    body: validationResult.data,
+  });
+};
+
 export const changePassword = async (
-  currentState: ActionResult<null>,
+  currentState: ActionResult<null> | null,
   formData: FormData,
 ): Promise<ActionResult<null>> => {
   const payload = {
@@ -134,5 +174,21 @@ export const changePassword = async (
 export const logoutUser = async (): Promise<ActionResult<null>> => {
   const result = await serverFetch<null>("/auth/logout", { method: "POST" });
   await clearCookies(["accessToken", "refreshToken"]);
+  return result;
+};
+
+export const deleteMyAccount = async (
+  userId: string,
+): Promise<ActionResult<null>> => {
+  const result = await serverFetch<null>(`/user/delete/${userId}`, {
+    method: "PATCH",
+  });
+
+  // FIX: only clear cookies on success
+  // FIX: use clearCookies utility instead of manual cookie sets
+  if (result.success) {
+    await clearCookies(["accessToken", "refreshToken"]);
+  }
+
   return result;
 };

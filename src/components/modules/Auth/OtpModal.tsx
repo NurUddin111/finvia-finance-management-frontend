@@ -1,32 +1,25 @@
 "use client";
 
 import { useEffect } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { ArrowLeft, MailCheck } from "lucide-react";
-
 import { useActionState } from "react";
-
 import { Button } from "@/components/ui/button";
-
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import InputFieldError from "@/components/shared/InputFieldError";
 import { verifyOtp } from "@/services/auth.services";
 
 export default function SignUpVerifyModal() {
   const router = useRouter();
-
   const [state, formAction, isPending] = useActionState(verifyOtp, null);
 
   useEffect(() => {
     if (state?.success) {
-      router.push("/signup/password", {
-        scroll: false,
-      });
+      router.push("/signup/password", { scroll: false });
     }
   }, [state, router]);
 
@@ -67,11 +60,16 @@ export default function SignUpVerifyModal() {
               </InputOTP>
             </div>
 
-            {/* ERROR */}
-            {!isPending && state?.success === false && (
+            {/* OTP FIELD ERROR — Zod validation failure */}
+            <div className="mt-2 flex justify-center">
+              <InputFieldError field="otp" state={state} />
+            </div>
+
+            {/* GLOBAL ERROR — API-level failure only */}
+            {!isPending && state?.success === false && !state.errors && (
               <div className="mt-5 rounded-2xl border border-red-500/15 bg-red-500/8 px-4 py-3">
                 <p className="text-sm text-red-400">
-                  {state.error || "Invalid verification code."}
+                  {state.error ?? "Invalid verification code."}
                 </p>
               </div>
             )}
