@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/app/(dashboardLayout)/business/dashboard/page.tsx
 
 import {
@@ -19,7 +18,7 @@ import {
   RecentTransactions,
   TopClientsTable,
 } from "@/components/modules/Business/Dashboard/DashboardTables";
-import { getMe } from "@/services/auth/getMe";
+import { getMe } from "@/services/auth.services";
 import { getClientsNumByMonth } from "@/services/business/dashboard/clientsByMonth";
 import { getClientsPieChartData } from "@/services/business/dashboard/clientsPieChart";
 import { months } from "@/services/business/dashboard/constants";
@@ -31,9 +30,12 @@ import { getTopClients } from "@/services/business/dashboard/topClients";
 import { getUpcomingOverdueInvoices } from "@/services/business/dashboard/upcomingOverdueInv";
 import { getPaymentMethodStats } from "@/services/business/payment/methodStats";
 import { getTopProducts } from "@/services/business/products/topProducts";
+import { redirect } from "next/navigation";
+
+// ── Helper ────────────────────────────────────────────────────────────────────
 
 function unwrap<T>(
-  res: PromiseSettledResult<{ success: boolean; data?: T; error?: any }>,
+  res: PromiseSettledResult<{ success: boolean; data?: T }>,
   fallback: T,
 ): T {
   if (res.status === "rejected") return fallback;
@@ -41,15 +43,16 @@ function unwrap<T>(
   return res.value.data;
 }
 
-export default async function BusinessDashboardPage() {
-  const myProfile = await getMe();
-  if (!myProfile?.data) return null;
-  const { name, role, avatar } = myProfile.data;
+// ── Page ──────────────────────────────────────────────────────────────────────
 
-  const KPICardDetailsRes = await getKPICardDetails();
-  const KPICardDetails = KPICardDetailsRes.data;
+export default async function BusinessDashboardPage() {
+  const getMyProfile = await getMe();
+  if (!getMyProfile?.data) redirect("/login");
+  const myProfile = getMyProfile.data;
+  const { name, role, avatar } = myProfile;
 
   const [
+    kpiCardDetailsRes,
     monthlyRevenueRes,
     topClientsRes,
     recentTransactionsRes,
@@ -60,6 +63,7 @@ export default async function BusinessDashboardPage() {
     topProductsRes,
     paymentMethodRes,
   ] = await Promise.allSettled([
+    getKPICardDetails(),
     getMonthlyRevenue(),
     getTopClients(),
     getRecentTransactions(),
@@ -71,7 +75,12 @@ export default async function BusinessDashboardPage() {
     getPaymentMethodStats(),
   ]);
 
-  const monthlyRevenue = unwrap(monthlyRevenueRes, {});
+  const kpiCardDetails = unwrap(kpiCardDetailsRes, null);
+  // FIX 3: typed as Record<string, number> — removes the need for "as number" casts
+  const monthlyRevenue = unwrap(
+    monthlyRevenueRes,
+    {} as Record<string, number>,
+  );
   const topClients = unwrap(topClientsRes, []);
   const recentTransactions = unwrap(recentTransactionsRes, []);
   const overdueInvoices = unwrap(overdueInvoicesRes, []);
@@ -85,9 +94,10 @@ export default async function BusinessDashboardPage() {
     total: 0,
   });
 
+  // FIX 4: safe mapping — value is now typed as number, no cast needed
   const revenueData = months
     .filter((m) => monthlyRevenue[m] !== undefined)
-    .map((m) => ({ month: m, revenue: monthlyRevenue[m] as number }));
+    .map((m) => ({ month: m, revenue: monthlyRevenue[m] }));
 
   return (
     <div className="min-h-screen rounded-2xl bg-[#050816] px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
@@ -95,20 +105,25 @@ export default async function BusinessDashboardPage() {
         {/* ── Page heading ── */}
         <DashboardHeader name={name} role={role} avatar={avatar} />
 
-        {/* ── KPI cards ── */}
-        <DashboardKpiCards data={KPICardDetails} />
+        {/* FIX 5: null-guard — components only render when kpiCardDetails is available */}
+        {kpiCardDetails && (
+          <>
+            {/* ── KPI cards ── */}
+            <DashboardKpiCards data={kpiCardDetails} />
+
+            {/* ── Invoice status | Top products | Payment method ── */}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <InvoiceStatusChart invStatusChart={kpiCardDetails} />
+
+              <TopProductsChart topProducts={topProducts} />
+
+              <PaymentMethodChart stats={paymentMethodStats} />
+            </div>
+          </>
+        )}
 
         {/* ── Revenue chart ── */}
         <RevenueChart revenueData={revenueData} />
-
-        {/* ── Invoice status | Top products | Payment method ── */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <InvoiceStatusChart invStatusChart={KPICardDetails} />
-
-          <TopProductsChart topProducts={topProducts} />
-
-          <PaymentMethodChart stats={paymentMethodStats} />
-        </div>
 
         {/* ── Top clients | Recent transactions ── */}
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">

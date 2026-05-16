@@ -1,38 +1,57 @@
 import { URL } from "url";
+import { IBusiness } from "./business";
+import { IClient } from "./client";
+import { IProduct } from "./product";
+import { IPayment } from "./payment";
 
-export interface InvoiceItem {
+export enum InvoiceStatus {
+  DRAFT = "DRAFT",
+  SENT = "SENT",
+  PAID = "PAID",
+  FAILED = "FAILED",
+  CANCELLED = "CANCELLED",
+  OVERDUE = "OVERDUE",
+}
+
+export interface IInvoiceItem {
   id: string;
+  invoiceId: string;
+  productId: string;
   name: string;
   quantity: number;
   pricePerUnit: number;
   total: number;
+  createdAt: Date;
+  updatedAt: Date;
+  invoice?: IInvoice;
+  product?: IProduct;
 }
 
-export interface Invoice {
+export interface IInvoice {
   id: string;
   businessId: string;
   clientId: string;
   createdById: string;
   invoiceNumber: string;
-  status: "DRAFT" | "SENT" | "PAID" | "OVERDUE" | "CANCELLED" | "FAILED";
-  issueDate: string;
+  status: InvoiceStatus;
+  issueDate: Date | null;
   dueDays: number;
-  dueDate: string;
+  dueDate: Date | null;
   totalItems: number;
   subtotal: number;
-  tax: number;
+  tax: number | null;
   total: number;
   currency: string;
   notes: string | null;
-  invPdfUrl: URL;
-  paymentToken: string | null;
-  createdAt: string;
-  updatedAt: string;
-  client: {
-    email: string;
-    name: string;
-  };
-  items: InvoiceItem[];
+  invPdfUrl: URL | null;
+  createdAt: Date;
+  updatedAt: Date;
+
+  // Relations
+  business?: IBusiness;
+  client?: IClient;
+  items?: IInvoiceItem[];
+  payments?: IPayment[];
 }
 
 export interface InvoiceStats {

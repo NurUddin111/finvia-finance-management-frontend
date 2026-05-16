@@ -1,10 +1,15 @@
+import { ZodType } from "zod";
 import { ActionResult } from "@/types/actions";
-import { ZodObject } from "zod";
+
+// Separate type — "validated form data", not "API response data"
+type ValidatorResult<T> =
+  | { success: true; data: T }
+  | { success: false; errors: ActionResult["errors"] };
 
 export const zodValidator = <T>(
-  payload: T,
-  schema: ZodObject,
-): ActionResult => {
+  payload: unknown,
+  schema: ZodType<T>,
+): ValidatorResult<T> => {
   const validatedPayload = schema.safeParse(payload);
 
   if (!validatedPayload.success) {
@@ -17,8 +22,5 @@ export const zodValidator = <T>(
     };
   }
 
-  return {
-    success: true,
-    data: validatedPayload.data as Record<string, unknown>,
-  };
+  return { success: true, data: validatedPayload.data };
 };

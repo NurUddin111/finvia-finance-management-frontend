@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/dialog";
 import { AlertTriangle } from "lucide-react";
 
-import { getMyProfile } from "@/services/user/getMe";
 import { deleteMyAccount } from "@/services/user/deleteAccount";
+import { getMe } from "@/services/auth.services";
 
 export default function AccountPage() {
   const router = useRouter();
@@ -29,9 +29,9 @@ export default function AccountPage() {
 
   useEffect(() => {
     const fetchIds = async () => {
-      const profileRes = await getMyProfile();
-      if (profileRes?.success) {
-        setUserId(profileRes.data.id);
+      const profileRes = await getMe();
+      if (profileRes?.data) {
+        setUserId(profileRes.data.id as string);
       }
     };
 

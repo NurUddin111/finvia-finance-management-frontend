@@ -24,8 +24,7 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { updateProfile } from "@/services/user/updateProfile";
-
-import { getMyProfile } from "@/services/user/getMe";
+import { getMe } from "@/services/auth.services";
 
 type ProfileForm = {
   name: string;
@@ -67,20 +66,14 @@ export default function EditProfilePage() {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const res = await getMyProfile();
-
-      if (res?.success) {
+      const res = await getMe();
+      if (res?.data) {
         setUserId(res.data.id);
-
         setForm({
           name: res.data.name ?? "",
-
           phone: res.data.phone ?? "",
-
           avatar: res.data.avatar ?? "",
-
           role: res.data.role ?? "",
-
           address: res.data.address ?? "",
         });
       }

@@ -9,14 +9,14 @@ const DashboardHeader = async ({
 }: {
   name: string;
   role: string;
-  avatar: string;
+  avatar: string | null;
 }) => {
   return (
     <div className="space-y-4">
       <header className="flex min-h-16 items-center justify-end border-b bg-background px-4 sm:px-6">
         <div className="flex items-center gap-3 cursor-pointer">
           <Avatar className="h-9 w-9">
-            <AvatarImage src={avatar} alt="Profile image" />
+            {avatar && <AvatarImage src={avatar} alt="Profile image" />}
             <AvatarFallback>
               <CircleUser aria-hidden="true" className="opacity-60" size={24} />
             </AvatarFallback>
