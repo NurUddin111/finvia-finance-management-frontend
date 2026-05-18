@@ -5,8 +5,10 @@ import ClientStatCards from "@/components/modules/Business/Clients/ClientStatsCa
 import ClientToolbar from "@/components/modules/Business/Clients/ClientsFilter";
 import ClientsTable from "@/components/modules/Business/Clients/ClientsTable";
 import Pagination from "@/components/shared/Pagination";
-import { getAllClients } from "@/services/business/clients.services";
-import { getClientsStats } from "@/services/business/clients/clientsStats";
+import {
+  getAllClients,
+  getClientsStats,
+} from "@/services/business/clients.services";
 import { ClientsStats, IClient } from "@/types/client";
 
 const ClientsPage = async ({

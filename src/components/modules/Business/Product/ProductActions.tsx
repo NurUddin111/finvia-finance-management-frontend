@@ -8,12 +8,12 @@ import UpdateProductModal from "./UpdateProductModal";
 
 import DeleteProductModal from "./DeleteProductModal";
 
-import { Product } from "@/types/product";
+import { IProduct } from "@/types/product";
 
 const actionBtn =
   "group flex h-9 w-9 items-center justify-center rounded-xl border transition-all duration-300";
 
-export default function ProductActions({ product }: { product: Product }) {
+export default function ProductActions({ product }: { product: IProduct }) {
   const [editOpen, setEditOpen] = useState(false);
 
   const [deleteOpen, setDeleteOpen] = useState(false);

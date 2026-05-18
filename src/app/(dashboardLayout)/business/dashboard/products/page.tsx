@@ -7,7 +7,7 @@ import Pagination from "@/components/shared/Pagination";
 import { getAllProducts } from "@/services/business/products/allProducts";
 import { getProductsStats } from "@/services/business/products/productsStats";
 
-import { Product, ProductStats } from "@/types/product";
+import { IProduct, ProductStats } from "@/types/product";
 
 const ProductsPage = async ({
   searchParams,
@@ -27,7 +27,7 @@ const ProductsPage = async ({
     getProductsStats(),
   ]);
 
-  const products = allProductsRes.data as Product[];
+  const products = allProductsRes.data as IProduct[];
 
   const productsStats = productsStatsRes.data as ProductStats;
 

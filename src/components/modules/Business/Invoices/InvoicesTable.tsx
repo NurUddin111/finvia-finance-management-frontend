@@ -1,23 +1,16 @@
 "use client";
 
 import { useState } from "react";
-
 import { Eye, FileX, ReceiptText } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-
 import InvoiceStatusBadge from "./InvoicesStatus";
-
-import { getSingleInvoice } from "@/services/business/invoices/getSingleInv";
-
 import InvoiceViewModal from "./ViewInvoice";
-
-import { Invoice } from "@/types/invoice";
-
+import { IInvoice } from "@/types/invoice";
 import { cn } from "@/lib/utils";
+import { getSingleInvoice } from "@/services/business/invoices.services";
 
 interface InvoicesTableProps {
-  invoices: Invoice[];
+  invoices: IInvoice[];
 }
 
 // ── Skeleton ─────────────────────────────────────────────
@@ -135,18 +128,17 @@ export function InvoicesTableSkeleton() {
 export default function InvoicesTable({ invoices }: InvoicesTableProps) {
   const [viewOpen, setViewOpen] = useState(false);
 
-  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
+  const [selectedInvoice, setSelectedInvoice] = useState<IInvoice | null>(null);
 
   const [viewLoading, setViewLoading] = useState(false);
 
   const handleViewInvoice = async (invoiceId: string) => {
     setViewLoading(true);
-
     setViewOpen(true);
 
     const res = await getSingleInvoice(invoiceId);
 
-    if (res.success) {
+    if (res.success && res.data) {
       setSelectedInvoice(res.data);
     }
 
@@ -197,7 +189,7 @@ export default function InvoicesTable({ invoices }: InvoicesTableProps) {
                     </p>
 
                     <p className="mt-0.5 truncate text-xs text-slate-500">
-                      {invoice.client.email}
+                      {invoice.client?.email}
                     </p>
                   </div>
                 </div>
@@ -308,11 +300,11 @@ export default function InvoicesTable({ invoices }: InvoicesTableProps) {
                   <td className="px-6 py-5">
                     <div className="min-w-0">
                       <p className="truncate text-sm font-medium text-white">
-                        {invoice.client.name}
+                        {invoice.client?.name}
                       </p>
 
                       <p className="mt-0.5 truncate text-xs text-slate-500">
-                        {invoice.client.email}
+                        {invoice.client?.email}
                       </p>
                     </div>
                   </td>

@@ -1,15 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { sendInvoice } from "@/services/business/invoices/sendInv";
 import { CheckCircle2, FileText, SendHorizonal, Sparkles } from "lucide-react";
+import { toast } from "sonner";
+import { sendInvoice } from "@/services/business/invoices.services";
 
 export default function InvoiceActionModal({
   open,
@@ -23,26 +19,24 @@ export default function InvoiceActionModal({
   const [isSending, setIsSending] = useState(false);
 
   const handleSend = async () => {
-    try {
-      setIsSending(true);
+    setIsSending(true);
+    const res = await sendInvoice(invoiceId);
+    setIsSending(false);
 
-      await sendInvoice(invoiceId);
-
+    if (res.success) {
+      toast.success("Invoice sent successfully!");
       onClose();
-    } finally {
-      setIsSending(false);
+    } else {
+      // FIX: don't close on failure — show error and let user retry
+      toast.error(res.error ?? "Failed to send invoice.");
     }
   };
 
   return (
     <Dialog open={open}>
-      <DialogContent
-        className="overflow-hidden border border-white/10 bg-[#050816] p-0 shadow-[0_25px_120px_rgba(0,0,0,0.75)] sm:max-w-md"
-        onInteractOutside={(e) => e.preventDefault()}
-        onEscapeKeyDown={(e) => e.preventDefault()}
-      >
+      <DialogContent className="overflow-hidden border border-white/10 bg-[#050816] p-0 shadow-[0_25px_120px_rgba(0,0,0,0.75)] sm:max-w-md" onInteractOutside={(e) => e.preventDefault()} onEscapeKeyDown={(e) => e.preventDefault()}>
         {/* TOP GLOW */}
-        <div className="absolute inset-x-0 top-0 h-28 bg-linear-to-b from-blue-500/10 to-transparent pointer-events-none" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-linear-to-b from-blue-500/10 to-transparent" />
 
         {/* HEADER */}
         <DialogHeader className="relative border-b border-white/10 px-6 pb-5 pt-6">
@@ -74,10 +68,8 @@ export default function InvoiceActionModal({
 
               <div>
                 <p className="text-sm font-medium text-white">Invoice Ready</p>
-
                 <p className="mt-1 text-xs leading-relaxed text-slate-500">
-                  You can save this invoice as a draft for later or instantly
-                  send it to your client.
+                  You can save this invoice as a draft for later or instantly send it to your client.
                 </p>
               </div>
             </div>
@@ -85,27 +77,12 @@ export default function InvoiceActionModal({
 
           {/* ACTIONS */}
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <Button
-              variant="outline"
-              onClick={onClose}
-              className="h-12 rounded-2xl border-white/10 bg-white/3 text-sm font-medium text-slate-300 transition-all duration-300 hover:border-white/20 hover:bg-white/6 hover:text-white"
-            >
+            <Button variant="outline" onClick={onClose} className="h-12 rounded-2xl border-white/10 bg-white/3 text-sm font-medium text-slate-300 transition-all duration-300 hover:border-white/20 hover:bg-white/6 hover:text-white">
               Save as Draft
             </Button>
 
-            <Button
-              disabled={isSending}
-              onClick={handleSend}
-              className="h-12 rounded-2xl bg-blue-500 text-sm font-semibold text-white transition-all duration-300 hover:bg-blue-400"
-            >
-              {isSending ? (
-                "Sending..."
-              ) : (
-                <>
-                  <SendHorizonal size={15} className="mr-2" />
-                  Send Invoice
-                </>
-              )}
+            <Button disabled={isSending} onClick={handleSend} className="h-12 rounded-2xl bg-blue-500 text-sm font-semibold text-white transition-all duration-300 hover:bg-blue-400">
+              {isSending ? "Sending..." : <><SendHorizonal size={15} className="mr-2" />Send Invoice</>}
             </Button>
           </div>
         </div>

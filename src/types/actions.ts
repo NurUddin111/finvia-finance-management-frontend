@@ -4,6 +4,7 @@ export interface IPaginationMeta {
   totalPages: number;
   hasNextPage: boolean;
   hasPrevPage: boolean;
+  availableYears?: number[];
 }
 
 export interface ActionResult<T = Record<string, unknown>> {
