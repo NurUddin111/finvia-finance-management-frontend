@@ -16,8 +16,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { logoutUser } from "@/services/auth.services";
 
-import { logoutUser } from "@/services/auth/logout";
 
 export default function OnboardingNav() {
   const [openLogout, setOpenLogout] = useState(false);

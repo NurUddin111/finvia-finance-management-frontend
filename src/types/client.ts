@@ -15,6 +15,7 @@ export interface IClient {
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
+  formattedDate: string;
 
   links?: IBusinessClient[];
   invoices?: IInvoice[];
@@ -38,4 +39,12 @@ export interface ClientsStats {
   activeClientPercentage: number;
   inactiveClients: number;
   neverBilledClients: number;
+}
+
+export interface GetAllClientsParams {
+  page?: string;
+  search?: string;
+  status?: string;
+  sortBy?: string;
+  order?: string;
 }

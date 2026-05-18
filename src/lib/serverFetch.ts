@@ -52,7 +52,12 @@ export async function serverFetch<T = Record<string, unknown>>(
     return { success: false, error: json?.message ?? "Something went wrong" };
   }
 
-  return { success: true, data: json.data as T, message: json.message };
+  return {
+    success: true,
+    data: json.data?.data ?? (json.data as T),
+    meta: json.data?.meta,
+    message: json.message,
+  };
 }
 
 export async function forwardResponseCookies(

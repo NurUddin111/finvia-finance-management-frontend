@@ -3,23 +3,21 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
-
 import { Loader2, UserPen, User, Mail, Phone, MapPin } from "lucide-react";
-
 import { cn } from "@/lib/utils";
-
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-import { updateClient } from "@/services/business/clients/updateClient";
-
+import InputFieldError from "@/components/shared/InputFieldError";
+import { ActionResult } from "@/types/actions";
 import { toast } from "sonner";
+import { IClient } from "@/types/client";
+import { updateClient } from "@/services/business/clients.services";
 
-// ── Styled Input ─────────────────────────────────────────────
+// ── Styled Input ──────────────────────────────────────────────
 function FormField({
   label,
   icon: Icon,
@@ -27,6 +25,7 @@ function FormField({
   type = "text",
   defaultValue,
   placeholder,
+  state,
 }: {
   label: string;
   icon: React.ElementType;
@@ -34,6 +33,7 @@ function FormField({
   type?: string;
   defaultValue?: string;
   placeholder?: string;
+  state: ActionResult<unknown> | null;
 }) {
   return (
     <div className="space-y-1.5">
@@ -63,10 +63,13 @@ function FormField({
           )}
         />
       </div>
+
+      <InputFieldError field={name} state={state} />
     </div>
   );
 }
 
+// ── Modal ─────────────────────────────────────────────────────
 export default function UpdateClientModal({
   open,
   onClose,
@@ -74,34 +77,26 @@ export default function UpdateClientModal({
 }: {
   open: boolean;
   onClose: () => void;
-  client: {
-    id: string;
-    name: string;
-    email: string;
-    phone?: string;
-    address?: string;
-  };
+  client: IClient;
 }) {
   const router = useRouter();
 
-  const [state, formAction, isPending] = useActionState(
-    updateClient.bind(null, client.id),
-    null,
-  );
+  // FIX: no .bind() — clientId passed via hidden input instead
+  const [state, formAction, isPending] = useActionState(updateClient, null);
 
   useEffect(() => {
-    if (state) {
-      if (state?.success) {
-        onClose();
+    if (!state) return;
 
-        router.refresh();
+    if (state.success) {
+      onClose();
+      router.refresh();
+      toast.success("Client details updated successfully!");
+      return;
+    }
 
-        toast.success("Client details updated successfully!");
-      }
-
-      if (!state?.success) {
-        toast.error("Failed to update client details!");
-      }
+    // FIX: only toast on API failure, not Zod field errors
+    if (!state.errors) {
+      toast.error(state.error ?? "Failed to update client details!");
     }
   }, [state, onClose, router]);
 
@@ -139,12 +134,16 @@ export default function UpdateClientModal({
 
         {/* Form */}
         <form action={formAction} className="space-y-4 px-5 py-5">
+          {/* FIX: clientId via hidden input — captured at submit time */}
+          <input type="hidden" name="clientId" value={client.id} />
+
           <FormField
             label="Client Name"
             icon={User}
             name="name"
             defaultValue={client.name}
             placeholder="Finvia Ltd"
+            state={state}
           />
 
           <FormField
@@ -154,6 +153,7 @@ export default function UpdateClientModal({
             type="email"
             defaultValue={client.email}
             placeholder="business@example.com"
+            state={state}
           />
 
           <FormField
@@ -162,6 +162,7 @@ export default function UpdateClientModal({
             name="phone"
             defaultValue={client.phone ?? ""}
             placeholder="+8801XXXXXXXXX"
+            state={state}
           />
 
           <FormField
@@ -170,12 +171,13 @@ export default function UpdateClientModal({
             name="address"
             defaultValue={client.address ?? ""}
             placeholder="Dhaka, Bangladesh"
+            state={state}
           />
 
-          {/* Error */}
-          {!isPending && state?.success === false && (
+          {/* GLOBAL ERROR — API failure only */}
+          {!isPending && state?.success === false && !state.errors && (
             <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-3 py-2 text-[12px] text-red-400">
-              {state.error}
+              {state.error ?? "Failed to update client details."}
             </div>
           )}
 

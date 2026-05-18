@@ -26,8 +26,8 @@ import {
 } from "@/components/ui/dialog";
 
 import { Button } from "@/components/ui/button";
+import { logoutUser } from "@/services/auth.services";
 
-import { logoutUser } from "@/services/auth/logout";
 
 const settingsItems = [
   {

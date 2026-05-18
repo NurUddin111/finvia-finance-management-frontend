@@ -3,23 +3,20 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
-
 import { Loader2, User, Mail, Phone, MapPin, Users2 } from "lucide-react";
-
 import { cn } from "@/lib/utils";
-
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-import { addClient } from "@/services/business/clients/addClient";
-
+import InputFieldError from "@/components/shared/InputFieldError";
+import { ActionResult } from "@/types/actions";
 import { toast } from "sonner";
+import { addClient } from "@/services/business/clients.services";
 
-// ── Styled Input ─────────────────────────────────────────────
+// ── Styled Input ──────────────────────────────────────────────
 function FormField({
   label,
   required,
@@ -27,6 +24,7 @@ function FormField({
   name,
   type = "text",
   placeholder,
+  state,
 }: {
   label: string;
   required?: boolean;
@@ -34,12 +32,13 @@ function FormField({
   name: string;
   type?: string;
   placeholder?: string;
+  // FIX: accept state so each field can render its own inline error
+  state: ActionResult<unknown> | null;
 }) {
   return (
     <div className="space-y-1.5">
       <label className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-[0.18em] text-slate-500">
         {label}
-
         {required && <span className="text-red-400">*</span>}
       </label>
 
@@ -64,11 +63,14 @@ function FormField({
           )}
         />
       </div>
+
+      {/* Zod field error */}
+      <InputFieldError field={name} state={state} />
     </div>
   );
 }
 
-// ── Modal ───────────────────────────────────────────────────
+// ── Modal ─────────────────────────────────────────────────────
 export default function AddNewClientModal({
   open,
   onClose,
@@ -77,19 +79,20 @@ export default function AddNewClientModal({
   onClose: () => void;
 }) {
   const router = useRouter();
-
   const [state, formAction, isPending] = useActionState(addClient, null);
 
   useEffect(() => {
-    if (state?.success) {
+    if (!state) return;
+
+    if (state.success) {
       onClose();
-
       toast.success("Client added successfully!");
-
       router.refresh();
+      return;
     }
 
-    if (state && !state.success) {
+    // FIX: only toast on API failure, not Zod field errors
+    if (!state.errors) {
       toast.error(state.error ?? "Failed to add client");
     }
   }, [state, onClose, router]);
@@ -134,6 +137,7 @@ export default function AddNewClientModal({
             icon={User}
             name="name"
             placeholder="Finvia Ltd"
+            state={state}
           />
 
           <FormField
@@ -143,6 +147,7 @@ export default function AddNewClientModal({
             name="email"
             type="email"
             placeholder="business@example.com"
+            state={state}
           />
 
           <FormField
@@ -150,6 +155,7 @@ export default function AddNewClientModal({
             icon={Phone}
             name="phone"
             placeholder="+8801XXXXXXXXX"
+            state={state}
           />
 
           <FormField
@@ -157,12 +163,13 @@ export default function AddNewClientModal({
             icon={MapPin}
             name="address"
             placeholder="Dhaka, Bangladesh"
+            state={state}
           />
 
-          {/* Error */}
-          {state?.success === false && (
+          {/* GLOBAL ERROR — API failure only */}
+          {!isPending && state?.success === false && !state.errors && (
             <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-3 py-2 text-[12px] text-red-400">
-              {state.error}
+              {state.error ?? "Failed to add client."}
             </div>
           )}
 
