@@ -1,24 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
 import { Button } from "@/components/ui/button";
-
 import InvoiceStatusBadge from "./InvoicesStatus";
-
 import InvoiceViewSkeleton from "./ViewInvSkeleton";
-
-import { sendInvoice } from "@/services/business/invoices/sendInv";
-
 import { useRouter } from "next/navigation";
-
-import { Invoice } from "@/types/invoice";
-
+import { IInvoice } from "@/types/invoice";
 import {
   CalendarDays,
   FileText,
@@ -27,6 +20,8 @@ import {
   Download,
   StickyNote,
 } from "lucide-react";
+import { toast } from "sonner";
+import { sendInvoice } from "@/services/business/invoices.services";
 
 export default function InvoiceViewModal({
   open,
@@ -36,10 +31,26 @@ export default function InvoiceViewModal({
 }: {
   open: boolean;
   onClose: () => void;
-  invoice: Invoice | null;
+  invoice: IInvoice | null;
   loading: boolean;
 }) {
   const router = useRouter();
+  const [isSending, setIsSending] = useState(false);
+
+  const handleSend = async () => {
+    if (!invoice) return;
+    setIsSending(true);
+    const res = await sendInvoice(invoice.id);
+    setIsSending(false);
+
+    if (res.success) {
+      toast.success("Invoice sent successfully!");
+      onClose();
+      router.refresh();
+    } else {
+      toast.error(res.error ?? "Failed to send invoice.");
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -66,7 +77,7 @@ export default function InvoiceViewModal({
 
                 {!loading && invoice && (
                   <p className="mt-1 truncate text-sm text-slate-400">
-                    Client: {invoice.client.email}
+                    Client: {invoice.client?.email}
                   </p>
                 )}
               </div>
@@ -89,7 +100,6 @@ export default function InvoiceViewModal({
                 <div className="rounded-3xl border border-white/10 bg-[#0B1120] p-5">
                   <div className="mb-4 flex items-center gap-2">
                     <CalendarDays className="size-4 text-blue-400" />
-
                     <h3 className="text-sm font-semibold text-white">
                       Invoice Dates
                     </h3>
@@ -98,17 +108,21 @@ export default function InvoiceViewModal({
                   <div className="space-y-4 text-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-slate-500">Issue Date</span>
-
+                      {/* FIX: issueDate is nullable */}
                       <span className="font-medium text-white">
-                        {new Date(invoice.issueDate).toLocaleDateString()}
+                        {invoice.issueDate
+                          ? new Date(invoice.issueDate).toLocaleDateString()
+                          : "—"}
                       </span>
                     </div>
 
                     <div className="flex items-center justify-between">
                       <span className="text-slate-500">Due Date</span>
-
+                      {/* FIX: dueDate is nullable */}
                       <span className="font-medium text-white">
-                        {new Date(invoice.dueDate).toLocaleDateString()}
+                        {invoice.dueDate
+                          ? new Date(invoice.dueDate).toLocaleDateString()
+                          : "—"}
                       </span>
                     </div>
                   </div>
@@ -117,7 +131,6 @@ export default function InvoiceViewModal({
                 <div className="rounded-3xl border border-white/10 bg-[#0B1120] p-5">
                   <div className="mb-4 flex items-center gap-2">
                     <FileText className="size-4 text-emerald-400" />
-
                     <h3 className="text-sm font-semibold text-white">
                       Invoice Summary
                     </h3>
@@ -126,15 +139,13 @@ export default function InvoiceViewModal({
                   <div className="space-y-4 text-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-slate-500">Items</span>
-
                       <span className="font-medium text-white">
-                        {invoice.items.length}
+                        {invoice.items?.length ?? 0}
                       </span>
                     </div>
 
                     <div className="flex items-center justify-between">
                       <span className="text-slate-500">Currency</span>
-
                       <span className="font-medium text-white">
                         {invoice.currency}
                       </span>
@@ -149,7 +160,6 @@ export default function InvoiceViewModal({
                   <h3 className="text-sm font-semibold text-white">
                     Invoice Items
                   </h3>
-
                   <p className="mt-1 text-xs text-slate-500">
                     Products and pricing breakdown
                   </p>
@@ -162,15 +172,12 @@ export default function InvoiceViewModal({
                         <th className="px-5 py-4 text-left font-medium text-slate-400">
                           Item
                         </th>
-
                         <th className="px-5 py-4 text-center font-medium text-slate-400">
                           Qty
                         </th>
-
                         <th className="px-5 py-4 text-right font-medium text-slate-400">
                           Rate
                         </th>
-
                         <th className="px-5 py-4 text-right font-medium text-slate-400">
                           Total
                         </th>
@@ -178,7 +185,7 @@ export default function InvoiceViewModal({
                     </thead>
 
                     <tbody>
-                      {invoice.items.map((item) => (
+                      {invoice.items?.map((item) => (
                         <tr
                           key={item.id}
                           className="border-b border-white/5 transition-colors hover:bg-white/2"
@@ -186,15 +193,12 @@ export default function InvoiceViewModal({
                           <td className="px-5 py-4 font-medium text-white">
                             {item.name}
                           </td>
-
                           <td className="px-5 py-4 text-center text-slate-300">
                             {item.quantity}
                           </td>
-
                           <td className="px-5 py-4 text-right text-slate-300">
                             {item.pricePerUnit}
                           </td>
-
                           <td className="px-5 py-4 text-right font-semibold text-white">
                             {item.total}
                           </td>
@@ -210,7 +214,6 @@ export default function InvoiceViewModal({
                 <div className="space-y-4 text-sm">
                   <div className="flex items-center justify-between">
                     <span className="text-slate-500">Subtotal</span>
-
                     <span className="font-medium text-white">
                       {invoice.subtotal}
                     </span>
@@ -218,7 +221,6 @@ export default function InvoiceViewModal({
 
                   <div className="flex items-center justify-between">
                     <span className="text-slate-500">Tax</span>
-
                     <span className="font-medium text-white">
                       {invoice.tax}
                     </span>
@@ -229,7 +231,6 @@ export default function InvoiceViewModal({
                       <span className="text-base font-medium text-slate-300">
                         Total
                       </span>
-
                       <span className="text-3xl font-semibold tracking-tight text-white">
                         {invoice.total} {invoice.currency}
                       </span>
@@ -243,10 +244,8 @@ export default function InvoiceViewModal({
                 <div className="rounded-3xl border border-white/10 bg-[#0B1120] p-5">
                   <div className="mb-4 flex items-center gap-2">
                     <StickyNote className="size-4 text-amber-400" />
-
                     <h3 className="text-sm font-semibold text-white">Notes</h3>
                   </div>
-
                   <p className="text-sm leading-relaxed text-slate-400">
                     {invoice.notes}
                   </p>
@@ -263,7 +262,7 @@ export default function InvoiceViewModal({
               {invoice.invPdfUrl && (
                 <Button
                   variant="outline"
-                  onClick={() => window.open(invoice.invPdfUrl, "_blank")}
+                  onClick={() => window.open(invoice.invPdfUrl!, "_blank")}
                   className="h-12 rounded-2xl border-white/10 bg-white/3 px-5 text-slate-300 hover:bg-white/5"
                 >
                   <Download size={15} className="mr-2" />
@@ -275,17 +274,12 @@ export default function InvoiceViewModal({
                 invoice.status !== "SENT" &&
                 invoice.status !== "PAID" && (
                   <Button
-                    onClick={async () => {
-                      await sendInvoice(invoice.id);
-
-                      onClose();
-
-                      router.refresh();
-                    }}
+                    disabled={isSending}
+                    onClick={handleSend}
                     className="h-12 rounded-2xl bg-blue-500 px-6 font-semibold text-white hover:bg-blue-400"
                   >
                     <SendHorizonal size={15} className="mr-2" />
-                    Send Invoice
+                    {isSending ? "Sending..." : "Send Invoice"}
                   </Button>
                 )}
 

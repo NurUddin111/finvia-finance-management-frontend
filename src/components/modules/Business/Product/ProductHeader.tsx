@@ -40,23 +40,7 @@ export default function ProductsHeader() {
       <div className="flex items-center gap-3">
         <Button
           onClick={() => setOpen(true)}
-          className="
-            group
-            h-10
-            rounded-xl
-            border border-blue-500/20
-            bg-blue-500/10
-            px-4
-            text-sm font-medium
-            text-blue-400
-            backdrop-blur-md
-            transition-all duration-300
-            hover:-translate-y-0.5
-            hover:border-blue-400/40
-            hover:bg-blue-500/15
-            hover:text-blue-300
-            hover:shadow-[0_0_25px_rgba(59,130,246,0.15)]
-          "
+          className="group h-10 rounded-xl border border-blue-500/20 bg-blue-500/10 px-4 text-sm font-medium text-blue-400 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_25px_rgba(59,130,246,0.15)]"
         >
           <PackagePlus
             size={16}

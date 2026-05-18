@@ -71,11 +71,13 @@ const StatCard: React.FC<StatCardProps> = ({
   </div>
 );
 
-interface InvoicesStatsProps {
-  invoiceStats: InvoiceStats;
-}
-
-const InvoiceStatsCards = ({ invoiceStats }: InvoicesStatsProps) => {
+const InvoiceStatsCards = ({
+  invoiceStats,
+}: {
+  invoiceStats: InvoiceStats | null;
+}) => {
+  if (!invoiceStats) return null;
+  
   const {
     totalInvoices,
     draftedInvoices,
