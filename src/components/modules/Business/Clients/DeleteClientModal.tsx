@@ -3,21 +3,16 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
-
 import { AlertTriangle, Loader2, Trash2 } from "lucide-react";
-
 import { cn } from "@/lib/utils";
-
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-import { deleteClient } from "@/services/business/clients/deleteClient";
-
 import { toast } from "sonner";
+import { deleteClient } from "@/services/business/clients.services";
 
 export default function DeleteClientModal({
   open,
@@ -32,23 +27,20 @@ export default function DeleteClientModal({
 }) {
   const router = useRouter();
 
-  const [state, formAction, isPending] = useActionState(
-    deleteClient.bind(null, clientId),
-    null,
-  );
+  // FIX: no .bind() — clientId passed via hidden input instead
+  const [state, formAction, isPending] = useActionState(deleteClient, null);
 
   useEffect(() => {
-    if (state?.success) {
+    if (!state) return;
+
+    if (state.success) {
       onClose();
-
       router.refresh();
-
       toast.success("Client deleted successfully!");
+      return;
     }
 
-    if (state?.success === false) {
-      toast.error(state.error ?? "Failed to delete client");
-    }
+    toast.error(state.error ?? "Failed to delete client");
   }, [state, onClose, router]);
 
   return (
@@ -88,17 +80,20 @@ export default function DeleteClientModal({
           </div>
         </DialogHeader>
 
-        {/* Error */}
+        {/* GLOBAL ERROR */}
         {!isPending && state?.success === false && (
           <div className="px-5 pt-4">
             <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-3 py-2 text-[12px] text-red-400">
-              {state.error}
+              {state.error ?? "Failed to delete client."}
             </div>
           </div>
         )}
 
         {/* Actions */}
         <form action={formAction} className="flex items-center gap-3 px-5 py-5">
+          {/* FIX: clientId via hidden input */}
+          <input type="hidden" name="clientId" value={clientId} />
+
           <button
             type="button"
             onClick={onClose}

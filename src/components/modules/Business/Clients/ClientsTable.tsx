@@ -1,6 +1,6 @@
 "use client";
 
-import { Client, ClientStatus } from "@/types/client";
+import { ClientStatus, IClient } from "@/types/client";
 import ClientActions from "./ClientActions";
 import ClientAvatar from "./ClientAvatar";
 
@@ -71,7 +71,7 @@ const EmptyState = ({ colSpan }: { colSpan: number }) => (
   </tr>
 );
 
-export default function ClientsTable({ clients }: { clients: Client[] }) {
+export default function ClientsTable({ clients }: { clients: IClient[] }) {
   return (
     <>
       {/* MOBILE */}
@@ -93,7 +93,7 @@ export default function ClientsTable({ clients }: { clients: Client[] }) {
             </div>
           </div>
         ) : (
-          clients.map((client: Client, idx: number) => (
+          clients.map((client: IClient, idx: number) => (
             <div
               key={client.id}
               className="rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-4 transition-all duration-300 hover:border-blue-500/20 hover:bg-white/2"
@@ -179,7 +179,7 @@ export default function ClientsTable({ clients }: { clients: Client[] }) {
             {clients.length === 0 ? (
               <EmptyState colSpan={TABLE_HEADERS.length} />
             ) : (
-              clients.map((client: Client, idx: number) => (
+              clients.map((client: IClient) => (
                 <tr
                   key={client.id}
                   className="border-b border-white/4 transition-all duration-200 hover:bg-white/3 last:border-0"
@@ -189,19 +189,11 @@ export default function ClientsTable({ clients }: { clients: Client[] }) {
                     <div className="flex items-center gap-4">
                       <div className="relative">
                         <ClientAvatar name={client.name} />
-
-                        <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border border-[#050816] bg-blue-500 text-[9px] font-semibold text-white">
-                          {idx + 1}
-                        </div>
                       </div>
 
                       <div>
                         <p className="text-sm font-medium text-white">
                           {client.name}
-                        </p>
-
-                        <p className="mt-1 text-xs text-slate-500">
-                          Client ID #{String(idx + 1).padStart(3, "0")}
                         </p>
                       </div>
                     </div>

@@ -6,26 +6,27 @@ import { Pencil, Trash2 } from "lucide-react";
 
 import UpdateClientModal from "./EditClient";
 import DeleteClientModal from "./DeleteClientModal";
+import { IClient } from "@/types/client";
 
-interface ClientActionsProps {
-  client: {
-    id: string;
-    name: string;
-    email: string;
-    phone?: string;
-    address?: string;
-    totalInvoices: number;
-    totalSpent: number;
-    isDeleted: false;
-    createdAt: Date;
-    updatedAt: Date;
-  };
-}
+// interface ClientActionsProps {
+//   client: {
+//     id: string;
+//     name: string;
+//     email: string;
+//     phone?: string;
+//     address?: string;
+//     totalInvoices: number;
+//     totalSpent: number;
+//     isDeleted: false;
+//     createdAt: Date;
+//     updatedAt: Date;
+//   };
+// }
 
 const actionBtn =
   "group flex h-9 w-9 items-center justify-center rounded-xl border transition-all duration-300";
 
-export default function ClientActions({ client }: ClientActionsProps) {
+export default function ClientActions({ client }: { client: IClient }) {
   const [open, setOpen] = useState<boolean>(false);
 
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
