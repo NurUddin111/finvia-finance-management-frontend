@@ -41,8 +41,8 @@ import { cn } from "@/lib/utils";
 import InvoiceActionModal from "./InvActions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { getAllProducts } from "@/services/business/products/allProducts";
 import { createInvoice } from "@/services/business/invoices.services";
+import { getAllProducts } from "@/services/business/product.services";
 
 type PaymentMethod = "ONLINE" | "CASH";
 

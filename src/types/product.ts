@@ -15,6 +15,11 @@ export interface IProduct {
   invoiceItems?: IInvoiceItem[];
 }
 
+export interface ITopProduct {
+  name: string;
+  totalSold: number;
+}
+
 export interface ProductStats {
   totalProducts: number;
   currentMonthProducts: number;
@@ -22,4 +27,11 @@ export interface ProductStats {
   topSellingProduct: { name: string; totalSold: number } | null;
   pendingOrders: number;
   pendingOrdersValue: number;
+}
+
+export interface GetAllProductsParams {
+  page?: string;
+  search?: string;
+  sortBy?: string;
+  order?: string;
 }

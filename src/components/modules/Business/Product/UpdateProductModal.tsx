@@ -1,31 +1,22 @@
 "use client";
 
 import { useEffect } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { useActionState } from "react";
-
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
-
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-
+import InputFieldError from "@/components/shared/InputFieldError";
 import { Package2, PencilLine } from "lucide-react";
-
-import { Product } from "@/types/product";
-
 import { toast } from "sonner";
-
-import { updateProduct } from "@/services/business/products/updateProduct";
+import { IProduct } from "@/types/product";
+import { updateProduct } from "@/services/business/product.services";
 
 export default function UpdateProductModal({
   open,
@@ -33,29 +24,25 @@ export default function UpdateProductModal({
   product,
 }: {
   open: boolean;
-
   onClose: () => void;
-
-  product: Product;
+  product: IProduct;
 }) {
   const router = useRouter();
 
-  const [state, formAction, isPending] = useActionState(
-    updateProduct.bind(null, product.id),
-    null,
-  );
+  const [state, formAction, isPending] = useActionState(updateProduct, null);
 
   useEffect(() => {
     if (!state) return;
 
     if (state.success) {
       toast.success("Product updated successfully!");
-
       onClose();
-
       router.refresh();
-    } else {
-      toast.error("Failed to update product!");
+      return;
+    }
+
+    if (!state.errors) {
+      toast.error(state.error ?? "Failed to update product!");
     }
   }, [state, onClose, router]);
 
@@ -91,6 +78,9 @@ export default function UpdateProductModal({
         {/* FORM */}
         <div className="px-6 py-6">
           <form action={formAction} className="space-y-6">
+            {/* FIX: productId via hidden input */}
+            <input type="hidden" name="productId" value={product.id} />
+
             <FieldGroup className="space-y-5">
               <Field>
                 <FieldLabel className="mb-2 text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
@@ -99,7 +89,6 @@ export default function UpdateProductModal({
 
                 <div className="relative">
                   <PencilLine className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
-
                   <Input
                     name="name"
                     defaultValue={product.name}
@@ -107,11 +96,16 @@ export default function UpdateProductModal({
                     className="h-12 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
                 </div>
+
+                <InputFieldError field="name" state={state} />
               </Field>
 
-              {!isPending && state?.success === false && (
+              {/* GLOBAL ERROR — API failure only */}
+              {!isPending && state?.success === false && !state.errors && (
                 <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-center">
-                  <p className="text-sm text-red-400">{state.error}</p>
+                  <p className="text-sm text-red-400">
+                    {state.error ?? "Failed to update product."}
+                  </p>
                 </div>
               )}
             </FieldGroup>
