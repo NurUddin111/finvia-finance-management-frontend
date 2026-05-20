@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ITopClient } from "@/types/client";
 import { CreditCard, Crown } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────────
@@ -58,16 +59,7 @@ function RankBadge({ rank }: { rank: number }) {
   );
 }
 
-export function TopClientsTable({
-  topClients,
-}: {
-  topClients: {
-    name: string;
-    totalSpent: number;
-    totalInvoices: number;
-    status: string;
-  }[];
-}) {
+export function TopClientsTable({ topClients }: { topClients: ITopClient[] }) {
   if (!topClients?.length) {
     return (
       <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816]">

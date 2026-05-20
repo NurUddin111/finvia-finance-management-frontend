@@ -19,17 +19,20 @@ import {
   TopClientsTable,
 } from "@/components/modules/Business/Dashboard/DashboardTables";
 import { getMe } from "@/services/auth.services";
-import { getClientsNumByMonth } from "@/services/business/dashboard/clientsByMonth";
-import { getClientsPieChartData } from "@/services/business/dashboard/clientsPieChart";
+import {
+  getClientsNumByMonth,
+  getClientsPieChartData,
+  getKPICardDetails,
+  getTopClients,
+} from "@/services/business/dashboard.services";
 import { months } from "@/services/business/dashboard/constants";
-import { getKPICardDetails } from "@/services/business/dashboard/kpiCardDetails";
 import { getMonthlyRevenue } from "@/services/business/dashboard/monthlyRevenue";
 import { getOverdueInvoices } from "@/services/business/dashboard/overdueInvoices";
 import { getRecentTransactions } from "@/services/business/dashboard/recentTransaction";
-import { getTopClients } from "@/services/business/dashboard/topClients";
 import { getUpcomingOverdueInvoices } from "@/services/business/dashboard/upcomingOverdueInv";
-import { getPaymentMethodStats } from "@/services/business/payment/methodStats";
+import { getPaymentMethodStats } from "@/services/business/payment.services";
 import { getTopProducts } from "@/services/business/product.services";
+import { MonthlyClientCount } from "@/types/client";
 import { redirect } from "next/navigation";
 
 // ── Helper ────────────────────────────────────────────────────────────────────
@@ -86,7 +89,7 @@ export default async function BusinessDashboardPage() {
   const overdueInvoices = unwrap(overdueInvoicesRes, []);
   const upcomingOverdue = unwrap(upcomingOverdueRes, []);
   const clientPieCharts = unwrap(clientPieRes, null);
-  const clientsNumByMonth = unwrap(clientGrowthRes, []);
+  const clientsNumByMonth = unwrap(clientGrowthRes, {} as MonthlyClientCount);
   const topProducts = unwrap(topProductsRes, []);
   const paymentMethodStats = unwrap(paymentMethodRes, {
     online: 0,

@@ -118,19 +118,10 @@ export function RevenueChart({
   );
 }
 
-type InvStatusChart = {
-  paidInvoices: number;
-  paidInvPer: number;
-  pendingInvoices: number;
-  pendingInvPer: number;
-  draftedInvoices: number;
-  draftedInvPer: number;
-};
-
 export function InvoiceStatusChart({
   invStatusChart,
 }: {
-  invStatusChart: InvStatusChart;
+  invStatusChart: IKPICardDetails;
 }) {
   const invoiceData = [
     {
@@ -154,9 +145,9 @@ export function InvoiceStatusChart({
   ];
 
   const totalInvoices =
-    invStatusChart.paidInvoices +
-    invStatusChart.pendingInvoices +
-    invStatusChart.draftedInvoices;
+    Number(invStatusChart.paidInvoices) +
+    Number(invStatusChart.pendingInvoices) +
+    Number(invStatusChart.draftedInvoices);
 
   const isEmpty = totalInvoices === 0;
 
@@ -698,22 +689,16 @@ export function ClientGrowthChart({
 
 // ── New vs Returning Donut ────────────────────────────────────────
 
-type clientPieChart = {
-  newClientsThisMonth: number;
-  newClientsDiff: number;
-  oldClientsThisMonth: number;
-  oldClientsDiff: number;
-  newClientsPercentage: number;
-  oldClientsPercentage: number;
-};
-
 import { Users2 } from "lucide-react";
+import { IClientsPieChartData } from "@/types/client";
+import { IKPICardDetails } from "@/types/dashboard";
 
 export function ClientTypeChart({
   clientPieChartData,
 }: {
-  clientPieChartData: clientPieChart;
+  clientPieChartData: IClientsPieChartData | null;
 }) {
+  if (!clientPieChartData) return null;
   const formattedClientPieChart = [
     {
       name: "New",
