@@ -1,11 +1,8 @@
 "use client";
 
 import Link from "next/link";
-
 import { useEffect, useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { ArrowRight, Building2, Menu, Sparkles, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -25,12 +22,10 @@ const navItems = [
     label: "Features",
     href: "/#features",
   },
-
   {
     label: "Benefits",
     href: "/#benefits",
   },
-
   {
     label: "Testimonials",
     href: "/#testimonials",
@@ -39,7 +34,6 @@ const navItems = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-
   const [open, setOpen] = useState(false);
 
   const router = useRouter();
@@ -67,10 +61,10 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 lg:px-8">
+    <header className="fixed inset-x-0 top-0 z-50 px-2 pt-2 sm:px-4 sm:pt-3 lg:px-8">
       <div
         className={cn(
-          "mx-auto flex h-16 w-full max-w-7xl items-center justify-between rounded-2xl border px-4 transition-all duration-300 sm:px-5 lg:px-6",
+          "mx-auto flex h-14 w-full max-w-7xl items-center justify-between rounded-2xl border px-3 transition-all duration-300 sm:h-16 sm:px-5 lg:px-6",
 
           scrolled
             ? "border-white/10 bg-[#050816]/80 shadow-[0_10px_60px_rgba(0,0,0,0.45)] backdrop-blur-2xl"
@@ -78,21 +72,24 @@ export default function Navbar() {
         )}
       >
         {/* LEFT */}
-        <Link href="/" className="group flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10 transition-all duration-300 group-hover:border-blue-400/30 group-hover:bg-blue-500/15">
+        <Link
+          href="/"
+          className="group flex min-w-0 items-center gap-2 sm:gap-3"
+        >
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10 transition-all duration-300 group-hover:border-blue-400/30 group-hover:bg-blue-500/15 sm:h-11 sm:w-11">
             <Building2 className="size-5 text-blue-400" />
           </div>
 
-          <div className="hidden sm:block">
+          <div className="hidden min-w-0 sm:block">
             <div className="flex items-center gap-2">
-              <h1 className="text-lg font-semibold tracking-tight text-white">
+              <h1 className="truncate text-base font-semibold tracking-tight text-white sm:text-lg">
                 Finvia
               </h1>
 
-              <Sparkles className="size-3.5 text-blue-400" />
+              <Sparkles className="size-3.5 shrink-0 text-blue-400" />
             </div>
 
-            <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500">
+            <p className="truncate text-[9px] uppercase tracking-[0.18em] text-slate-500 sm:text-[10px] sm:tracking-[0.22em]">
               Business Workspace
             </p>
           </div>
@@ -146,31 +143,31 @@ export default function Navbar() {
             <Button
               size="icon"
               variant="ghost"
-              className="h-11 w-11 rounded-2xl border border-white/10 bg-white/3 text-slate-300 hover:bg-white/5 hover:text-white"
+              className="h-10 w-10 rounded-2xl border border-white/10 bg-white/3 text-slate-300 hover:bg-white/5 hover:text-white sm:h-11 sm:w-11"
             >
               <Menu className="size-5" />
             </Button>
           </SheetTrigger>
 
-          <SheetContent className="border-l border-white/10 bg-[#050816] px-0 text-white">
+          <SheetContent className="w-full border-l border-white/10 bg-[#050816] px-0 text-white sm:max-w-sm">
             {/* TOP */}
             <SheetHeader className="border-b border-white/10 px-5 pb-5">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-3">
                 <Link
                   href="/"
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-3"
+                  className="flex min-w-0 items-center gap-3"
                 >
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
                     <Building2 className="size-5 text-blue-400" />
                   </div>
 
-                  <div>
-                    <SheetTitle className="text-left text-lg font-semibold tracking-tight text-white">
+                  <div className="min-w-0">
+                    <SheetTitle className="truncate text-left text-lg font-semibold tracking-tight text-white">
                       Finvia
                     </SheetTitle>
 
-                    <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500">
+                    <p className="truncate text-[10px] uppercase tracking-[0.22em] text-slate-500">
                       Business Workspace
                     </p>
                   </div>
@@ -180,7 +177,7 @@ export default function Navbar() {
                   size="icon"
                   variant="ghost"
                   onClick={() => setOpen(false)}
-                  className="h-10 w-10 rounded-2xl border border-white/10 bg-white/3 text-slate-400 hover:bg-white/5 hover:text-white"
+                  className="h-10 w-10 shrink-0 rounded-2xl border border-white/10 bg-white/3 text-slate-400 hover:bg-white/5 hover:text-white"
                 >
                   <X className="size-4" />
                 </Button>
@@ -188,7 +185,7 @@ export default function Navbar() {
             </SheetHeader>
 
             {/* NAVIGATION */}
-            <div className="flex h-full flex-col px-5 pb-8 pt-6">
+            <div className="flex h-full min-h-0 flex-col overflow-y-auto px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-6">
               <nav className="space-y-2">
                 {navItems.map((item) => (
                   <Link
