@@ -76,3 +76,23 @@ export interface GetAllInvoicesParams {
   order?: string;
   year?: string;
 }
+
+export interface IOverdueInvoice {
+  client: { name: string };
+  invoiceNumber: string;
+  dueDate: string;
+  total: number;
+  formattedDueDate: string;
+  daysAgo: number;
+}
+
+type TxnStatus = "SENT" | "FAILED" | "CANCELLED";
+
+export interface IUpcomingOverdueInvoice {
+  client: { name: string };
+  invoiceNumber: string;
+  status: TxnStatus;
+  dueDate: string;
+  total: number;
+  formattedDueDate: string;
+}

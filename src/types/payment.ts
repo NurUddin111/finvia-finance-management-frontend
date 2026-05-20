@@ -39,3 +39,15 @@ export interface IPayment {
   // Relations
   invoice?: IInvoice;
 }
+
+type TxnStatus = "SENT" | "PAID" | "FAILED" | "CANCELLED";
+
+export interface IRecentTransaction {
+  client: { name: string };
+  items: { name: string; quantity: number }[];
+  subtotal: number;
+  status: TxnStatus;
+  totalItems: number;
+  updatedAt: Date;
+  formattedDate: string;
+}

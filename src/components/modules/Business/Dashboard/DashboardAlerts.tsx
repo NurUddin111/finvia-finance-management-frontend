@@ -1,23 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { IOverdueInvoice, IUpcomingOverdueInvoice } from "@/types/invoice";
 import { AlertCircle, AlertTriangle, CalendarClock } from "lucide-react";
 
 // ── Overdue Invoices ──────────────────────────────────────────────
 
-type OverdueInvoice = {
-  client: {
-    name: string;
-  };
-  invoiceNumber: string;
-  dueDate: string;
-  total: number;
-  formattedDueDate: string;
-  daysAgo: number;
-};
-
 export function OverdueInvoices({
   overdueInvoices,
 }: {
-  overdueInvoices: OverdueInvoice[];
+  overdueInvoices: IOverdueInvoice[];
 }) {
   const totalOverdue = overdueInvoices.reduce((sum, inv) => sum + inv.total, 0);
 
@@ -297,15 +287,6 @@ export function OverdueInvoices({
 
 type TxnStatus = "SENT" | "FAILED" | "CANCELLED";
 
-type UpcomingOverdueInv = {
-  client: { name: string };
-  invoiceNumber: string;
-  status: TxnStatus;
-  dueDate: string;
-  total: number;
-  formattedDueDate: string;
-};
-
 const STATUS_STYLES: Record<TxnStatus, string> = {
   SENT: "bg-blue-500/10   text-blue-400    border-blue-500/20",
   FAILED: "bg-red-500/10    text-red-400     border-red-500/20",
@@ -331,7 +312,7 @@ function DueStatusBadge({ status }: { status: TxnStatus }) {
 export function UpcomingDueDates({
   upcomingOverdueInv,
 }: {
-  upcomingOverdueInv: UpcomingOverdueInv[];
+  upcomingOverdueInv: IUpcomingOverdueInvoice[];
 }) {
   return (
     <Card
