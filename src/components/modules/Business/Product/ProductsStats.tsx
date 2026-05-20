@@ -74,11 +74,12 @@ const StatCard: React.FC<StatCardProps> = ({
   </div>
 );
 
-interface ProductStatsProps {
-  productStats: ProductStats;
-}
-
-const ProductStatCards = ({ productStats }: ProductStatsProps) => {
+const ProductStatCards = ({
+  productStats,
+}: {
+  productStats: ProductStats | null;
+}) => {
+  if (!productStats) return null;
   const {
     totalProducts,
     currentMonthProducts,

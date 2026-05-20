@@ -29,7 +29,7 @@ import { getRecentTransactions } from "@/services/business/dashboard/recentTrans
 import { getTopClients } from "@/services/business/dashboard/topClients";
 import { getUpcomingOverdueInvoices } from "@/services/business/dashboard/upcomingOverdueInv";
 import { getPaymentMethodStats } from "@/services/business/payment/methodStats";
-import { getTopProducts } from "@/services/business/products/topProducts";
+import { getTopProducts } from "@/services/business/product.services";
 import { redirect } from "next/navigation";
 
 // ── Helper ────────────────────────────────────────────────────────────────────

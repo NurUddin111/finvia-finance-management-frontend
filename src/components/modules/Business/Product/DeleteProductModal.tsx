@@ -1,25 +1,18 @@
 "use client";
 
 import { useEffect } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { useActionState } from "react";
-
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
 import { Button } from "@/components/ui/button";
-
 import { Trash2, AlertTriangle } from "lucide-react";
-
 import { toast } from "sonner";
-
-import { deleteProduct } from "@/services/business/products/deleteProduct";
+import { deleteProduct } from "@/services/business/product.services";
 
 export default function DeleteProductModal({
   open,
@@ -28,32 +21,25 @@ export default function DeleteProductModal({
   productName,
 }: {
   open: boolean;
-
   onClose: () => void;
-
   productId: string;
-
   productName: string;
 }) {
   const router = useRouter();
 
-  const [state, formAction, isPending] = useActionState(
-    deleteProduct.bind(null, productId),
-    null,
-  );
+  const [state, formAction, isPending] = useActionState(deleteProduct, null);
 
   useEffect(() => {
     if (!state) return;
 
     if (state.success) {
       toast.success("Product deleted successfully!");
-
       onClose();
-
       router.refresh();
-    } else {
-      toast.error("Failed to delete product!");
+      return;
     }
+
+    toast.error(state.error ?? "Failed to delete product!");
   }, [state, onClose, router]);
 
   return (
@@ -95,7 +81,6 @@ export default function DeleteProductModal({
 
               <div>
                 <p className="text-sm font-medium text-white">Are you sure?</p>
-
                 <p className="mt-1 text-sm leading-relaxed text-slate-400">
                   You are about to delete{" "}
                   <span className="font-medium text-red-300">
@@ -107,14 +92,20 @@ export default function DeleteProductModal({
             </div>
           </div>
 
+          {/* GLOBAL ERROR */}
           {!isPending && state?.success === false && (
             <div className="mt-4 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-center">
-              <p className="text-sm text-red-400">{state.error}</p>
+              <p className="text-sm text-red-400">
+                {state.error ?? "Failed to delete product."}
+              </p>
             </div>
           )}
 
           {/* ACTIONS */}
           <form action={formAction} className="mt-6 flex gap-3">
+            {/* FIX: productId via hidden input */}
+            <input type="hidden" name="productId" value={productId} />
+
             <Button
               type="button"
               variant="outline"
