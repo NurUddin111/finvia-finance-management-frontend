@@ -149,7 +149,7 @@ export default function Navbar() {
             </Button>
           </SheetTrigger>
 
-          <SheetContent className="w-full border-l border-white/10 bg-[#050816] px-0 text-white sm:max-w-sm">
+          <SheetContent className="w-full border-l border-white/10 bg-[#050816] px-0 text-white sm:max-w-sm [&>button]:hidden">
             {/* TOP */}
             <SheetHeader className="border-b border-white/10 px-5 pb-5">
               <div className="flex items-center justify-between gap-3">

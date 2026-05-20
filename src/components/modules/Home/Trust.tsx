@@ -4,34 +4,35 @@ import { BadgeCheck, Lock, Server, ShieldCheck, Sparkles } from "lucide-react";
 
 export default function TrustSection() {
   return (
-    <section className="relative overflow-hidden px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+    <section className="relative overflow-hidden px-3 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
       {/* BACKGROUND */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-0 top-1/3 h-75 w-75 rounded-full bg-blue-500/8 blur-3xl" />
+        <div className="absolute left-0 top-1/3 h-52 w-52 rounded-full bg-blue-500/8 blur-3xl sm:h-64 sm:w-64" />
 
-        <div className="absolute right-0 top-0 h-80 w-[320px] rounded-full bg-violet-500/10 blur-3xl" />
+        <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-violet-500/10 blur-3xl sm:h-72 sm:w-72" />
       </div>
 
       <div className="relative mx-auto max-w-7xl">
         {/* HEADER */}
         <div className="mx-auto max-w-3xl text-center">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2">
-            <Sparkles className="size-4 text-blue-400" />
+          <div className="mb-2 inline-flex max-w-full items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1.5 sm:px-4 sm:py-2">
+            <Sparkles className="size-3.5 shrink-0 text-blue-400 sm:size-4" />
 
-            <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-blue-400">
+            <span className="truncate text-[10px] font-medium uppercase tracking-[0.14em] text-blue-400 sm:text-[11px] sm:tracking-[0.18em]">
               Trusted & Secure
             </span>
           </div>
 
-          <h2 className="text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+          <h2 className="text-2xl font-semibold leading-[1.02] tracking-tight text-white sm:text-4xl lg:text-[2.3rem]">
             Built for reliability,
-            <br />
+            <br className="hidden sm:block" />
             <span className="bg-linear-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
+              {" "}
               security & peace of mind
             </span>
           </h2>
 
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-slate-400 sm:text-base">
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-slate-400 sm:mt-4 sm:text-base">
             Finvia follows modern security practices and reliable infrastructure
             standards to keep your business data protected, private, and always
             accessible.
@@ -39,7 +40,7 @@ export default function TrustSection() {
         </div>
 
         {/* GRID */}
-        <div className="mt-16 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4 xl:gap-5">
           <TrustCard
             icon={ShieldCheck}
             title="Data encryption"
@@ -89,43 +90,39 @@ function TrustCard({
   glow,
 }: {
   icon: React.ElementType;
-
   title: string;
-
   description: string;
-
   color: string;
-
   glow: string;
 }) {
   return (
-    <div className="group relative overflow-hidden rounded-[30px] border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/15 hover:shadow-[0_0_50px_rgba(59,130,246,0.08)] sm:p-7">
+    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-4 text-center transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/15 hover:shadow-[0_0_50px_rgba(59,130,246,0.08)] sm:p-5">
       {/* GLOW */}
       <div
-        className={`absolute -right-10 -top-10 h-32 w-32 rounded-full blur-3xl ${glow}`}
+        className={`absolute -right-10 -top-10 h-28 w-28 rounded-full blur-3xl ${glow}`}
       />
 
       <div className="relative">
         {/* ICON */}
         <div
-          className={`mx-auto flex h-15 w-15 items-center justify-center rounded-3xl border ${color}`}
+          className={`mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border ${color} sm:h-14 sm:w-14`}
         >
-          <Icon className="size-6" />
+          <Icon className="size-5 sm:size-6" />
         </div>
 
         {/* CONTENT */}
-        <div className="mt-6">
-          <h3 className="text-xl font-semibold tracking-tight text-white">
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
             {title}
           </h3>
 
-          <p className="mt-3 text-sm leading-relaxed text-slate-400">
+          <p className="mt-2 text-sm leading-relaxed text-slate-400">
             {description}
           </p>
         </div>
 
         {/* LINE */}
-        <div className="mt-6 h-px w-full bg-linear-to-r from-transparent via-white/10 to-transparent" />
+        <div className="mt-5 h-px w-full bg-linear-to-r from-transparent via-white/10 to-transparent" />
       </div>
     </div>
   );
