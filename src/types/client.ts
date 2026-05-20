@@ -3,6 +3,22 @@ import { IInvoice } from "./invoice";
 
 export type ClientStatus = "ACTIVE" | "INACTIVE";
 
+export type Month =
+  | "Jan"
+  | "Feb"
+  | "Mar"
+  | "Apr"
+  | "May"
+  | "Jun"
+  | "Jul"
+  | "Aug"
+  | "Sep"
+  | "Oct"
+  | "Nov"
+  | "Dec";
+
+export type MonthlyClientCount = Partial<Record<Month, number>>;
+
 export interface IClient {
   id: string;
   name: string;
@@ -47,4 +63,20 @@ export interface GetAllClientsParams {
   status?: string;
   sortBy?: string;
   order?: string;
+}
+
+export interface IClientsPieChartData {
+  newClientsThisMonth: number;
+  newClientsDiff: number;
+  oldClientsThisMonth: number;
+  oldClientsDiff: number;
+  newClientsPercentage: number;
+  oldClientsPercentage: number;
+}
+
+export interface ITopClient {
+  name: string;
+  totalSpent: number;
+  totalInvoices: number;
+  status: string;
 }

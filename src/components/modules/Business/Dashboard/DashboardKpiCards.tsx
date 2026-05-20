@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { IKPICardDetails } from "@/types/dashboard";
 import { TrendingUp, FileText, CheckCircle, AlertCircle } from "lucide-react";
 
 interface KpiCardProps {
@@ -101,7 +102,7 @@ export type KPICardData = {
   overdueInvDiff: number;
 };
 
-export function DashboardKpiCards({ data }: { data: KPICardData }) {
+export function DashboardKpiCards({ data }: { data: IKPICardDetails }) {
   const {
     totalRevenue,
     revenueDiff,

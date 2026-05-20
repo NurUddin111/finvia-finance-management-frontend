@@ -3,8 +3,7 @@ import ProductStatCards from "@/components/modules/Business/Product/ProductsStat
 import ProductTable from "@/components/modules/Business/Product/ProductsTable";
 import ProductToolbar from "@/components/modules/Business/Product/ProductToolbar";
 import Pagination from "@/components/shared/Pagination";
-import { getAllProducts } from "@/services/business/products/allProducts";
-import { getProductsStats } from "@/services/business/products/productsStats";
+import { getAllProducts, getProductsStats } from "@/services/business/product.services";
 import { IProduct, ProductStats } from "@/types/product";
 
 const ProductsPage = async ({
