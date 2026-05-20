@@ -23,13 +23,15 @@ import {
   getClientsNumByMonth,
   getClientsPieChartData,
   getKPICardDetails,
+  getMonthlyRevenue,
+  getOverdueInvoices,
+  getRecentTransactions,
   getTopClients,
+  getUpcomingOverdueInvoices,
 } from "@/services/business/dashboard.services";
-import { months } from "@/services/business/dashboard/constants";
-import { getMonthlyRevenue } from "@/services/business/dashboard/monthlyRevenue";
-import { getOverdueInvoices } from "@/services/business/dashboard/overdueInvoices";
-import { getRecentTransactions } from "@/services/business/dashboard/recentTransaction";
-import { getUpcomingOverdueInvoices } from "@/services/business/dashboard/upcomingOverdueInv";
+import { months } from "@/services/business/constants";
+// import { getOverdueInvoices } from "@/services/business/dashboard/overdueInvoices";
+// import { getRecentTransactions } from "@/services/business/dashboard/recentTransaction";
 import { getPaymentMethodStats } from "@/services/business/payment.services";
 import { getTopProducts } from "@/services/business/product.services";
 import { MonthlyClientCount } from "@/types/client";

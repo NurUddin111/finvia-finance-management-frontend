@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ITopClient } from "@/types/client";
+import { IRecentTransaction } from "@/types/payment";
 import { CreditCard, Crown } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────────
@@ -147,20 +148,6 @@ export function TopClientsTable({ topClients }: { topClients: ITopClient[] }) {
 
 type TxnStatus = "SENT" | "PAID" | "FAILED" | "CANCELLED";
 
-type RecentTransaction = {
-  client: { name: string };
-  items: { name: string; quantity: number }[];
-  subtotal: number;
-  status: TxnStatus;
-  totalItems: number;
-  updatedAt: Date;
-  formattedDate: string;
-};
-
-type TransactionDetails = {
-  recentTransactions: RecentTransaction[];
-};
-
 const TXN_STATUS_STYLES: Record<TxnStatus, string> = {
   PAID: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   SENT: "bg-blue-500/10    text-blue-400    border-blue-500/20",
@@ -185,7 +172,11 @@ function TxnStatusBadge({ status }: { status: TxnStatus }) {
   );
 }
 
-export function RecentTransactions({ recentTransactions }: TransactionDetails) {
+export function RecentTransactions({
+  recentTransactions,
+}: {
+  recentTransactions: IRecentTransaction[];
+}) {
   if (!recentTransactions?.length) {
     return (
       <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816]">
