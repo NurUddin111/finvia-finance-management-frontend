@@ -351,7 +351,10 @@ export function TopProductsChart({
               <YAxis
                 type="category"
                 dataKey="name"
-                width={120}
+                width={80}
+                tickFormatter={(name: string) =>
+                  name.length > 10 ? `${name.slice(0, 10)}…` : name
+                }
                 tick={{
                   fill: "rgba(226,232,240,0.92)",
                   fontSize: 11,
