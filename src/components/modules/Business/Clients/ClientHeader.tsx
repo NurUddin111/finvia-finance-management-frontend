@@ -10,25 +10,22 @@ export default function ClientsHeader() {
 
   return (
     <>
-      <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-        <div className="space-y-4">
+      <div className="mb-5 flex flex-col gap-4 lg:mb-8 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+        <div className="space-y-3 lg:space-y-4">
           <div className="flex items-center gap-2">
             <div className="flex items-center justify-center rounded-full border border-blue-500/20 bg-blue-500/10 p-1.5">
-              <Users2 className="size-4 text-blue-400" />
+              <Users2 className="size-3.5 text-blue-400 sm:size-4" />
             </div>
 
-            <span className="text-3xl font-medium uppercase tracking-[0.2em] text-blue-400">
+            <span className="text-lg font-medium uppercase tracking-[0.12em] text-blue-400 sm:text-2xl sm:tracking-[0.18em] lg:text-3xl lg:tracking-[0.2em]">
               Client Management
             </span>
           </div>
 
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">
-              Manage customer relationships, billing history, contact
-              information, and business interactions from one centralized
-              workspace.
-            </p>
-
-          
+            Manage customer relationships, billing history, contact information,
+            and business interactions from one centralized workspace.
+          </p>
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

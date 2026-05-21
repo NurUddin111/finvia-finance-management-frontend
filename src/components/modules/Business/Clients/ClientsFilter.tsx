@@ -67,7 +67,7 @@ const ClientToolbar = ({ total }: { total: number }) => {
   };
 
   return (
-    <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-4 backdrop-blur-xl lg:flex-row lg:items-center lg:justify-between">
+    <div className="mb-5 flex flex-col gap-4 rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-4 backdrop-blur-xl lg:flex-row lg:items-center lg:justify-between">
       {/* LEFT */}
       <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
         {/* SEARCH */}
