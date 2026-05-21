@@ -52,6 +52,7 @@ const InvoicePage = async ({
           availableYears={meta?.availableYears ?? []}
         />
 
+
         <InvoicesTable invoices={allInvoices} />
 
         <Pagination
