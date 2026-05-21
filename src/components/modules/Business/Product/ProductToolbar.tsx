@@ -79,8 +79,8 @@ const ProductToolbar = ({ total }: { total: number }) => {
       </div>
 
       {/* RIGHT */}
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="rounded-full border border-white/10 bg-white/3 px-3 py-1.5 text-xs font-medium text-slate-400">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+        <div className="inline-flex w-fit items-center rounded-full border border-white/10 bg-white/3 px-3 py-1.5 text-xs font-medium text-slate-400">
           {total} result
           {total !== 1 ? "s" : ""} found
         </div>
@@ -88,7 +88,7 @@ const ProductToolbar = ({ total }: { total: number }) => {
         {isFiltered && (
           <button
             onClick={handleReset}
-            className="flex h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/3 px-4 text-xs font-medium text-slate-400 transition-all duration-300 hover:border-red-500/20 hover:bg-red-500/10 hover:text-red-400"
+            className="flex h-10 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/3 px-4 text-xs font-medium text-slate-400 transition-all duration-300 hover:border-red-500/20 hover:bg-red-500/10 hover:text-red-400 sm:justify-start"
           >
             <X size={13} />
             Reset Filters
