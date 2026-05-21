@@ -16,6 +16,12 @@ const navItems = [
   },
 
   {
+    label: "Products",
+    href: "/business/dashboard/products",
+    icon: PackageSearch,
+  },
+
+  {
     label: "Clients",
     href: "/business/dashboard/clients",
     icon: Users,
@@ -25,12 +31,6 @@ const navItems = [
     label: "Invoices",
     href: "/business/dashboard/invoices",
     icon: FileText,
-  },
-
-  {
-    label: "Products",
-    href: "/business/dashboard/products",
-    icon: PackageSearch,
   },
 
   {
@@ -44,7 +44,7 @@ export default function BusinessBottomNav() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#030712]/95 backdrop-blur-2xl md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#030712]/95 backdrop-blur-2xl lg:hidden">
       {/* TOP GLOW */}
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-blue-500/40 to-transparent" />
 
