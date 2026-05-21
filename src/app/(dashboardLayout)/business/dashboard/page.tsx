@@ -30,14 +30,10 @@ import {
   getUpcomingOverdueInvoices,
 } from "@/services/business/dashboard.services";
 import { months } from "@/services/business/constants";
-// import { getOverdueInvoices } from "@/services/business/dashboard/overdueInvoices";
-// import { getRecentTransactions } from "@/services/business/dashboard/recentTransaction";
 import { getPaymentMethodStats } from "@/services/business/payment.services";
 import { getTopProducts } from "@/services/business/product.services";
 import { MonthlyClientCount } from "@/types/client";
 import { redirect } from "next/navigation";
-
-// ── Helper ────────────────────────────────────────────────────────────────────
 
 function unwrap<T>(
   res: PromiseSettledResult<{ success: boolean; data?: T }>,
@@ -47,8 +43,6 @@ function unwrap<T>(
   if (!res.value.success || res.value.data === undefined) return fallback;
   return res.value.data;
 }
-
-// ── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function BusinessDashboardPage() {
   const getMyProfile = await getMe();
@@ -81,7 +75,6 @@ export default async function BusinessDashboardPage() {
   ]);
 
   const kpiCardDetails = unwrap(kpiCardDetailsRes, null);
-  // FIX 3: typed as Record<string, number> — removes the need for "as number" casts
   const monthlyRevenue = unwrap(
     monthlyRevenueRes,
     {} as Record<string, number>,
@@ -99,29 +92,25 @@ export default async function BusinessDashboardPage() {
     total: 0,
   });
 
-  // FIX 4: safe mapping — value is now typed as number, no cast needed
   const revenueData = months
     .filter((m) => monthlyRevenue[m] !== undefined)
     .map((m) => ({ month: m, revenue: monthlyRevenue[m] }));
 
   return (
-    <div className="min-h-screen rounded-2xl bg-[#050816] px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
-      <div className="mx-auto flex w-full max-w-475 flex-col gap-6">
+    <div className="min-h-screen rounded-2xl bg-[#050816] px-4 py-5 sm:px-6 lg:px-6 lg:py-7">
+      <div className="flex w-full flex-col gap-6">
         {/* ── Page heading ── */}
         <DashboardHeader name={name} role={role} avatar={avatar} />
 
-        {/* FIX 5: null-guard — components only render when kpiCardDetails is available */}
         {kpiCardDetails && (
           <>
             {/* ── KPI cards ── */}
             <DashboardKpiCards data={kpiCardDetails} />
 
             {/* ── Invoice status | Top products | Payment method ── */}
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
               <InvoiceStatusChart invStatusChart={kpiCardDetails} />
-
               <TopProductsChart topProducts={topProducts} />
-
               <PaymentMethodChart stats={paymentMethodStats} />
             </div>
           </>
@@ -133,7 +122,6 @@ export default async function BusinessDashboardPage() {
         {/* ── Top clients | Recent transactions ── */}
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <TopClientsTable topClients={topClients} />
-
           <RecentTransactions recentTransactions={recentTransactions} />
         </div>
 
@@ -142,7 +130,6 @@ export default async function BusinessDashboardPage() {
           <div className="lg:col-span-3">
             <OverdueInvoices overdueInvoices={overdueInvoices} />
           </div>
-
           <div className="lg:col-span-2">
             <UpcomingDueDates upcomingOverdueInv={upcomingOverdue} />
           </div>
@@ -151,7 +138,6 @@ export default async function BusinessDashboardPage() {
         {/* ── New vs returning clients | Client growth ── */}
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <ClientTypeChart clientPieChartData={clientPieCharts} />
-
           <ClientGrowthChart clientNumbers={clientsNumByMonth} />
         </div>
       </div>

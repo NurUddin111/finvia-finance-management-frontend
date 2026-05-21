@@ -10,15 +10,15 @@ export async function proxy(request: NextRequest) {
     "verifiedCreationToken",
   )?.value;
 
-  const protectedStartsWith = ["/admin", "/business", "/onboarding"];
+  // const protectedStartsWith = ["/admin", "/business", "/onboarding"];
 
-  const isProtectedRoute = protectedStartsWith.some((route) =>
-    pathname.startsWith(route),
-  );
+  // const isProtectedRoute = protectedStartsWith.some((route) =>
+  //   pathname.startsWith(route),
+  // );
 
-  if (!accessToken && isProtectedRoute) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  // if (!accessToken && isProtectedRoute) {
+  //   return NextResponse.redirect(new URL("/login", request.url));
+  // }
 
   if (!creationToken && pathname === "/signup/verify") {
     return NextResponse.redirect(new URL("/signup", request.url));

@@ -22,21 +22,19 @@ export default function LoginModal() {
 
     if (state.success) {
       toast.success("Logged in successfully!");
-      router.refresh(); // ✅ refresh to pick up new session cookies
+      router.refresh();
       return;
     }
 
-    // FIX: don't refresh on failure — it clears the form state
-    // FIX: only toast on API failure, not Zod field errors
     if (!state.errors) {
       toast.error(state.error ?? "Failed to login!");
     }
   }, [state, router]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 px-4 py-5 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 px-3 py-4 backdrop-blur-sm sm:px-6 sm:py-8">
       {/* MODAL */}
-      <div className="relative w-full max-w-sm overflow-hidden rounded-[28px] border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] shadow-[0_30px_120px_rgba(0,0,0,0.65)]">
+      <div className="relative w-full max-w-110 overflow-hidden rounded-[28px] border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] shadow-[0_30px_120px_rgba(0,0,0,0.65)]">
         {/* CLOSE */}
         <button
           type="button"
@@ -48,29 +46,26 @@ export default function LoginModal() {
         </button>
 
         {/* HEADER */}
-        <div className="border-b border-white/10 px-5 py-5">
+        <div className="border-b border-white/10 px-5 py-4 sm:px-6">
           <h2 className="text-2xl font-semibold tracking-tight text-white">
             Welcome back
           </h2>
-
           <p className="mt-1 text-sm text-slate-400">
             Login to your Finvia workspace.
           </p>
         </div>
 
         {/* BODY */}
-        <div className="px-5 py-5">
+        <div className="px-5 py-4 sm:px-6">
           <form action={formAction}>
-            <FieldGroup className="space-y-2">
+            <FieldGroup className="space-y-1">
               {/* EMAIL */}
               <Field>
                 <FieldLabel className="mb-2 block text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
                   Email
                 </FieldLabel>
-
                 <div className="relative">
                   <Mail className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
-
                   <Input
                     name="email"
                     type="email"
@@ -80,7 +75,6 @@ export default function LoginModal() {
                     className="h-11 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
                 </div>
-
                 <InputFieldError field="email" state={state} />
               </Field>
 
@@ -89,10 +83,8 @@ export default function LoginModal() {
                 <FieldLabel className="mb-2 block text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
                   Password
                 </FieldLabel>
-
                 <div className="relative">
                   <Lock className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
-
                   <Input
                     name="password"
                     type={showPassword ? "text" : "password"}
@@ -100,7 +92,6 @@ export default function LoginModal() {
                     placeholder="Enter your password"
                     className="h-11 rounded-2xl border border-white/10 bg-white/3 pl-11 pr-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
-
                   <button
                     type="button"
                     onClick={() => setShowPassword((p) => !p)}
@@ -114,11 +105,10 @@ export default function LoginModal() {
                     )}
                   </button>
                 </div>
-
                 <InputFieldError field="password" state={state} />
               </Field>
 
-              {/* GLOBAL ERROR — API failure only */}
+              {/* GLOBAL ERROR */}
               {!isPending && state?.success === false && !state.errors && (
                 <div className="rounded-2xl border border-red-500/15 bg-red-500/8 px-4 py-3">
                   <p className="text-sm text-red-400">
@@ -137,7 +127,7 @@ export default function LoginModal() {
               </Button>
 
               {/* FOOTER */}
-              <p className="pt-1 text-center text-sm text-slate-500">
+              <p className="text-center text-sm text-slate-500">
                 Don&apos;t have an account?{" "}
                 <button
                   type="button"
@@ -149,7 +139,7 @@ export default function LoginModal() {
               </p>
 
               {/* DIVIDER */}
-              <div className="flex items-center gap-3 pt-1">
+              <div className="flex items-center gap-3">
                 <div className="h-px flex-1 bg-white/10" />
                 <span className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
                   OR
@@ -160,7 +150,6 @@ export default function LoginModal() {
               {/* GOOGLE */}
               <Button
                 type="button"
-                disabled
                 className="h-11 w-full rounded-2xl border border-white/10 bg-white/3 text-sm font-medium text-slate-300 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:text-white"
               >
                 <GoogleIcon className="size-4" />

@@ -24,16 +24,16 @@ export default function SignUpVerifyModal() {
   }, [state, router]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 px-4 py-5 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 px-3 py-4 backdrop-blur-sm sm:px-6 sm:py-8">
       {/* MODAL */}
-      <div className="relative w-full max-w-sm overflow-hidden rounded-[28px] border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] shadow-[0_30px_120px_rgba(0,0,0,0.65)]">
+      <div className="relative w-full max-w-110 overflow-hidden rounded-[28px] border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] shadow-[0_30px_120px_rgba(0,0,0,0.65)]">
         {/* HEADER */}
-        <div className="border-b border-white/10 px-5 py-5">
+        <div className="border-b border-white/10 px-5 py-4 sm:px-6">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
             <MailCheck className="size-5 text-blue-400" />
           </div>
 
-          <h2 className="mt-4 text-2xl font-semibold tracking-tight text-white">
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white">
             Verify email
           </h2>
 
@@ -43,31 +43,31 @@ export default function SignUpVerifyModal() {
         </div>
 
         {/* BODY */}
-        <div className="px-5 py-5">
+        <div className="px-5 py-4 sm:px-6">
           <form action={formAction}>
             {/* OTP */}
             <div className="flex justify-center">
               <InputOTP maxLength={6} name="otp" autoFocus>
-                <InputOTPGroup className="gap-2">
+                <InputOTPGroup className="gap-1.5 sm:gap-2">
                   {[0, 1, 2, 3, 4, 5].map((i) => (
                     <InputOTPSlot
                       key={i}
                       index={i}
-                      className="h-12 w-12 rounded-2xl border border-white/10 bg-white/3 text-sm text-white focus:border-blue-500/20 focus:bg-white/5 data-[active=true]:border-blue-500/30"
+                      className="h-11 w-11 rounded-2xl border border-white/10 bg-white/3 text-sm text-white focus:border-blue-500/20 focus:bg-white/5 data-[active=true]:border-blue-500/30 sm:h-12 sm:w-12"
                     />
                   ))}
                 </InputOTPGroup>
               </InputOTP>
             </div>
 
-            {/* OTP FIELD ERROR — Zod validation failure */}
+            {/* OTP FIELD ERROR */}
             <div className="mt-2 flex justify-center">
               <InputFieldError field="otp" state={state} />
             </div>
 
-            {/* GLOBAL ERROR — API-level failure only */}
+            {/* GLOBAL ERROR */}
             {!isPending && state?.success === false && !state.errors && (
-              <div className="mt-5 rounded-2xl border border-red-500/15 bg-red-500/8 px-4 py-3">
+              <div className="mt-4 rounded-2xl border border-red-500/15 bg-red-500/8 px-4 py-3">
                 <p className="text-sm text-red-400">
                   {state.error ?? "Invalid verification code."}
                 </p>
@@ -78,7 +78,7 @@ export default function SignUpVerifyModal() {
             <Button
               type="submit"
               disabled={isPending}
-              className="mt-6 h-11 w-full rounded-2xl border border-blue-500/20 bg-blue-500/10 text-sm font-medium text-blue-400 transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_35px_rgba(59,130,246,0.16)] disabled:opacity-60"
+              className="mt-5 h-11 w-full rounded-2xl border border-blue-500/20 bg-blue-500/10 text-sm font-medium text-blue-400 transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_35px_rgba(59,130,246,0.16)] disabled:opacity-60"
             >
               {isPending ? "Verifying..." : "Verify Email"}
             </Button>
