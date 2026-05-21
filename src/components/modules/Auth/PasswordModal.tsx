@@ -25,24 +25,22 @@ export default function SignUpPasswordModal() {
       return;
     }
 
-    // FIX: only toast on API failure, not Zod field errors
-    // field errors are already shown inline via InputFieldError
     if (!state.success && !state.errors) {
       toast.error(state.error ?? "Account creation failed!");
     }
   }, [state, router]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 px-4 py-5 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 px-3 py-4 backdrop-blur-sm sm:px-6 sm:py-8">
       {/* MODAL */}
-      <div className="relative w-full max-w-sm overflow-hidden rounded-[28px] border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] shadow-[0_30px_120px_rgba(0,0,0,0.65)]">
+      <div className="relative w-full max-w-110 overflow-hidden rounded-[28px] border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] shadow-[0_30px_120px_rgba(0,0,0,0.65)]">
         {/* HEADER */}
-        <div className="border-b border-white/10 px-5 py-5">
+        <div className="border-b border-white/10 px-5 py-4 sm:px-6">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
             <Lock className="size-5 text-blue-400" />
           </div>
 
-          <h2 className="mt-4 text-2xl font-semibold tracking-tight text-white">
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white">
             Set password
           </h2>
 
@@ -52,9 +50,9 @@ export default function SignUpPasswordModal() {
         </div>
 
         {/* BODY */}
-        <div className="px-5 py-5">
+        <div className="px-5 py-4 sm:px-6">
           <form action={formAction}>
-            <FieldGroup className="space-y-4">
+            <FieldGroup className="space-y-3">
               {/* PASSWORD */}
               <Field>
                 <FieldLabel className="mb-2 block text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
@@ -87,7 +85,6 @@ export default function SignUpPasswordModal() {
                   </button>
                 </div>
 
-                {/* Zod field error */}
                 <InputFieldError field="password" state={state} />
 
                 <p className="mt-2 text-xs leading-relaxed text-slate-500">
@@ -95,7 +92,7 @@ export default function SignUpPasswordModal() {
                 </p>
               </Field>
 
-              {/* GLOBAL ERROR — API failure only */}
+              {/* GLOBAL ERROR */}
               {!isPending && state?.success === false && !state.errors && (
                 <div className="rounded-2xl border border-red-500/15 bg-red-500/8 px-4 py-3">
                   <p className="text-sm text-red-400">
