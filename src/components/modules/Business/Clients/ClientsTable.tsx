@@ -74,8 +74,8 @@ const EmptyState = ({ colSpan }: { colSpan: number }) => (
 export default function ClientsTable({ clients }: { clients: IClient[] }) {
   return (
     <>
-      {/* MOBILE */}
-      <div className="space-y-4 md:hidden">
+      {/* MOBILE + TABLET */}
+      <div className="space-y-4 lg:hidden">
         {clients.length === 0 ? (
           <div className="rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-8">
             <div className="flex flex-col items-center justify-center text-center">
@@ -93,44 +93,42 @@ export default function ClientsTable({ clients }: { clients: IClient[] }) {
             </div>
           </div>
         ) : (
-          clients.map((client: IClient, idx: number) => (
+          clients.map((client: IClient) => (
             <div
               key={client.id}
-              className="rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-4 transition-all duration-300 hover:border-blue-500/20 hover:bg-white/2"
+              className="rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-4 transition-all duration-300 hover:border-blue-500/20 hover:bg-white/2 sm:p-5"
             >
               {/* TOP */}
               <div className="flex items-start justify-between gap-3">
                 <div className="flex min-w-0 items-center gap-3">
-                  <div className="relative">
+                  <div className="relative shrink-0">
                     <ClientAvatar name={client?.name} />
-
-                    <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border border-[#050816] bg-blue-500 text-[9px] font-semibold text-white">
-                      {idx + 1}
-                    </div>
                   </div>
 
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-white">
+                    <p className="truncate text-sm font-semibold text-white sm:text-base">
                       {client?.name}
                     </p>
 
-                    <p className="mt-1 truncate text-xs text-slate-400">
+                    <p className="mt-1 truncate text-xs text-slate-400 sm:text-sm">
                       {client?.email}
                     </p>
 
-                    <p className="mt-1 text-[11px] text-slate-500">
+                    <p className="mt-1 text-[11px] text-slate-500 sm:text-xs">
                       {client?.phone || "—"}
                     </p>
                   </div>
                 </div>
 
-                <StatusBadge status={client.status} />
+                <div className="shrink-0">
+                  <StatusBadge status={client.status} />
+                </div>
               </div>
 
               {/* META */}
-              <div className="mt-4 grid grid-cols-2 gap-3 rounded-2xl border border-white/5 bg-white/2 p-3">
+              <div className="mt-4 grid grid-cols-2 gap-3 rounded-2xl border border-white/5 bg-white/2 p-3 sm:p-4">
                 <div>
-                  <p className="text-[10px] uppercase tracking-[0.18em] text-slate-500">
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-slate-500 sm:tracking-[0.18em]">
                     Invoices
                   </p>
 
@@ -140,11 +138,11 @@ export default function ClientsTable({ clients }: { clients: IClient[] }) {
                 </div>
 
                 <div className="text-right">
-                  <p className="text-[10px] uppercase tracking-[0.18em] text-slate-500">
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-slate-500 sm:tracking-[0.18em]">
                     Added
                   </p>
 
-                  <p className="mt-2 text-xs text-slate-300">
+                  <p className="mt-2 text-xs text-slate-300 sm:text-sm">
                     {client.formattedDate}
                   </p>
                 </div>
@@ -160,14 +158,14 @@ export default function ClientsTable({ clients }: { clients: IClient[] }) {
       </div>
 
       {/* DESKTOP */}
-      <div className="hidden overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] md:block">
-        <table className="w-full border-collapse">
+      <div className="hidden overflow-x-auto rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] lg:block">
+        <table className="min-w-237.5 w-full border-collapse">
           <thead className="border-b border-white/10 bg-white/2">
             <tr>
               {TABLE_HEADERS.map((h) => (
                 <th
                   key={h}
-                  className="px-6 py-4 text-left text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500"
+                  className="px-3 py-4 text-left text-[10px] font-medium uppercase tracking-[0.14em] text-slate-500 lg:px-6 lg:text-[11px] lg:tracking-[0.18em]"
                 >
                   {h}
                 </th>
@@ -182,26 +180,24 @@ export default function ClientsTable({ clients }: { clients: IClient[] }) {
               clients.map((client: IClient) => (
                 <tr
                   key={client.id}
-                  className="border-b border-white/4 transition-all duration-200 hover:bg-white/3 last:border-0"
+                  className="border-b border-white/4 transition-all duration-200 last:border-0 hover:bg-white/3"
                 >
                   {/* CLIENT */}
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-4">
-                      <div className="relative">
-                        <ClientAvatar name={client.name} />
-                      </div>
+                  <td className="px-3 py-3 lg:px-6 lg:py-4">
+                    <div className="flex items-center gap-3">
+                      <ClientAvatar name={client.name} />
 
-                      <div>
-                        <p className="text-sm font-medium text-white">
-                          {client.name}
-                        </p>
-                      </div>
+                      <p className="whitespace-nowrap text-sm font-medium text-white">
+                        {client.name}
+                      </p>
                     </div>
                   </td>
 
                   {/* CONTACT */}
-                  <td className="px-6 py-4">
-                    <p className="text-sm text-slate-300">{client.email}</p>
+                  <td className="px-3 py-3 lg:px-6 lg:py-4">
+                    <p className="whitespace-nowrap text-sm text-slate-300">
+                      {client.email}
+                    </p>
 
                     <p className="mt-1 text-xs text-slate-500">
                       {client.phone || "—"}
@@ -209,24 +205,24 @@ export default function ClientsTable({ clients }: { clients: IClient[] }) {
                   </td>
 
                   {/* STATUS */}
-                  <td className="px-6 py-4">
+                  <td className="px-3 py-3 lg:px-6 lg:py-4">
                     <StatusBadge status={client.status} />
                   </td>
 
                   {/* INVOICES */}
-                  <td className="px-6 py-4">
+                  <td className="px-3 py-3 lg:px-6 lg:py-4">
                     <InvoicePill count={client.totalInvoices ?? 0} />
                   </td>
 
                   {/* ADDED */}
-                  <td className="px-6 py-4">
-                    <p className="text-sm text-slate-400">
+                  <td className="px-3 py-3 lg:px-6 lg:py-4">
+                    <p className="whitespace-nowrap text-sm text-slate-400">
                       {client.formattedDate}
                     </p>
                   </td>
 
                   {/* ACTIONS */}
-                  <td className="px-6 py-4">
+                  <td className="px-3 py-3 lg:px-6 lg:py-4">
                     <ClientActions client={client} />
                   </td>
                 </tr>

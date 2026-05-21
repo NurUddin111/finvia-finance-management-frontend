@@ -29,24 +29,17 @@ const ClientsPage = async ({
     getClientsStats(),
   ]);
 
-  // FIX: ?? [] handles the undefined case TS was complaining about
   const clients: IClient[] = clientsRes.data ?? [];
   const meta = clientsRes.meta;
-
-  // FIX: ?? null guards against undefined assignment
   const clientsStats: ClientsStats | null = clientsStatsRes.data ?? null;
 
   return (
-    <div className="min-h-screen rounded-2xl bg-[#050816] px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
-      <div className="mx-auto w-full max-w-400">
+    <div className="min-h-screen rounded-2xl bg-[#050816] px-4 py-5 sm:px-6 lg:px-6 lg:py-7">
+      <div className="w-full">
         <ClientsHeader />
-
         <ClientStatCards clientsStats={clientsStats} />
-
         <ClientToolbar total={meta?.total ?? 0} />
-
         <ClientsTable clients={clients} />
-
         <Pagination
           page={meta?.page ?? 1}
           totalPages={meta?.totalPages ?? 1}
