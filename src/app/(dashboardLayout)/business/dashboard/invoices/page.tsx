@@ -3,7 +3,9 @@ import InvoicesHeader from "@/components/modules/Business/Invoices/InvoicesHeade
 import InvoicesTable from "@/components/modules/Business/Invoices/InvoicesTable";
 import InvoicesStats from "@/components/modules/Business/Invoices/InvoicesStats";
 import Pagination from "@/components/shared/Pagination";
+
 import { IInvoice, InvoiceStats } from "@/types/invoice";
+
 import {
   getAllInvoices,
   getInvoiceStats,
@@ -17,9 +19,9 @@ const InvoicePage = async ({
 }) => {
   const params = await searchParams;
 
-  // FIX: all three run in parallel — updateInvStatus result not needed so not destructured
   const [invoiceStatsRes, allInvoicesRes] = await Promise.all([
     getInvoiceStats(),
+
     getAllInvoices({
       page: params.page,
       search: params.search,
@@ -28,17 +30,19 @@ const InvoicePage = async ({
       order: params.order,
       year: params.year,
     }),
+
     updateInvStatus(),
   ]);
 
-  // FIX: ?? instead of `as` casts — safe fallbacks, no type lies
   const invoiceStats: InvoiceStats | null = invoiceStatsRes.data ?? null;
+
   const allInvoices: IInvoice[] = allInvoicesRes.data ?? [];
+
   const meta = allInvoicesRes.meta;
 
   return (
-    <div className="min-h-screen rounded-2xl bg-[#050816] px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
-      <div className="mx-auto flex w-full max-w-400 flex-col gap-6">
+    <div className="min-h-screen bg-[#050816] px-3 py-4 sm:px-5 sm:py-5 lg:px-8 lg:py-7">
+      <div className="mx-auto flex w-full max-w-400 flex-col gap-5 lg:gap-6">
         <InvoicesHeader />
 
         <InvoicesStats invoiceStats={invoiceStats} />
@@ -47,6 +51,7 @@ const InvoicePage = async ({
           total={meta?.total ?? 0}
           availableYears={meta?.availableYears ?? []}
         />
+
 
         <InvoicesTable invoices={allInvoices} />
 
