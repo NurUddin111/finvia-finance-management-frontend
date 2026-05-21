@@ -20,7 +20,7 @@ export default function InvoicesHeader() {
             <ReceiptText className="size-4 text-blue-400" />
           </div>
 
-          <span className="text-3xl font-medium uppercase tracking-[0.2em] text-blue-400">
+          <span className="text-lg font-medium uppercase tracking-[0.12em] text-blue-400 sm:text-2xl sm:tracking-[0.18em] lg:text-3xl lg:tracking-[0.2em]">
             Invoice Management
           </span>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, X, SlidersHorizontal, CalendarRange } from "lucide-react";
+import { CalendarRange, Search, SlidersHorizontal, X } from "lucide-react";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -65,6 +65,7 @@ const InvoicesFilters = ({
     }, 400);
 
     return () => clearTimeout(timer);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
@@ -113,7 +114,7 @@ const InvoicesFilters = ({
         </div>
 
         {/* STATUS */}
-        <div className="relative min-w-47.5">
+        <div className="relative w-full sm:min-w-52 lg:w-auto">
           <SlidersHorizontal
             size={14}
             className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
@@ -122,10 +123,14 @@ const InvoicesFilters = ({
           <select
             value={searchParams.get("status") || "all"}
             onChange={(e) => handleFilterChange("status", e.target.value)}
-            className="h-11 w-full appearance-none rounded-2xl border border-white/10 bg-white/3 pl-11 pr-4 text-sm text-slate-300 outline-none transition-all duration-300 focus:border-blue-500/30 focus:bg-white/5 focus:shadow-[0_0_25px_rgba(59,130,246,0.08)]"
+            className="h-11 w-full appearance-none rounded-2xl border border-white/10 bg-white/3 pl-11 pr-10 text-sm text-slate-300 outline-none transition-all duration-300 focus:border-blue-500/30 focus:bg-[#0B1120] focus:text-white focus:shadow-[0_0_25px_rgba(59,130,246,0.08)]"
           >
             {INVOICE_STATUSES.map((s) => (
-              <option key={s.value} value={s.value}>
+              <option
+                key={s.value}
+                value={s.value}
+                className="bg-[#0B1120] text-white"
+              >
                 {s.label}
               </option>
             ))}
@@ -134,7 +139,7 @@ const InvoicesFilters = ({
 
         {/* YEAR */}
         {availableYears.length > 0 && (
-          <div className="relative min-w-42.5">
+          <div className="relative w-full sm:min-w-44 lg:w-auto">
             <CalendarRange
               size={14}
               className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
@@ -143,12 +148,18 @@ const InvoicesFilters = ({
             <select
               value={searchParams.get("year") || "all"}
               onChange={(e) => handleFilterChange("year", e.target.value)}
-              className="h-11 w-full appearance-none rounded-2xl border border-white/10 bg-white/3 pl-11 pr-4 text-sm text-slate-300 outline-none transition-all duration-300 focus:border-blue-500/30 focus:bg-white/5 focus:shadow-[0_0_25px_rgba(59,130,246,0.08)]"
+              className="h-11 w-full appearance-none rounded-2xl border border-white/10 bg-white/3 pl-11 pr-10 text-sm text-slate-300 outline-none transition-all duration-300 focus:border-blue-500/30 focus:bg-[#0B1120] focus:text-white focus:shadow-[0_0_25px_rgba(59,130,246,0.08)]"
             >
-              <option value="all">All Years</option>
+              <option value="all" className="bg-[#0B1120] text-white">
+                All Years
+              </option>
 
               {availableYears.map((year) => (
-                <option key={year} value={String(year)}>
+                <option
+                  key={year}
+                  value={String(year)}
+                  className="bg-[#0B1120] text-white"
+                >
                   {year}
                 </option>
               ))}
@@ -158,8 +169,8 @@ const InvoicesFilters = ({
       </div>
 
       {/* RIGHT */}
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="rounded-full border border-white/10 bg-white/3 px-3 py-1.5 text-xs font-medium text-slate-400">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+        <div className="inline-flex w-fit items-center rounded-full border border-white/10 bg-white/3 px-3 py-1.5 text-xs font-medium text-slate-400">
           {total} result
           {total !== 1 ? "s" : ""} found
         </div>
@@ -167,7 +178,7 @@ const InvoicesFilters = ({
         {isFiltered && (
           <button
             onClick={handleReset}
-            className="flex h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/3 px-4 text-xs font-medium text-slate-400 transition-all duration-300 hover:border-red-500/20 hover:bg-red-500/10 hover:text-red-400"
+            className="flex h-10 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/3 px-4 text-xs font-medium text-slate-400 transition-all duration-300 hover:border-red-500/20 hover:bg-red-500/10 hover:text-red-400 sm:justify-start"
           >
             <X size={13} />
             Reset Filters
