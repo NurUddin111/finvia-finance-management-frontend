@@ -80,7 +80,7 @@ This frontend consumes the Finvia backend APIs to manage authentication, busines
     NEXT_PUBLIC_API_BASE_URL=
     NEXT_PUBLIC_APP_NAME=
 
-    Make sure the backend server is running before starting the frontend.
+    Make sure the backend server is running before starting the frontend!
 
 ## 🚀 Getting Started
 
