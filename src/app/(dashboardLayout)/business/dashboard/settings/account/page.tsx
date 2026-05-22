@@ -1,16 +1,28 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import { useRouter } from "next/navigation";
-import { AlertTriangle, Building2, ShieldAlert, Trash2 } from "lucide-react";
+
+import {
+  AlertTriangle,
+  Building2,
+  ChevronLeft,
+  ShieldAlert,
+  Trash2,
+} from "lucide-react";
+
 import { Button } from "@/components/ui/button";
+
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+
 import { deleteMyAccount, getMe } from "@/services/auth.services";
+
 import {
   deleteMyBusiness,
   getMyBusiness,
@@ -19,25 +31,29 @@ import {
 export default function AccountPage() {
   const router = useRouter();
 
-  const [userId, setUserId] = useState<string>("");
-  const [businessId, setBusinessId] = useState<string>("");
+  const [userId, setUserId] = useState("");
+
+  const [businessId, setBusinessId] = useState("");
+
   const [openAccount, setOpenAccount] = useState(false);
+
   const [openBusiness, setOpenBusiness] = useState(false);
 
-  // FIX: split into two loading states so they don't interfere
   const [loadingAccount, setLoadingAccount] = useState(false);
+
   const [loadingBusiness, setLoadingBusiness] = useState(false);
 
   /* FETCH IDS */
   useEffect(() => {
     const fetchIds = async () => {
       const profileRes = await getMe();
+
       if (profileRes?.data) {
         setUserId(profileRes.data.id);
       }
 
       const businessRes = await getMyBusiness();
-      // FIX: check businessRes.data explicitly to narrow type
+
       if (businessRes?.success && businessRes.data) {
         setBusinessId(businessRes.data.id);
       }
@@ -51,7 +67,9 @@ export default function AccountPage() {
     if (!userId) return;
 
     setLoadingAccount(true);
+
     const res = await deleteMyAccount(userId);
+
     setLoadingAccount(false);
 
     if (res?.success) {
@@ -63,31 +81,45 @@ export default function AccountPage() {
     if (!businessId) return;
 
     setLoadingBusiness(true);
+
     const res = await deleteMyBusiness(businessId);
+
     setLoadingBusiness(false);
 
     if (res?.success) {
       setOpenBusiness(false);
+
       router.refresh();
     }
   };
 
   return (
-    <div className="min-h-screen rounded-2xl bg-[#050816] px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
+    <div className="min-h-screen bg-[#050816] px-3 py-4 sm:px-5 sm:py-5 lg:px-8 lg:py-7">
+      <div className="mx-auto flex w-full max-w-350 flex-col gap-5 lg:gap-6">
+        {/* BACK BUTTON */}
+        <div className="lg:hidden">
+          <button
+            onClick={() => router.back()}
+            className="group inline-flex h-10 items-center gap-2 rounded-2xl border border-white/10 bg-white/3 px-4 text-sm font-medium text-slate-300 transition-all duration-300 hover:border-red-500/20 hover:bg-red-500/10 hover:text-red-400"
+          >
+            <ChevronLeft className="size-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
+            Back
+          </button>
+        </div>
+
         {/* HEADER */}
-        <div className="rounded-3xl border border-red-500/15 bg-linear-to-b from-[#140809] to-[#050816] p-5 md:p-6">
-          <div className="flex items-start gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10">
-              <ShieldAlert className="size-6 text-red-400" />
+        <div className="rounded-3xl border border-red-500/15 bg-linear-to-b from-[#140809] to-[#050816] p-4 sm:p-5 md:p-6">
+          <div className="flex items-start gap-3 sm:gap-4">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10 sm:h-14 sm:w-14">
+              <ShieldAlert className="size-5 text-red-400 sm:size-6" />
             </div>
 
-            <div>
-              <span className="rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-red-400">
+            <div className="min-w-0">
+              <span className="inline-flex rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-red-400 sm:text-[11px] sm:tracking-[0.18em]">
                 Danger Zone
               </span>
 
-              <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white">
+              <h1 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
                 Account Management
               </h1>
 
@@ -100,17 +132,17 @@ export default function AccountPage() {
         </div>
 
         {/* CONTENT */}
-        <div className="space-y-5">
+        <div className="space-y-4 sm:space-y-5">
           {/* DELETE BUSINESS */}
-          <div className="rounded-3xl border border-red-500/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5 md:p-6">
-            <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-red-500/15 bg-red-500/10">
-                  <Building2 className="size-5 text-red-400" />
+          <div className="rounded-3xl border border-red-500/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-4 sm:p-5 md:p-6">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-red-500/15 bg-red-500/10 sm:h-12 sm:w-12">
+                  <Building2 className="size-4 text-red-400 sm:size-5" />
                 </div>
 
-                <div>
-                  <h2 className="text-lg font-semibold text-white">
+                <div className="min-w-0">
+                  <h2 className="text-base font-semibold text-white sm:text-lg">
                     Delete Business
                   </h2>
 
@@ -125,7 +157,7 @@ export default function AccountPage() {
               <Button
                 disabled={!businessId || loadingBusiness}
                 onClick={() => setOpenBusiness(true)}
-                className="h-11 rounded-2xl border border-red-500/20 bg-red-500/10 px-5 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300 hover:shadow-[0_0_25px_rgba(239,68,68,0.18)]"
+                className="h-11 w-full rounded-2xl border border-red-500/20 bg-red-500/10 px-5 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300 hover:shadow-[0_0_25px_rgba(239,68,68,0.18)] sm:w-auto"
               >
                 <Trash2 className="size-4" />
                 Delete Business
@@ -134,15 +166,15 @@ export default function AccountPage() {
           </div>
 
           {/* DELETE ACCOUNT */}
-          <div className="rounded-3xl border border-red-500/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5 md:p-6">
-            <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-red-500/15 bg-red-500/10">
-                  <AlertTriangle className="size-5 text-red-400" />
+          <div className="rounded-3xl border border-red-500/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-4 sm:p-5 md:p-6">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-red-500/15 bg-red-500/10 sm:h-12 sm:w-12">
+                  <AlertTriangle className="size-4 text-red-400 sm:size-5" />
                 </div>
 
-                <div>
-                  <h2 className="text-lg font-semibold text-white">
+                <div className="min-w-0">
+                  <h2 className="text-base font-semibold text-white sm:text-lg">
                     Delete Account
                   </h2>
 
@@ -156,7 +188,7 @@ export default function AccountPage() {
               <Button
                 disabled={!userId || loadingAccount}
                 onClick={() => setOpenAccount(true)}
-                className="h-11 rounded-2xl border border-red-500/20 bg-red-500/10 px-5 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300 hover:shadow-[0_0_25px_rgba(239,68,68,0.18)]"
+                className="h-11 w-full rounded-2xl border border-red-500/20 bg-red-500/10 px-5 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300 hover:shadow-[0_0_25px_rgba(239,68,68,0.18)] sm:w-auto"
               >
                 <Trash2 className="size-4" />
                 Delete Account
@@ -169,15 +201,15 @@ export default function AccountPage() {
       {/* DELETE BUSINESS MODAL */}
       <Dialog open={openBusiness} onOpenChange={setOpenBusiness}>
         <DialogContent className="overflow-hidden border border-red-500/15 bg-[#050816] p-0 shadow-[0_30px_120px_rgba(0,0,0,0.65)] sm:max-w-md">
-          <div className="border-b border-red-500/10 bg-linear-to-b from-[#140809] to-[#050816] px-6 py-6">
+          <div className="border-b border-red-500/10 bg-linear-to-b from-[#140809] to-[#050816] px-5 py-5 sm:px-6 sm:py-6">
             <DialogHeader>
               <div className="mb-4 flex justify-center">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10">
-                  <Building2 className="size-6 text-red-400" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10 sm:h-14 sm:w-14">
+                  <Building2 className="size-5 text-red-400 sm:size-6" />
                 </div>
               </div>
 
-              <DialogTitle className="text-center text-2xl font-semibold text-white">
+              <DialogTitle className="text-center text-xl font-semibold text-white sm:text-2xl">
                 Delete Business
               </DialogTitle>
 
@@ -187,7 +219,7 @@ export default function AccountPage() {
             </DialogHeader>
           </div>
 
-          <div className="px-6 py-6">
+          <div className="px-5 py-5 sm:px-6 sm:py-6">
             <div className="rounded-2xl border border-red-500/15 bg-red-500/8 p-4">
               <p className="text-sm leading-relaxed text-slate-300">
                 Deleting your business will remove all invoices, clients,
@@ -195,7 +227,7 @@ export default function AccountPage() {
               </p>
             </div>
 
-            <div className="mt-6 flex gap-3">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Button
                 variant="outline"
                 onClick={() => setOpenBusiness(false)}
@@ -220,15 +252,15 @@ export default function AccountPage() {
       {/* DELETE ACCOUNT MODAL */}
       <Dialog open={openAccount} onOpenChange={setOpenAccount}>
         <DialogContent className="overflow-hidden border border-red-500/15 bg-[#050816] p-0 shadow-[0_30px_120px_rgba(0,0,0,0.65)] sm:max-w-md">
-          <div className="border-b border-red-500/10 bg-linear-to-b from-[#140809] to-[#050816] px-6 py-6">
+          <div className="border-b border-red-500/10 bg-linear-to-b from-[#140809] to-[#050816] px-5 py-5 sm:px-6 sm:py-6">
             <DialogHeader>
               <div className="mb-4 flex justify-center">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10">
-                  <AlertTriangle className="size-6 text-red-400" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10 sm:h-14 sm:w-14">
+                  <AlertTriangle className="size-5 text-red-400 sm:size-6" />
                 </div>
               </div>
 
-              <DialogTitle className="text-center text-2xl font-semibold text-white">
+              <DialogTitle className="text-center text-xl font-semibold text-white sm:text-2xl">
                 Delete Account
               </DialogTitle>
 
@@ -238,7 +270,7 @@ export default function AccountPage() {
             </DialogHeader>
           </div>
 
-          <div className="px-6 py-6">
+          <div className="px-5 py-5 sm:px-6 sm:py-6">
             <div className="rounded-2xl border border-red-500/15 bg-red-500/8 p-4">
               <p className="text-sm leading-relaxed text-slate-300">
                 This will permanently erase your account and log you out
@@ -246,7 +278,7 @@ export default function AccountPage() {
               </p>
             </div>
 
-            <div className="mt-6 flex gap-3">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Button
                 variant="outline"
                 onClick={() => setOpenAccount(false)}
