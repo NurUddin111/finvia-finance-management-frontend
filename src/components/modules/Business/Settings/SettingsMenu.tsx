@@ -28,7 +28,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { logoutUser } from "@/services/auth.services";
 
-
 const settingsItems = [
   {
     label: "Profile",
