@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   User2,
   Sparkles,
+  ChevronLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -86,6 +87,16 @@ export default function EditProfilePage() {
   return (
     <div className="min-h-screen rounded-2xl bg-[#050816] px-4 py-5 sm:px-6 lg:px-6 lg:py-7">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
+        {/* BACK BUTTON */}
+        <div className="lg:hidden">
+          <button
+            onClick={() => router.back()}
+            className="group inline-flex h-10 items-center gap-2 rounded-2xl border border-white/10 bg-white/3 px-4 text-sm font-medium text-slate-300 transition-all duration-300 hover:border-blue-500/20 hover:bg-blue-500/10 hover:text-blue-400"
+          >
+            <ChevronLeft className="size-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
+            Back
+          </button>
+        </div>
         {/* HEADER */}
         <div className="rounded-3xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5 md:p-6">
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">

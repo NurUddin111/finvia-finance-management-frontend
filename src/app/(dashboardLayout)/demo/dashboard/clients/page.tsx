@@ -5,8 +5,11 @@ import { useState } from "react";
 import ClientStatCards from "@/components/modules/Business/Clients/ClientStatsCard";
 
 import DemoClientsHeader from "@/components/modules/Demo/Clients/DemoClientsHeader";
+
 import DemoClientsTable from "@/components/modules/Demo/Clients/DemoClientsTable";
+
 import DemoClientToolbar from "@/components/modules/Demo/Clients/DemoClientsToolbar";
+
 import DemoPagination from "@/components/modules/Demo/DemoPagination";
 
 import { demoClients, demoClientsStats } from "@/data/demodata";
@@ -24,8 +27,8 @@ export default function DemoClientsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#050816] rounded-2xl px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
-      <div className="mx-auto w-full max-w-400">
+    <div className="min-h-screen bg-[#050816] px-3 py-4 sm:px-5 sm:py-5 lg:px-8 lg:py-7">
+      <div className="mx-auto flex w-full max-w-475 flex-col gap-5 lg:gap-6">
         <DemoClientsHeader />
 
         <ClientStatCards clientsStats={demoClientsStats} />

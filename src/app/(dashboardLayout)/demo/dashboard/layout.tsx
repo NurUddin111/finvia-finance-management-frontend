@@ -18,8 +18,10 @@ export default function DemoDashboardLayout({
 
       {/* MAIN */}
       <div className="flex min-w-0 flex-1 flex-col">
-        <main className="flex-1 pb-20 md:pb-6">
-          <div className="w-full p-3 sm:p-4 md:p-5 lg:p-6">{children}</div>
+        <main className="flex-1 pb-20 sm:pb-24 lg:pb-6">
+          <div className="w-full px-3 py-3 sm:px-4 sm:py-4 md:px-5 md:py-5 lg:px-6 lg:py-6">
+            {children}
+          </div>
         </main>
       </div>
 

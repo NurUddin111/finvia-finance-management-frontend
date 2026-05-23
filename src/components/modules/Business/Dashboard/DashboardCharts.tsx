@@ -121,7 +121,7 @@ export function RevenueChart({
 export function InvoiceStatusChart({
   invStatusChart,
 }: {
-  invStatusChart: IKPICardDetails;
+  invStatusChart: Partial<IKPICardDetails>;
 }) {
   const invoiceData = [
     {

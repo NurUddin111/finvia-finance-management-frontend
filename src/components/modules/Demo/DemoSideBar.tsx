@@ -4,7 +4,7 @@ import DemoSettingsAccordion from "./Settings/DemoSettingsMenu";
 
 const DemoSideBar = () => {
   return (
-    <aside className="hidden md:flex w-64 shrink-0 border-r bg-background">
+    <aside className="hidden lg:flex w-64 shrink-0 border-r bg-background">
       <div className="flex h-full w-full flex-col px-4 py-6">
         <DemoBusinessBrand />
 
@@ -15,21 +15,25 @@ const DemoSideBar = () => {
             icon="dashboard"
             href="/demo/dashboard"
           />
-          <SidebarItem
-            label="Clients"
-            icon="clients"
-            href="/demo/dashboard/clients"
-          />
-          <SidebarItem
-            label="Invoices"
-            icon="invoices"
-            href="/demo/dashboard/invoices"
-          />
+
           <SidebarItem
             label="Products"
             icon="products"
             href="/demo/dashboard/products"
           />
+
+          <SidebarItem
+            label="Clients"
+            icon="clients"
+            href="/demo/dashboard/clients"
+          />
+
+          <SidebarItem
+            label="Invoices"
+            icon="invoices"
+            href="/demo/dashboard/invoices"
+          />
+
           <DemoSettingsAccordion />
         </nav>
 

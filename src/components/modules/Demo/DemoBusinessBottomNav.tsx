@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { usePathname } from "next/navigation";
 
-import { Home, Users, FileText, Settings, PackageSearch } from "lucide-react";
+import { FileText, Home, PackageSearch, Settings, Users } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -13,6 +13,12 @@ const navItems = [
     label: "Dashboard",
     href: "/demo/dashboard",
     icon: Home,
+  },
+
+  {
+    label: "Products",
+    href: "/demo/dashboard/products",
+    icon: PackageSearch,
   },
 
   {
@@ -28,12 +34,6 @@ const navItems = [
   },
 
   {
-    label: "Products",
-    href: "/demo/dashboard/products",
-    icon: PackageSearch,
-  },
-
-  {
     label: "Settings",
     href: "/demo/dashboard/settings",
     icon: Settings,
@@ -44,11 +44,11 @@ export default function DemoBusinessBottomNav() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#030712]/95 backdrop-blur-2xl md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#030712]/95 backdrop-blur-2xl lg:hidden">
       {/* TOP GLOW */}
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-blue-500/40 to-transparent" />
 
-      <nav className="grid h-18 grid-cols-5 px-2">
+      <nav className="grid h-16 grid-cols-5 px-1.5 sm:h-18 sm:px-2">
         {navItems.map((item) => {
           const Icon = item.icon;
 
@@ -61,12 +61,12 @@ export default function DemoBusinessBottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className="relative flex flex-col items-center justify-center"
+              className="relative flex min-w-0 flex-col items-center justify-center"
             >
               {/* ACTIVE PILL */}
               <div
                 className={cn(
-                  "absolute top-2 h-10 w-14 rounded-2xl transition-all duration-300",
+                  "absolute top-2 h-9 w-12 rounded-2xl transition-all duration-300 sm:h-10 sm:w-14",
 
                   isActive
                     ? "bg-blue-500/10 shadow-[0_0_30px_rgba(59,130,246,0.18)]"
@@ -76,26 +76,26 @@ export default function DemoBusinessBottomNav() {
 
               {/* ACTIVE INDICATOR */}
               {isActive && (
-                <div className="absolute top-0 h-1 w-8 rounded-b-full bg-blue-400" />
+                <div className="absolute top-0 h-1 w-7 rounded-b-full bg-blue-400 sm:w-8" />
               )}
 
               {/* CONTENT */}
-              <div className="relative z-10 flex flex-col items-center gap-1">
+              <div className="relative z-10 flex flex-col items-center gap-0.5 sm:gap-1">
                 <div
                   className={cn(
-                    "flex h-9 w-9 items-center justify-center rounded-xl border transition-all duration-300",
+                    "flex h-8 w-8 items-center justify-center rounded-xl border transition-all duration-300 sm:h-9 sm:w-9",
 
                     isActive
                       ? "border-blue-500/20 bg-blue-500/10 text-blue-400"
                       : "border-transparent text-slate-500",
                   )}
                 >
-                  <Icon size={18} />
+                  <Icon size={17} className="sm:size-4.5" />
                 </div>
 
                 <span
                   className={cn(
-                    "text-[10px] font-medium transition-all duration-300",
+                    "max-w-full truncate text-[9px] font-medium transition-all duration-300 sm:text-[10px]",
 
                     isActive ? "text-blue-400" : "text-slate-500",
                   )}
