@@ -49,8 +49,8 @@ export interface IInvoice {
 
   // Relations
   business?: IBusiness;
-  client?: IClient;
-  items?: IInvoiceItem[];
+  client?: Partial<IClient>;
+  items?: Partial<IInvoiceItem>[];
   payments?: IPayment[];
 }
 

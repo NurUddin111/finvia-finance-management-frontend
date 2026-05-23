@@ -1,6 +1,6 @@
-import { Client, ClientsStats } from "@/types/client";
-import { Invoice, InvoiceStats } from "@/types/invoice";
-import { Product, ProductStats } from "@/types/product";
+import { IClient, ClientsStats } from "@/types/client";
+import { IInvoice, InvoiceStats, InvoiceStatus } from "@/types/invoice";
+import { IProduct, ProductStats } from "@/types/product";
 
 // ── Profile ───────────────────────────────────────────────────────
 export const demoProfile = {
@@ -247,7 +247,7 @@ export const demoClientsStats: ClientsStats = {
 };
 
 // ── Clients (15 entries → 2 pages at 10 per page) ─────────────────
-export const demoClients: Client[] = [
+export const demoClients: IClient[] = [
   {
     id: "1",
     name: "Tanvir Hossain",
@@ -478,17 +478,17 @@ export const demoInvoiceStats: InvoiceStats = {
 // ── Invoices (15 entries → 2 pages at 10 per page) ────────────────
 // Replace the demoInvoices array in src/data/demoData.ts
 
-export const demoInvoices: Invoice[] = [
+export const demoInvoices: IInvoice[] = [
   {
     id: "inv-1",
     businessId: "biz-1",
     clientId: "1",
     createdById: "user-1",
     invoiceNumber: "#INV-1061",
-    status: "PAID",
-    issueDate: "2026-04-25",
+    status: InvoiceStatus.PAID,
+    issueDate: new Date("2026-04-25"),
     dueDays: 7,
-    dueDate: "2026-05-02",
+    dueDate: new Date("2026-05-02"),
     totalItems: 1,
     subtotal: 132000,
     tax: 0,
@@ -496,9 +496,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: null,
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-04-25T10:00:00Z",
-    updatedAt: "2026-05-02T14:00:00Z",
+    createdAt: new Date("2026-04-25T10:00:00Z"),
+    updatedAt: new Date("2026-05-02T14:00:00Z"),
     client: { email: "tanvir.hossain@gmail.com", name: "Tanvir Hossain" },
     items: [
       {
@@ -516,10 +515,10 @@ export const demoInvoices: Invoice[] = [
     clientId: "2",
     createdById: "user-1",
     invoiceNumber: "#INV-1062",
-    status: "SENT",
-    issueDate: "2026-04-28",
+    status: InvoiceStatus.SENT,
+    issueDate: new Date("2026-04-28"),
     dueDays: 7,
-    dueDate: "2026-05-05",
+    dueDate: new Date("2026-05-05"),
     totalItems: 1,
     subtotal: 84500,
     tax: 0,
@@ -527,9 +526,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: null,
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-04-28T09:00:00Z",
-    updatedAt: "2026-04-28T09:00:00Z",
+    createdAt: new Date("2026-04-28T09:00:00Z"),
+    updatedAt: new Date("2026-04-28T09:00:00Z"),
     client: { email: "nusrat.islam@outlook.com", name: "Nusrat Islam" },
     items: [
       {
@@ -547,10 +545,10 @@ export const demoInvoices: Invoice[] = [
     clientId: "3",
     createdById: "user-1",
     invoiceNumber: "#INV-1063",
-    status: "PAID",
-    issueDate: "2026-04-20",
+    status: InvoiceStatus.PAID,
+    issueDate: new Date("2026-04-20"),
     dueDays: 14,
-    dueDate: "2026-05-04",
+    dueDate: new Date("2026-05-04"),
     totalItems: 2,
     subtotal: 61200,
     tax: 0,
@@ -558,9 +556,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: null,
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-04-20T11:00:00Z",
-    updatedAt: "2026-05-01T10:00:00Z",
+    createdAt: new Date("2026-04-20T11:00:00Z"),
+    updatedAt: new Date("2026-05-01T10:00:00Z"),
     client: { email: "mahbub.rahman@yahoo.com", name: "Mahbub Rahman" },
     items: [
       {
@@ -585,10 +582,10 @@ export const demoInvoices: Invoice[] = [
     clientId: "4",
     createdById: "user-1",
     invoiceNumber: "#INV-1064",
-    status: "OVERDUE",
-    issueDate: "2026-04-10",
+    status: InvoiceStatus.OVERDUE,
+    issueDate: new Date("2026-04-10"),
     dueDays: 7,
-    dueDate: "2026-04-17",
+    dueDate: new Date("2026-04-17"),
     totalItems: 1,
     subtotal: 52000,
     tax: 0,
@@ -596,9 +593,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: null,
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-04-10T08:00:00Z",
-    updatedAt: "2026-04-10T08:00:00Z",
+    createdAt: new Date("2026-04-10T08:00:00Z"),
+    updatedAt: new Date("2026-04-10T08:00:00Z"),
     client: { email: "sadia.khan@gmail.com", name: "Sadia Khan" },
     items: [
       {
@@ -616,10 +612,10 @@ export const demoInvoices: Invoice[] = [
     clientId: "5",
     createdById: "user-1",
     invoiceNumber: "#INV-1065",
-    status: "CANCELLED",
-    issueDate: "2026-04-08",
+    status: InvoiceStatus.CANCELLED,
+    issueDate: new Date("2026-04-08"),
     dueDays: 7,
-    dueDate: "2026-04-15",
+    dueDate: new Date("2026-04-15"),
     totalItems: 1,
     subtotal: 3200,
     tax: 0,
@@ -627,9 +623,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: "Client cancelled order",
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-04-08T13:00:00Z",
-    updatedAt: "2026-04-09T09:00:00Z",
+    createdAt: new Date("2026-04-08T13:00:00Z"),
+    updatedAt: new Date("2026-04-09T09:00:00Z"),
     client: { email: "rafiq.ahmed@gmail.com", name: "Rafiq Ahmed" },
     items: [
       {
@@ -647,10 +642,10 @@ export const demoInvoices: Invoice[] = [
     clientId: "6",
     createdById: "user-1",
     invoiceNumber: "#INV-1066",
-    status: "PAID",
-    issueDate: "2026-03-28",
+    status: InvoiceStatus.PAID,
+    issueDate: new Date("2026-03-28"),
     dueDays: 7,
-    dueDate: "2026-04-04",
+    dueDate: new Date("2026-04-04"),
     totalItems: 1,
     subtotal: 97400,
     tax: 0,
@@ -658,9 +653,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: null,
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-03-28T10:00:00Z",
-    updatedAt: "2026-04-03T15:00:00Z",
+    createdAt: new Date("2026-03-28T10:00:00Z"),
+    updatedAt: new Date("2026-04-03T15:00:00Z"),
     client: { email: "farhana.begum@hotmail.com", name: "Farhana Begum" },
     items: [
       {
@@ -678,10 +672,10 @@ export const demoInvoices: Invoice[] = [
     clientId: "7",
     createdById: "user-1",
     invoiceNumber: "#INV-1067",
-    status: "OVERDUE",
-    issueDate: "2026-03-20",
+    status: InvoiceStatus.OVERDUE,
+    issueDate: new Date("2026-03-20"),
     dueDays: 14,
-    dueDate: "2026-04-03",
+    dueDate: new Date("2026-04-03"),
     totalItems: 1,
     subtotal: 28500,
     tax: 0,
@@ -689,9 +683,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: null,
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-03-20T09:00:00Z",
-    updatedAt: "2026-03-20T09:00:00Z",
+    createdAt: new Date("2026-03-20T09:00:00Z"),
+    updatedAt: new Date("2026-03-20T09:00:00Z"),
     client: { email: "karim.uddin@gmail.com", name: "Karim Uddin" },
     items: [
       {
@@ -709,10 +702,10 @@ export const demoInvoices: Invoice[] = [
     clientId: "8",
     createdById: "user-1",
     invoiceNumber: "#INV-1068",
-    status: "SENT",
-    issueDate: "2026-04-30",
+    status: InvoiceStatus.SENT,
+    issueDate: new Date("2026-04-30"),
     dueDays: 7,
-    dueDate: "2026-05-07",
+    dueDate: new Date("2026-05-07"),
     totalItems: 2,
     subtotal: 19600,
     tax: 0,
@@ -720,9 +713,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: null,
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-04-30T11:00:00Z",
-    updatedAt: "2026-04-30T11:00:00Z",
+    createdAt: new Date("2026-04-30T11:00:00Z"),
+    updatedAt: new Date("2026-04-30T11:00:00Z"),
     client: { email: "jahangir.alam@gmail.com", name: "Jahangir Alam" },
     items: [
       {
@@ -747,10 +739,10 @@ export const demoInvoices: Invoice[] = [
     clientId: "10",
     createdById: "user-1",
     invoiceNumber: "#INV-1069",
-    status: "DRAFT",
-    issueDate: "2026-05-01",
+    status: InvoiceStatus.DRAFT,
+    issueDate: new Date("2026-05-01"),
     dueDays: 7,
-    dueDate: "2026-05-08",
+    dueDate: new Date("2026-05-08"),
     totalItems: 1,
     subtotal: 44200,
     tax: 0,
@@ -758,9 +750,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: null,
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-05-01T09:00:00Z",
-    updatedAt: "2026-05-01T09:00:00Z",
+    createdAt: new Date("2026-05-01T09:00:00Z"),
+    updatedAt: new Date("2026-05-01T09:00:00Z"),
     client: { email: "rezaul.karim@outlook.com", name: "Rezaul Karim" },
     items: [
       {
@@ -778,10 +769,10 @@ export const demoInvoices: Invoice[] = [
     clientId: "11",
     createdById: "user-1",
     invoiceNumber: "#INV-1070",
-    status: "PAID",
-    issueDate: "2026-04-15",
+    status: InvoiceStatus.PAID,
+    issueDate: new Date("2026-04-15"),
     dueDays: 7,
-    dueDate: "2026-04-22",
+    dueDate: new Date("2026-04-22"),
     totalItems: 1,
     subtotal: 31500,
     tax: 0,
@@ -789,9 +780,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: null,
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-04-15T10:00:00Z",
-    updatedAt: "2026-04-21T14:00:00Z",
+    createdAt: new Date("2026-04-15T10:00:00Z"),
+    updatedAt: new Date("2026-04-21T14:00:00Z"),
     client: { email: "nasrin.sultana@gmail.com", name: "Nasrin Sultana" },
     items: [
       {
@@ -809,10 +799,10 @@ export const demoInvoices: Invoice[] = [
     clientId: "12",
     createdById: "user-1",
     invoiceNumber: "#INV-1071",
-    status: "SENT",
-    issueDate: "2026-05-02",
+    status: InvoiceStatus.SENT,
+    issueDate: new Date("2026-05-02"),
     dueDays: 7,
-    dueDate: "2026-05-09",
+    dueDate: new Date("2026-05-09"),
     totalItems: 1,
     subtotal: 14800,
     tax: 0,
@@ -820,9 +810,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: null,
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-05-02T09:30:00Z",
-    updatedAt: "2026-05-02T09:30:00Z",
+    createdAt: new Date("2026-05-02T09:30:00Z"),
+    updatedAt: new Date("2026-05-02T09:30:00Z"),
     client: { email: "imran.hossain@yahoo.com", name: "Imran Hossain" },
     items: [
       {
@@ -840,10 +829,10 @@ export const demoInvoices: Invoice[] = [
     clientId: "14",
     createdById: "user-1",
     invoiceNumber: "#INV-1072",
-    status: "PAID",
-    issueDate: "2026-04-22",
+    status: InvoiceStatus.PAID,
+    issueDate: new Date("2026-04-22"),
     dueDays: 14,
-    dueDate: "2026-05-06",
+    dueDate: new Date("2026-05-06"),
     totalItems: 2,
     subtotal: 58900,
     tax: 0,
@@ -851,9 +840,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: null,
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-04-22T10:00:00Z",
-    updatedAt: "2026-05-05T12:00:00Z",
+    createdAt: new Date("2026-04-22T10:00:00Z"),
+    updatedAt: new Date("2026-05-05T12:00:00Z"),
     client: { email: "shakil.ahmed@outlook.com", name: "Shakil Ahmed" },
     items: [
       {
@@ -878,10 +866,10 @@ export const demoInvoices: Invoice[] = [
     clientId: "15",
     createdById: "user-1",
     invoiceNumber: "#INV-1073",
-    status: "DRAFT",
-    issueDate: "2026-05-05",
+    status: InvoiceStatus.DRAFT,
+    issueDate: new Date("2026-05-05"),
     dueDays: 7,
-    dueDate: "2026-05-12",
+    dueDate: new Date("2026-05-12"),
     totalItems: 1,
     subtotal: 9200,
     tax: 0,
@@ -889,9 +877,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: null,
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-05-05T08:00:00Z",
-    updatedAt: "2026-05-05T08:00:00Z",
+    createdAt: new Date("2026-05-05T08:00:00Z"),
+    updatedAt: new Date("2026-05-05T08:00:00Z"),
     client: { email: "poly.akter@gmail.com", name: "Poly Akter" },
     items: [
       {
@@ -909,10 +896,10 @@ export const demoInvoices: Invoice[] = [
     clientId: "6",
     createdById: "user-1",
     invoiceNumber: "#INV-1074",
-    status: "FAILED",
-    issueDate: "2026-04-05",
+    status: InvoiceStatus.FAILED,
+    issueDate: new Date("2026-04-05"),
     dueDays: 7,
-    dueDate: "2026-04-12",
+    dueDate: new Date("2026-04-12"),
     totalItems: 1,
     subtotal: 22000,
     tax: 0,
@@ -920,9 +907,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: "Payment gateway error",
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-04-05T11:00:00Z",
-    updatedAt: "2026-04-12T16:00:00Z",
+    createdAt: new Date("2026-04-05T11:00:00Z"),
+    updatedAt: new Date("2026-04-12T16:00:00Z"),
     client: { email: "farhana.begum@hotmail.com", name: "Farhana Begum" },
     items: [
       {
@@ -940,10 +926,10 @@ export const demoInvoices: Invoice[] = [
     clientId: "3",
     createdById: "user-1",
     invoiceNumber: "#INV-1075",
-    status: "SENT",
-    issueDate: "2026-05-06",
+    status: InvoiceStatus.SENT,
+    issueDate: new Date("2026-05-06"),
     dueDays: 7,
-    dueDate: "2026-05-13",
+    dueDate: new Date("2026-05-13"),
     totalItems: 1,
     subtotal: 17000,
     tax: 0,
@@ -951,9 +937,8 @@ export const demoInvoices: Invoice[] = [
     currency: "BDT",
     notes: null,
     invPdfUrl: new URL("https://finvia.app"),
-    paymentToken: null,
-    createdAt: "2026-05-06T09:00:00Z",
-    updatedAt: "2026-05-06T09:00:00Z",
+    createdAt: new Date("2026-05-06T09:00:00Z"),
+    updatedAt: new Date("2026-05-06T09:00:00Z"),
     client: { email: "mahbub.rahman@yahoo.com", name: "Mahbub Rahman" },
     items: [
       {
@@ -978,7 +963,7 @@ export const demoProductStats: ProductStats = {
 };
 
 // ── Products (15 entries → 2 pages at 10 per page) ────────────────
-export const demoProducts: Product[] = [
+export const demoProducts: IProduct[] = [
   {
     id: "p-1",
     businessId: "biz-1",
@@ -987,8 +972,8 @@ export const demoProducts: Product[] = [
     totalEarning: 109200,
     pendingOrder: 2,
     isDeleted: false,
-    createdAt: "2026-01-10T08:00:00Z",
-    updatedAt: "2026-05-08T10:00:00Z",
+    createdAt: new Date("2026-01-10T08:00:00Z"),
+    updatedAt: new Date("2026-05-08T10:00:00Z"),
   },
   {
     id: "p-2",
@@ -998,8 +983,8 @@ export const demoProducts: Product[] = [
     totalEarning: 132000,
     pendingOrder: 1,
     isDeleted: false,
-    createdAt: "2026-01-12T08:00:00Z",
-    updatedAt: "2026-05-02T14:00:00Z",
+    createdAt: new Date("2026-01-12T08:00:00Z"),
+    updatedAt: new Date("2026-05-02T14:00:00Z"),
   },
   {
     id: "p-3",
@@ -1009,8 +994,8 @@ export const demoProducts: Product[] = [
     totalEarning: 91500,
     pendingOrder: 0,
     isDeleted: false,
-    createdAt: "2026-01-15T08:00:00Z",
-    updatedAt: "2026-05-01T10:00:00Z",
+    createdAt: new Date("2026-01-15T08:00:00Z"),
+    updatedAt: new Date("2026-05-01T10:00:00Z"),
   },
   {
     id: "p-4",
@@ -1020,8 +1005,8 @@ export const demoProducts: Product[] = [
     totalEarning: 22260,
     pendingOrder: 1,
     isDeleted: false,
-    createdAt: "2026-01-20T08:00:00Z",
-    updatedAt: "2026-05-07T09:00:00Z",
+    createdAt: new Date("2026-01-20T08:00:00Z"),
+    updatedAt: new Date("2026-05-07T09:00:00Z"),
   },
   {
     id: "p-5",
@@ -1031,8 +1016,8 @@ export const demoProducts: Product[] = [
     totalEarning: 14100,
     pendingOrder: 0,
     isDeleted: false,
-    createdAt: "2026-01-22T08:00:00Z",
-    updatedAt: "2026-04-30T11:00:00Z",
+    createdAt: new Date("2026-01-22T08:00:00Z"),
+    updatedAt: new Date("2026-04-30T11:00:00Z"),
   },
   {
     id: "p-6",
@@ -1042,8 +1027,8 @@ export const demoProducts: Product[] = [
     totalEarning: 10800,
     pendingOrder: 0,
     isDeleted: false,
-    createdAt: "2026-02-01T08:00:00Z",
-    updatedAt: "2026-05-06T09:00:00Z",
+    createdAt: new Date("2026-02-01T08:00:00Z"),
+    updatedAt: new Date("2026-05-06T09:00:00Z"),
   },
   {
     id: "p-7",
@@ -1053,8 +1038,8 @@ export const demoProducts: Product[] = [
     totalEarning: 84500,
     pendingOrder: 1,
     isDeleted: false,
-    createdAt: "2026-02-05T08:00:00Z",
-    updatedAt: "2026-04-28T09:00:00Z",
+    createdAt: new Date("2026-02-05T08:00:00Z"),
+    updatedAt: new Date("2026-04-28T09:00:00Z"),
   },
   {
     id: "p-8",
@@ -1064,8 +1049,8 @@ export const demoProducts: Product[] = [
     totalEarning: 28500,
     pendingOrder: 0,
     isDeleted: false,
-    createdAt: "2026-02-10T08:00:00Z",
-    updatedAt: "2026-04-20T09:00:00Z",
+    createdAt: new Date("2026-02-10T08:00:00Z"),
+    updatedAt: new Date("2026-04-20T09:00:00Z"),
   },
   {
     id: "p-9",
@@ -1075,8 +1060,8 @@ export const demoProducts: Product[] = [
     totalEarning: 42500,
     pendingOrder: 0,
     isDeleted: false,
-    createdAt: "2026-02-15T08:00:00Z",
-    updatedAt: "2026-05-05T12:00:00Z",
+    createdAt: new Date("2026-02-15T08:00:00Z"),
+    updatedAt: new Date("2026-05-05T12:00:00Z"),
   },
   {
     id: "p-10",
@@ -1086,8 +1071,8 @@ export const demoProducts: Product[] = [
     totalEarning: 32000,
     pendingOrder: 1,
     isDeleted: false,
-    createdAt: "2026-02-20T08:00:00Z",
-    updatedAt: "2026-05-04T10:00:00Z",
+    createdAt: new Date("2026-02-20T08:00:00Z"),
+    updatedAt: new Date("2026-05-04T10:00:00Z"),
   },
   {
     id: "p-11",
@@ -1097,8 +1082,8 @@ export const demoProducts: Product[] = [
     totalEarning: 44200,
     pendingOrder: 0,
     isDeleted: false,
-    createdAt: "2026-03-01T08:00:00Z",
-    updatedAt: "2026-05-01T09:00:00Z",
+    createdAt: new Date("2026-03-01T08:00:00Z"),
+    updatedAt: new Date("2026-05-01T09:00:00Z"),
   },
   {
     id: "p-12",
@@ -1108,8 +1093,8 @@ export const demoProducts: Product[] = [
     totalEarning: 31500,
     pendingOrder: 0,
     isDeleted: false,
-    createdAt: "2026-03-05T08:00:00Z",
-    updatedAt: "2026-04-21T14:00:00Z",
+    createdAt: new Date("2026-03-05T08:00:00Z"),
+    updatedAt: new Date("2026-04-21T14:00:00Z"),
   },
   {
     id: "p-13",
@@ -1119,8 +1104,8 @@ export const demoProducts: Product[] = [
     totalEarning: 14800,
     pendingOrder: 0,
     isDeleted: false,
-    createdAt: "2026-03-10T08:00:00Z",
-    updatedAt: "2026-05-02T09:30:00Z",
+    createdAt: new Date("2026-03-10T08:00:00Z"),
+    updatedAt: new Date("2026-05-02T09:30:00Z"),
   },
   {
     id: "p-14",
@@ -1130,8 +1115,8 @@ export const demoProducts: Product[] = [
     totalEarning: 22000,
     pendingOrder: 0,
     isDeleted: false,
-    createdAt: "2026-03-15T08:00:00Z",
-    updatedAt: "2026-04-12T16:00:00Z",
+    createdAt: new Date("2026-03-15T08:00:00Z"),
+    updatedAt: new Date("2026-04-12T16:00:00Z"),
   },
   {
     id: "p-15",
@@ -1141,7 +1126,7 @@ export const demoProducts: Product[] = [
     totalEarning: 17000,
     pendingOrder: 0,
     isDeleted: false,
-    createdAt: "2026-04-01T08:00:00Z",
-    updatedAt: "2026-05-06T09:00:00Z",
+    createdAt: new Date("2026-04-01T08:00:00Z"),
+    updatedAt: new Date("2026-05-06T09:00:00Z"),
   },
 ];

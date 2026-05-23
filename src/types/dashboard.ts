@@ -1,12 +1,12 @@
 export interface IKPICardDetails {
-  totalRevenue: string;
+  totalRevenue: number;
   revenueDiff: number;
   revenueDiffInPercentage: number;
-  totalInvoices: string;
+  totalInvoices: number;
   pendingInvoices: number;
-  paidInvoices: string;
+  paidInvoices: number;
   collectionRate: number;
-  totalOverdueInvoices: string;
+  totalOverdueInvoices: number;
   overdueInvDiff: number;
   paidInvPer: number;
   pendingInvPer: number;
