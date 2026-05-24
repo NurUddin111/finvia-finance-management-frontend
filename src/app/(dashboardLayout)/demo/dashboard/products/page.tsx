@@ -7,7 +7,9 @@ import ProductStatCards from "@/components/modules/Business/Product/ProductsStat
 import { demoProducts, demoProductStats } from "@/data/demodata";
 
 import DemoProductsHeader from "@/components/modules/Demo/Products/DemoProductHeader";
+
 import DemoProductToolbar from "@/components/modules/Demo/Products/DemoProductToolbar";
+
 import DemoProductTable from "@/components/modules/Demo/Products/DemoProductsTable";
 
 import DemoPagination from "@/components/modules/Demo/DemoPagination";
@@ -25,21 +27,21 @@ export default function DemoProductsPage() {
   );
 
   return (
-    <div className="min-h-screen rounded-2xl bg-[#050816] px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
-      <div className="mx-auto flex w-full max-w-475 flex-col gap-6">
-        {/* Header */}
+    <div className="min-h-screen rounded-2xl bg-[#050816] px-3 py-4 sm:px-5 sm:py-5 lg:px-8 lg:py-7">
+      <div className="mx-auto flex w-full max-w-475 flex-col gap-5 lg:gap-6">
+        {/* HEADER */}
         <DemoProductsHeader />
 
-        {/* Stats */}
+        {/* STATS */}
         <ProductStatCards productStats={demoProductStats} />
 
-        {/* Toolbar */}
+        {/* TOOLBAR */}
         <DemoProductToolbar total={demoProducts.length} />
 
-        {/* Table */}
+        {/* TABLE */}
         <DemoProductTable products={paginatedProducts} />
 
-        {/* Pagination */}
+        {/* PAGINATION */}
         <DemoPagination
           page={page}
           totalPages={totalPages}

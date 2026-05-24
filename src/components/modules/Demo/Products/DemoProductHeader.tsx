@@ -4,21 +4,21 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
-import { PackagePlus, Lock, Boxes } from "lucide-react";
+import { Boxes, Lock, PackagePlus } from "lucide-react";
 
 export default function DemoProductsHeader() {
   const [showNudge, setShowNudge] = useState(false);
 
   return (
-    <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+    <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
       {/* LEFT */}
-      <div className="space-y-4">
+      <div className="space-y-3 lg:space-y-4">
         <div className="flex items-center gap-2">
           <div className="flex items-center justify-center rounded-full border border-blue-500/20 bg-blue-500/10 p-1.5">
-            <Boxes className="size-4 text-blue-400" />
+            <Boxes className="size-3.5 text-blue-400 sm:size-4" />
           </div>
 
-          <span className="text-3xl font-medium uppercase tracking-[0.2em] text-blue-400">
+          <span className="text-lg font-medium uppercase tracking-[0.12em] text-blue-400 sm:text-2xl sm:tracking-[0.18em] lg:text-3xl lg:tracking-[0.2em]">
             Product Management
           </span>
         </div>
@@ -44,9 +44,14 @@ export default function DemoProductsHeader() {
         </Button>
 
         {showNudge && (
-          <div className="absolute right-0 top-14 z-50 flex items-center gap-2 rounded-2xl border border-white/10 bg-[#0B1120]/95 px-4 py-3 text-sm text-slate-400 shadow-[0_20px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl whitespace-nowrap">
-            <Lock size={13} className="shrink-0 text-blue-400" />
-            Sign up to use this feature
+          <div className="absolute right-0 top-14 z-50 flex w-62.5 items-start gap-2 rounded-2xl border border-red-500/20 bg-[#0B1120]/95 px-4 py-3 text-sm text-slate-300 shadow-[0_10px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:w-auto sm:items-center">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-500/10 text-red-400">
+              <Lock size={13} />
+            </div>
+
+            <span className="text-xs leading-relaxed sm:whitespace-nowrap sm:text-sm">
+              Sign up to unlock this feature
+            </span>
           </div>
         )}
       </div>
