@@ -61,7 +61,7 @@ export default function DemoSettingsIndexPage() {
   return (
     <>
       <div className="min-h-screen bg-[#050816] px-3 py-4 lg:hidden">
-        <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-5">
+        <div className="mx-auto flex w-full max-w-400 flex-col gap-5">
           {/* HEADER */}
           <div className="rounded-3xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-4 sm:p-5">
             <div className="flex items-start gap-3 sm:items-center">
