@@ -44,7 +44,7 @@ export default function DemoBusinessBottomNav() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#030712]/95 backdrop-blur-2xl lg:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#030712]/95 pb-safe backdrop-blur-2xl lg:hidden">
       {/* TOP GLOW */}
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-blue-500/40 to-transparent" />
 
@@ -53,9 +53,9 @@ export default function DemoBusinessBottomNav() {
           const Icon = item.icon;
 
           const isActive =
-            pathname === item.href ||
-            (item.href !== "/demo/dashboard" &&
-              pathname.startsWith(`${item.href}/`));
+            item.href === "/demo/dashboard"
+              ? pathname === item.href
+              : pathname.startsWith(item.href);
 
           return (
             <Link
@@ -80,7 +80,7 @@ export default function DemoBusinessBottomNav() {
               )}
 
               {/* CONTENT */}
-              <div className="relative z-10 flex flex-col items-center gap-0.5 sm:gap-1">
+              <div className="relative z-10 flex flex-col items-center gap-0.5">
                 <div
                   className={cn(
                     "flex h-8 w-8 items-center justify-center rounded-xl border transition-all duration-300 sm:h-9 sm:w-9",
