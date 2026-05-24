@@ -25,24 +25,24 @@ export default function DemoInvoicePage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#050816] rounded-2xl px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
-      <div className="mx-auto flex w-full max-w-400 flex-col gap-6">
-        {/* Header */}
+    <div className="min-h-screen rounded-2xl bg-[#050816] px-3 py-4 sm:px-5 sm:py-5 lg:px-8 lg:py-7">
+      <div className="mx-auto flex w-full max-w-400 flex-col gap-5 sm:gap-6">
+        {/* HEADER */}
         <DemoInvoicesHeader />
 
-        {/* Stats */}
+        {/* STATS */}
         <InvoicesStats invoiceStats={demoInvoiceStats} />
 
-        {/* Filters */}
+        {/* FILTERS */}
         <DemoInvoicesFilters
           total={demoInvoices.length}
           availableYears={[2026]}
         />
 
-        {/* Table */}
+        {/* TABLE */}
         <DemoInvoicesTable invoices={paginatedInvoices} />
 
-        {/* Pagination */}
+        {/* PAGINATION */}
         <DemoPagination
           page={page}
           totalPages={totalPages}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Lock, SlidersHorizontal, CalendarRange } from "lucide-react";
+import { CalendarRange, Lock, Search, SlidersHorizontal } from "lucide-react";
 
 const INVOICE_STATUSES = [
   { value: "all", label: "All Statuses" },
@@ -34,17 +34,17 @@ const DemoInvoicesFilters = ({
             type="text"
             disabled
             placeholder="Search by invoice number or client email..."
-            className="h-11 w-full cursor-not-allowed rounded-2xl border border-white/10 bg-white/3 pl-11 pr-4 text-sm text-slate-500 placeholder:text-slate-500 outline-none"
+            className="h-11 w-full cursor-not-allowed rounded-2xl border border-white/10 bg-white/3 pl-11 pr-16 text-sm text-slate-500 placeholder:text-slate-500 outline-none sm:pr-20"
           />
 
-          <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1 rounded-full border border-white/10 bg-white/3 px-2 py-1 text-[10px] font-medium text-slate-500">
+          <div className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1 rounded-full border border-white/10 bg-white/3 px-2 py-1 text-[9px] font-medium text-slate-500 sm:right-3 sm:text-[10px]">
             <Lock size={10} />
             Demo
           </div>
         </div>
 
         {/* STATUS */}
-        <div className="relative min-w-47.5 cursor-not-allowed opacity-60">
+        <div className="relative w-full cursor-not-allowed opacity-60 sm:min-w-48 sm:max-w-60">
           <SlidersHorizontal
             size={14}
             className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
@@ -52,7 +52,7 @@ const DemoInvoicesFilters = ({
 
           <select
             disabled
-            className="h-11 w-full cursor-not-allowed appearance-none rounded-2xl border border-white/10 bg-white/3 pl-11 pr-4 text-sm text-slate-500 outline-none"
+            className="h-11 w-full cursor-not-allowed appearance-none rounded-2xl border border-white/10 bg-white/3 pl-11 pr-16 text-sm text-slate-500 outline-none sm:pr-20"
           >
             {INVOICE_STATUSES.map((s) => (
               <option key={s.value} value={s.value}>
@@ -61,7 +61,7 @@ const DemoInvoicesFilters = ({
             ))}
           </select>
 
-          <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1 rounded-full border border-white/10 bg-white/3 px-2 py-1 text-[10px] font-medium text-slate-500">
+          <div className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1 rounded-full border border-white/10 bg-white/3 px-2 py-1 text-[9px] font-medium text-slate-500 sm:right-3 sm:text-[10px]">
             <Lock size={10} />
             Demo
           </div>
@@ -69,7 +69,7 @@ const DemoInvoicesFilters = ({
 
         {/* YEAR */}
         {availableYears.length > 0 && (
-          <div className="relative min-w-42.5 cursor-not-allowed opacity-60">
+          <div className="relative w-full cursor-not-allowed opacity-60 sm:min-w-44 sm:max-w-52">
             <CalendarRange
               size={14}
               className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
@@ -77,7 +77,7 @@ const DemoInvoicesFilters = ({
 
             <select
               disabled
-              className="h-11 w-full cursor-not-allowed appearance-none rounded-2xl border border-white/10 bg-white/3 pl-11 pr-4 text-sm text-slate-500 outline-none"
+              className="h-11 w-full cursor-not-allowed appearance-none rounded-2xl border border-white/10 bg-white/3 pl-11 pr-16 text-sm text-slate-500 outline-none sm:pr-20"
             >
               <option value="all">All Years</option>
 
@@ -88,7 +88,7 @@ const DemoInvoicesFilters = ({
               ))}
             </select>
 
-            <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1 rounded-full border border-white/10 bg-white/3 px-2 py-1 text-[10px] font-medium text-slate-500">
+            <div className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1 rounded-full border border-white/10 bg-white/3 px-2 py-1 text-[9px] font-medium text-slate-500 sm:right-3 sm:text-[10px]">
               <Lock size={10} />
               Demo
             </div>
@@ -97,13 +97,12 @@ const DemoInvoicesFilters = ({
       </div>
 
       {/* RIGHT */}
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="rounded-full border border-white/10 bg-white/3 px-3 py-1.5 text-xs font-medium text-slate-400">
-          {total} result
-          {total !== 1 ? "s" : ""} found
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="w-fit rounded-full border border-white/10 bg-white/3 px-3 py-1.5 text-xs font-medium text-slate-400">
+          {total} result{total !== 1 ? "s" : ""} found
         </div>
 
-        <div className="hidden items-center gap-2 rounded-xl border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-medium text-blue-400 sm:flex">
+        <div className="hidden items-center gap-2 rounded-xl border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-medium text-blue-400 xl:flex">
           <Lock size={12} />
           Interactive filters disabled in demo
         </div>
@@ -111,4 +110,5 @@ const DemoInvoicesFilters = ({
     </div>
   );
 };
+
 export default DemoInvoicesFilters;

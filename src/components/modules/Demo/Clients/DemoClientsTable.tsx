@@ -134,7 +134,7 @@ export default function DemoClientsTable({ clients }: { clients: IClient[] }) {
               </div>
 
               {/* META */}
-              <div className="mt-4 grid grid-cols-1 gap-3 rounded-2xl border border-white/5 bg-white/2 p-3 xs:grid-cols-2">
+              <div className="mt-4 grid grid-cols-2 gap-3 rounded-2xl border border-white/5 bg-white/2 p-3">
                 <div>
                   <p className="text-[9px] uppercase tracking-[0.16em] text-slate-500 sm:text-[10px] sm:tracking-[0.18em]">
                     Invoices
@@ -145,7 +145,7 @@ export default function DemoClientsTable({ clients }: { clients: IClient[] }) {
                   </div>
                 </div>
 
-                <div className="xs:text-right">
+                <div className="text-right">
                   <p className="text-[9px] uppercase tracking-[0.16em] text-slate-500 sm:text-[10px] sm:tracking-[0.18em]">
                     Added
                   </p>
