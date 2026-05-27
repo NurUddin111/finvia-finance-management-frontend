@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { IKPICardDetails } from "@/types/dashboard";
 import { TrendingUp, FileText, CheckCircle, AlertCircle } from "lucide-react";
 
 interface KpiCardProps {
@@ -89,19 +90,19 @@ function KpiCard({
   );
 }
 
-export type KPICardData = {
-  totalRevenue: string;
-  revenueDiff: number;
-  revenueDiffInPercentage: number;
-  totalInvoices: string;
-  pendingInvoices: number;
-  paidInvoices: string;
-  collectionRate: number;
-  totalOverdueInvoices: string;
-  overdueInvDiff: number;
-};
+// export type KPICardData = {
+//   totalRevenue: string;
+//   revenueDiff: number;
+//   revenueDiffInPercentage: number;
+//   totalInvoices: string;
+//   pendingInvoices: number;
+//   paidInvoices: string;
+//   collectionRate: number;
+//   totalOverdueInvoices: string;
+//   overdueInvDiff: number;
+// };
 
-export function DashboardKpiCards({ data }: { data: KPICardData }) {
+export function DashboardKpiCards({ data }: { data: IKPICardDetails }) {
   const {
     totalRevenue,
     revenueDiff,

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import DashboardHeader from "@/components/modules/Admin/DashboardHeader";
 import KPISection from "@/components/modules/Admin/KPISection";
 import { getMe } from "@/services/auth.services";

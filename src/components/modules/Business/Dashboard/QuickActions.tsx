@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { FilePlus, UserPlus, BadgeCheck, Receipt } from "lucide-react";
+import { FilePlus, UserPlus, Receipt } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function QuickActions() {

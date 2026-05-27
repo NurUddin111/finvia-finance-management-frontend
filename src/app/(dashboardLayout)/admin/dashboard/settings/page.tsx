@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { User,  Shield, Lock } from "lucide-react";
+import { User, Shield, Lock } from "lucide-react";
 
 const settingsItems = [
   { label: "Profile", slug: "profile", icon: User },
@@ -11,8 +10,6 @@ const settingsItems = [
 ];
 
 export default function MobileSettingsIndexPage() {
-  const pathname = usePathname();
-
   return (
     <div className="md:hidden p-4 space-y-3">
       <h2 className="text-lg font-semibold mb-2">Settings</h2>
