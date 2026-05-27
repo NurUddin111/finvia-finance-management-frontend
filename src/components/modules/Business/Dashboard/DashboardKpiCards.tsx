@@ -102,7 +102,8 @@ function KpiCard({
 //   overdueInvDiff: number;
 // };
 
-export function DashboardKpiCards({ data }: { data: IKPICardDetails }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function DashboardKpiCards({ data }: { data: any }) {
   const {
     totalRevenue,
     revenueDiff,
