@@ -12,10 +12,7 @@ import GoogleIcon from "@/components/shared/icons/Google";
 import { signup } from "@/services/auth.services";
 
 export default function SignUpEmailModal() {
-  // null = initial state (no submission yet)
-  // state = ActionResult<null> | null after each submission
   const [state, formAction, isPending] = useActionState(signup, null);
-
   const router = useRouter();
 
   useEffect(() => {
@@ -25,9 +22,9 @@ export default function SignUpEmailModal() {
   }, [state, router]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 px-4 py-5 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 px-3 py-4 backdrop-blur-sm sm:px-6 sm:py-8">
       {/* MODAL */}
-      <div className="relative w-full max-w-sm overflow-hidden rounded-[28px] border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] shadow-[0_30px_120px_rgba(0,0,0,0.65)]">
+      <div className="relative w-full max-w-110 overflow-hidden rounded-[28px] border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] shadow-[0_30px_120px_rgba(0,0,0,0.65)]">
         {/* CLOSE */}
         <button
           type="button"
@@ -39,29 +36,26 @@ export default function SignUpEmailModal() {
         </button>
 
         {/* HEADER */}
-        <div className="border-b border-white/10 px-5 py-5">
+        <div className="border-b border-white/10 px-5 py-4 sm:px-6">
           <h2 className="text-2xl font-semibold tracking-tight text-white">
             Create account
           </h2>
-
           <p className="mt-1 text-sm text-slate-400">
             Start your Finvia journey in seconds.
           </p>
         </div>
 
         {/* BODY */}
-        <div className="px-5 py-5">
+        <div className="px-5 py-4 sm:px-6">
           <form action={formAction}>
-            <FieldGroup className="space-y-4">
+            <FieldGroup className="space-y-3">
               {/* NAME */}
               <Field>
                 <FieldLabel className="mb-2 block text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
                   Full Name
                 </FieldLabel>
-
                 <div className="relative">
                   <User2 className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
-
                   <Input
                     id="name"
                     name="name"
@@ -71,8 +65,6 @@ export default function SignUpEmailModal() {
                     className="h-11 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
                 </div>
-
-                {/* reads state.errors, finds the "name" field error if any */}
                 <InputFieldError field="name" state={state} />
               </Field>
 
@@ -81,10 +73,8 @@ export default function SignUpEmailModal() {
                 <FieldLabel className="mb-2 block text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
                   Email
                 </FieldLabel>
-
                 <div className="relative">
                   <Mail className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
-
                   <Input
                     id="email"
                     name="email"
@@ -94,12 +84,10 @@ export default function SignUpEmailModal() {
                     className="h-11 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
                 </div>
-
-                {/* reads state.errors, finds the "email" field error if any */}
                 <InputFieldError field="email" state={state} />
               </Field>
 
-              {/* GLOBAL ERROR — shown when API call itself fails (not field errors) */}
+              {/* GLOBAL ERROR */}
               {!isPending && state?.success === false && !state.errors && (
                 <div className="rounded-2xl border border-red-500/15 bg-red-500/8 px-4 py-3">
                   <p className="text-sm text-red-400">
@@ -118,7 +106,7 @@ export default function SignUpEmailModal() {
               </Button>
 
               {/* FOOTER */}
-              <p className="pt-1 text-center text-sm text-slate-500">
+              <p className="text-center text-sm text-slate-500">
                 Already have an account?{" "}
                 <button
                   type="button"
@@ -130,7 +118,7 @@ export default function SignUpEmailModal() {
               </p>
 
               {/* DIVIDER */}
-              <div className="flex items-center gap-3 pt-1">
+              <div className="flex items-center gap-3">
                 <div className="h-px flex-1 bg-white/10" />
                 <span className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
                   OR
