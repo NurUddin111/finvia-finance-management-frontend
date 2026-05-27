@@ -13,8 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { AlertTriangle } from "lucide-react";
 
-import { deleteMyAccount } from "@/services/user/deleteAccount";
-import { getMe } from "@/services/auth.services";
+import { deleteMyAccount, getMe } from "@/services/auth.services";
 
 export default function AccountPage() {
   const router = useRouter();

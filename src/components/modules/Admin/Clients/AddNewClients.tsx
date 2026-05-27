@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { addClient } from "@/services/business/clients/addClient";
+import { addClient } from "@/services/business/clients.services";
 
 export default function AddNewClientModal({
   open,
