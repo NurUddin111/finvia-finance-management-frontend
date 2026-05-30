@@ -1,5 +1,4 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { IKPICardDetails } from "@/types/dashboard";
 import { TrendingUp, FileText, CheckCircle, AlertCircle } from "lucide-react";
 
 interface KpiCardProps {
@@ -29,32 +28,10 @@ function KpiCard({
   };
 
   return (
-    <Card
-      className="
-        group
-        relative
-        overflow-hidden
-        rounded-2xl
-        border border-white/10
-        bg-linear-to-b
-        from-[#0B1120]
-        to-[#050816]
-        transition-all duration-300
-        hover:-translate-y-1
-        hover:border-blue-500/20
-        hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]
-      "
-    >
+    <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
       {/* Glow */}
       <div
-        className={`
-          absolute -right-10 -top-10
-          h-28 w-28 rounded-full
-          opacity-20 blur-3xl
-          transition-transform duration-500
-          group-hover:scale-110
-          ${iconBg}
-        `}
+        className={`absolute -right-10 -top-10 h-28 w-28 rounded-full opacity-20 blur-3xl transition-transform duration-500 group-hover:scale-110 ${iconBg}`}
       />
 
       <CardContent className="relative p-4 sm:p-5">
@@ -72,15 +49,7 @@ function KpiCard({
           </div>
 
           <div
-            className={`
-              flex size-10 shrink-0 items-center justify-center
-              rounded-xl border border-white/10
-              backdrop-blur-md
-              transition-all duration-300
-              group-hover:scale-105
-              ${iconBg}
-              ${iconColor}
-            `}
+            className={`flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/10 backdrop-blur-md transition-all duration-300 group-hover:scale-105 ${iconBg} ${iconColor}`}
           >
             {icon}
           </div>
@@ -89,18 +58,6 @@ function KpiCard({
     </Card>
   );
 }
-
-// export type KPICardData = {
-//   totalRevenue: string;
-//   revenueDiff: number;
-//   revenueDiffInPercentage: number;
-//   totalInvoices: string;
-//   pendingInvoices: number;
-//   paidInvoices: string;
-//   collectionRate: number;
-//   totalOverdueInvoices: string;
-//   overdueInvDiff: number;
-// };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function DashboardKpiCards({ data }: { data: any }) {
@@ -120,7 +77,7 @@ export function DashboardKpiCards({ data }: { data: any }) {
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
       <KpiCard
         label="Total Revenue"
-        value={totalRevenue}
+        value={`${totalRevenue} BDT`}
         sub={`${revenueDiff >= 0 ? "↑" : "↓"} ${revenueDiffInPercentage}% vs last month`}
         subType={revenueDiff >= 0 ? "up" : "down"}
         icon={<TrendingUp size={18} />}

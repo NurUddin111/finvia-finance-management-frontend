@@ -22,8 +22,7 @@ export const CreateBusinessZodSchemaValidation = z.object({
     }),
 
   category: z.string({
-    error: (issue) =>
-      issue.input === undefined ? "Category is required" : "Invalid Category",
+    error: "Category is required",
   }),
 
   email: z
@@ -83,5 +82,3 @@ export const CreateBusinessZodSchemaValidation = z.object({
     })
     .optional(),
 });
-
-

@@ -172,7 +172,7 @@ export default function ProductTable({ products }: ProductTableProps) {
                 {/* REVENUE */}
                 <td className="px-3 py-4 lg:px-6 lg:py-5">
                   <p className="text-right text-sm font-semibold tabular-nums text-emerald-400">
-                    ${product.totalEarning.toLocaleString()}
+                    ৳{product.totalEarning.toLocaleString()}
                   </p>
                 </td>
 

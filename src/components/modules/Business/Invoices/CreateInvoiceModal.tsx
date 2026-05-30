@@ -434,7 +434,7 @@ export default function CreateInvoiceModal({
                               </p>
                               <div className="flex h-11 items-center">
                                 <p className="text-sm font-semibold text-white">
-                                  $
+                                  ৳
                                   {(item.quantity * item.pricePerUnit).toFixed(
                                     2,
                                   )}
@@ -461,7 +461,7 @@ export default function CreateInvoiceModal({
                           <div className="mt-2 flex items-center justify-between border-t border-white/5 pt-2 sm:hidden">
                             <p className="text-[11px] text-slate-500">Amount</p>
                             <p className="text-sm font-semibold text-white">
-                              ${(item.quantity * item.pricePerUnit).toFixed(2)}
+                              ৳{(item.quantity * item.pricePerUnit).toFixed(2)}
                             </p>
                           </div>
                         </div>
@@ -487,7 +487,7 @@ export default function CreateInvoiceModal({
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-slate-400">Subtotal</span>
                         <span className="font-medium tabular-nums text-white">
-                          ${subtotal.toFixed(2)}
+                          ৳{subtotal.toFixed(2)}
                         </span>
                       </div>
 
@@ -509,7 +509,7 @@ export default function CreateInvoiceModal({
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-slate-400">Tax</span>
                         <span className="font-medium tabular-nums text-white">
-                          ${taxAmount.toFixed(2)}
+                          ৳{taxAmount.toFixed(2)}
                         </span>
                       </div>
 
@@ -519,7 +519,7 @@ export default function CreateInvoiceModal({
                             Total
                           </span>
                           <span className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                            ${total.toFixed(2)}
+                            ৳{total.toFixed(2)}
                           </span>
                         </div>
                       </div>

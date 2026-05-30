@@ -177,7 +177,7 @@ export default function MobileSettingsIndexPage() {
               <Button
                 onClick={async () => {
                   await logoutUser();
-                  router.refresh();
+                  router.push("/");
                 }}
                 className="h-10 flex-1 rounded-xl border border-red-500/20 bg-red-500/10 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300"
               >
