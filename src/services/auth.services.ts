@@ -54,11 +54,17 @@ export const verifyOtp = async (
     return { success: false, errors: validationResult.errors };
   }
 
-  return serverFetch<null>("/auth/signup/verify", {
+  const result = await serverFetch<null>("/auth/signup/verify", {
     method: "POST",
     body: validationResult.data,
     onResponse: (res) => forwardResponseCookies(res, ["verifiedCreationToken"]),
   });
+
+  if (result.success) {
+    await clearCookies(["creationToken"]);
+  }
+
+  return result;
 };
 
 export const signupPassword = async (
@@ -75,10 +81,16 @@ export const signupPassword = async (
     return { success: false, errors: validationResult.errors };
   }
 
-  return serverFetch<null>("/auth/signup/password", {
+  const result = await serverFetch<null>("/auth/signup/password", {
     method: "POST",
     body: validationResult.data,
   });
+
+  if (result.success) {
+    await clearCookies(["verifiedCreationToken", "creationToken"]);
+  }
+
+  return result;
 };
 
 export const login = async (
@@ -184,8 +196,6 @@ export const deleteMyAccount = async (
     method: "PATCH",
   });
 
-  // FIX: only clear cookies on success
-  // FIX: use clearCookies utility instead of manual cookie sets
   if (result.success) {
     await clearCookies(["accessToken", "refreshToken"]);
   }

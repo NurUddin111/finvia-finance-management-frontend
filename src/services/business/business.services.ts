@@ -1,6 +1,6 @@
 "use server";
 
-import { serverFetch } from "@/lib/serverFetch";
+import { forwardResponseCookies, serverFetch } from "@/lib/serverFetch";
 import { zodValidator } from "@/lib/zodValidator";
 import { ActionResult } from "@/types/actions";
 import { IBusiness } from "@/types/business";
@@ -32,6 +32,8 @@ export const createBusiness = async (
   return serverFetch<null>("/business/add", {
     method: "POST",
     body: validationResult.data,
+    onResponse: (res) =>
+      forwardResponseCookies(res, ["accessToken", "refreshToken"]),
   });
 };
 

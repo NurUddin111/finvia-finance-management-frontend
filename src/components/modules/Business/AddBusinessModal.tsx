@@ -48,11 +48,10 @@ export default function AddBusinessModal({
     if (state.success) {
       onClose();
       toast.success("Business workspace created successfully!");
-      router.push("/business/dashboard", { scroll: false });
+      router.push("/business/dashboard");
       return;
     }
 
-    // FIX: only toast on API failure, not Zod field errors
     if (!state.errors) {
       toast.error(state.error ?? "Failed to create business workspace!");
     }

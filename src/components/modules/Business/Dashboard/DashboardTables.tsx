@@ -63,64 +63,31 @@ function RankBadge({ rank }: { rank: number }) {
 export function TopClientsTable({ topClients }: { topClients: ITopClient[] }) {
   if (!topClients?.length) {
     return (
-      <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] transition-all duration-300 hover:border-blue-500/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)]">
-        {/* Ambient glow */}
-        <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-          <div className="absolute bottom-0 left-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
-        </div>
-
-        <CardHeader className="relative pb-3">
+      <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816]">
+        <CardHeader className="pb-2">
           <div className="space-y-1">
-            <CardTitle className="text-base font-semibold tracking-tight text-white sm:text-lg">
+            <CardTitle className="text-lg font-semibold tracking-tight text-white">
               Top Clients
             </CardTitle>
 
-            <p className="text-xs text-slate-400 sm:text-sm">
+            <p className="text-sm text-slate-400">
               Highest revenue-generating customers
             </p>
           </div>
         </CardHeader>
 
-        <CardContent className="relative space-y-3">
-          {topClients.map((c, i) => (
-            <div
-              key={c.name}
-              className="flex items-start gap-2 rounded-2xl border border-white/5 bg-white/2 p-3 transition-all duration-200 hover:border-blue-500/10 hover:bg-white/4 xs:gap-3 sm:items-center sm:gap-4 sm:p-4"
-            >
-              <div className="shrink-0">
-                <RankBadge rank={i + 1} />
-              </div>
-
-              <div className="shrink-0">
-                <ClientAvatar name={c.name} />
-              </div>
-
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-semibold text-white xs:text-sm">
-                  {c.name}
-                </p>
-
-                <div className="mt-1 flex flex-wrap items-center gap-1.5 sm:gap-2">
-                  <span className="rounded-md border border-blue-500/20 bg-blue-500/10 px-1.5 py-0.5 text-[9px] text-blue-400 xs:px-2 xs:text-[10px]">
-                    {c.totalInvoices}{" "}
-                    {c.totalInvoices === 1 ? "invoice" : "invoices"}
-                  </span>
-
-                  <ClientStatusBadge status={c.status} />
-                </div>
-              </div>
-
-              <div className="max-w-22 shrink-0 text-right xs:max-w-[110px] sm:max-w-none">
-                <p className="truncate text-xs font-semibold text-emerald-400 xs:text-sm sm:text-base">
-                  ৳{c.totalSpent.toLocaleString()}
-                </p>
-
-                <p className="mt-1 text-[9px] text-slate-500 xs:text-[10px] sm:text-[11px]">
-                  total spent
-                </p>
-              </div>
+        <CardContent className="pb-8">
+          <div className="flex h-65 flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/2 text-center">
+            <div className="mb-4 rounded-full border border-white/10 bg-white/3 p-4">
+              <Crown className="size-5 text-yellow-400" />
             </div>
-          ))}
+
+            <p className="text-sm font-medium text-slate-300">No clients yet</p>
+
+            <p className="mt-1 text-xs text-slate-500">
+              Your top clients will appear here
+            </p>
+          </div>
         </CardContent>
       </Card>
     );
