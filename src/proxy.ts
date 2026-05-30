@@ -37,22 +37,50 @@ export async function proxy(request: NextRequest) {
 
       const role = decoded.role as string | undefined;
 
-      if (pathname === "/login" || pathname === "/onboarding") {
-        if (role === "ADMIN") {
+      // No logged-in user can visit /login
+      if (pathname === "/login") {
+        if (role === "ADMIN")
           return NextResponse.redirect(
             new URL("/admin/dashboard", request.url),
           );
-        }
-
-        if (role === "BUSINESS_OWNER" || role === "BUSINESS_ADMIN") {
+        if (role === "BUSINESS_OWNER" || role === "BUSINESS_ADMIN")
           return NextResponse.redirect(
             new URL("/business/dashboard", request.url),
           );
-        }
-
-        if (role === "USER") {
+        if (role === "USER")
           return NextResponse.redirect(new URL("/onboarding", request.url));
-        }
+      }
+
+      // Only BUSINESS_OWNER and BUSINESS_ADMIN can visit /business/*
+      if (pathname.startsWith("/business")) {
+        if (role === "ADMIN")
+          return NextResponse.redirect(
+            new URL("/admin/dashboard", request.url),
+          );
+        if (role === "USER")
+          return NextResponse.redirect(new URL("/onboarding", request.url));
+      }
+
+      // Only ADMIN can visit /admin/*
+      if (pathname.startsWith("/admin")) {
+        if (role === "USER")
+          return NextResponse.redirect(new URL("/onboarding", request.url));
+        if (role === "BUSINESS_OWNER" || role === "BUSINESS_ADMIN")
+          return NextResponse.redirect(
+            new URL("/business/dashboard", request.url),
+          );
+      }
+
+      // ADMIN, BUSINESS_OWNER, BUSINESS_ADMIN can't visit /onboarding
+      if (pathname === "/onboarding") {
+        if (role === "ADMIN")
+          return NextResponse.redirect(
+            new URL("/admin/dashboard", request.url),
+          );
+        if (role === "BUSINESS_OWNER" || role === "BUSINESS_ADMIN")
+          return NextResponse.redirect(
+            new URL("/business/dashboard", request.url),
+          );
       }
     } catch (error) {
       return NextResponse.redirect(new URL("/login", request.url));
