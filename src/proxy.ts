@@ -37,11 +37,7 @@ export async function proxy(request: NextRequest) {
 
       const role = decoded.role as string | undefined;
 
-      if (
-        pathname === "/login" ||
-        pathname === "/onboarding" ||
-        pathname === "/"
-      ) {
+      if (pathname === "/login" || pathname === "/onboarding") {
         if (role === "ADMIN") {
           return NextResponse.redirect(
             new URL("/admin/dashboard", request.url),
