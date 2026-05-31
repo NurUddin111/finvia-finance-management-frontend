@@ -20,15 +20,36 @@ export default function SuccessPaymentPage() {
             Your payment has been processed successfully.
           </p>
 
-          <div className="mt-6 rounded-2xl border border-emerald-500/15 bg-emerald-500/5 p-4">
+          <div className="mt-6 rounded-2xl border border-emerald-500/15 bg-emerald-500/5 p-4 text-left">
             <p className="text-sm leading-relaxed text-slate-300">
               Thank you for supporting Finvia. Your subscription and account
               access have been updated successfully.
             </p>
+
+            <div className="mt-4 border-t border-emerald-500/10 pt-4">
+              <p className="text-sm font-medium text-white">
+                Receipt & Invoice
+              </p>
+
+              <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                A payment receipt has been sent to your email address. Please
+                check your inbox (and spam folder if necessary).
+              </p>
+
+              <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                If you do not receive your receipt within a few minutes, please
+                contact
+                <span className="mx-1 font-medium text-emerald-400">
+                  finvia.finance@gmail.com
+                </span>
+                and attach your invoice PDF so we can assist you quickly.
+              </p>
+            </div>
           </div>
 
           <p className="mt-5 text-xs text-slate-500">
-            You may now close this page.
+            You may now close this page after confirming receipt of your payment
+            email.
           </p>
         </div>
       </div>
