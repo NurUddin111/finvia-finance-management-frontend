@@ -5,8 +5,7 @@ import { getMe } from "@/services/auth.services";
 import { UserRole } from "@/types/user";
 
 export default async function GoogleCallbackPage() {
-  // Cookies are already set by backend redirect
-  // Just verify the session is valid
+
   const res = await getMe();
 
   if (!res?.data) {
