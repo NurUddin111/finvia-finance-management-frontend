@@ -21,9 +21,18 @@ export const CreateBusinessZodSchemaValidation = z.object({
       },
     }),
 
-  category: z.string({
-    error: "Category is required",
-  }),
+  category: z
+    .string({
+      error: (issue) =>
+        issue.input === undefined ? "Category is required" : "Invalid Category",
+    })
+    .min(1, {
+      error: (issue) => {
+        if (issue.code === "too_small") {
+          return `Category is required!`;
+        }
+      },
+    }),
 
   email: z
     .email({

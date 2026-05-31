@@ -150,6 +150,9 @@ export default function LoginModal() {
               {/* GOOGLE */}
               <Button
                 type="button"
+                onClick={() => {
+                  window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+                }}
                 className="h-11 w-full rounded-2xl border border-white/10 bg-white/3 text-sm font-medium text-slate-300 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:text-white"
               >
                 <GoogleIcon className="size-4" />

@@ -2,7 +2,8 @@ import { cookies } from "next/headers";
 import cookie from "cookie";
 import { ActionResult } from "@/types/actions";
 
-const BASE_URL = process.env.API_BASE_URL ?? "http://localhost:1126/api/v1";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1126/api/v1";
 
 type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
