@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 import {
@@ -11,6 +11,9 @@ import {
   Phone,
   Sparkles,
   ImageIcon,
+  Upload,
+  X,
+  LoaderCircle,
 } from "lucide-react";
 import {
   Dialog,
@@ -41,6 +44,9 @@ export default function AddBusinessModal({
 }) {
   const router = useRouter();
   const [state, formAction, isPending] = useActionState(createBusiness, null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!state) return;
@@ -56,6 +62,30 @@ export default function AddBusinessModal({
       toast.error(state.error ?? "Failed to create business workspace!");
     }
   }, [state, router, onClose]);
+
+  // Revoke the object URL when it's no longer needed to free memory
+  useEffect(() => {
+    return () => {
+      if (logoPreview) URL.revokeObjectURL(logoPreview);
+    };
+  }, [logoPreview]);
+
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (logoPreview) URL.revokeObjectURL(logoPreview);
+
+    setLogoFile(file);
+    setLogoPreview(URL.createObjectURL(file));
+  };
+
+  const handleLogoClear = () => {
+    if (logoPreview) URL.revokeObjectURL(logoPreview);
+    setLogoFile(null);
+    setLogoPreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -241,26 +271,66 @@ export default function AddBusinessModal({
                   <InputFieldError field="address" state={state} />
                 </Field>
 
-                {/* LOGO */}
+                {/* LOGO UPLOAD */}
                 <Field>
                   <FieldLabel className="mb-2 text-sm text-slate-300">
-                    Logo URL
+                    Business Logo
                   </FieldLabel>
 
-                  <div className="relative">
-                    <ImageIcon className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
-                    <Input
-                      name="logoUrl"
-                      placeholder="https://logo.png"
-                      className="h-12 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
-                    />
-                  </div>
-                  <InputFieldError field="logoUrl" state={state} />
+                  {/* Hidden real file input — always in the DOM so FormData picks it up */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    name="logo"
+                    accept="image/*"
+                    onChange={handleLogoChange}
+                    className="hidden"
+                  />
+
+                  {logoPreview && logoFile ? (
+                    /* PREVIEW STATE */
+                    <div className="flex h-12 items-center gap-3 rounded-2xl border border-white/10 bg-white/3 px-3">
+                      <img
+                        src={logoPreview}
+                        alt="Logo preview"
+                        className="h-7 w-7 rounded-lg object-cover"
+                      />
+                      <span className="flex-1 truncate text-sm text-slate-300">
+                        {logoFile.name}
+                      </span>
+                      <span className="shrink-0 text-xs text-slate-500">
+                        {(logoFile.size / 1024).toFixed(0)} KB
+                      </span>
+                      <button
+                        type="button"
+                        onClick={handleLogoClear}
+                        className="shrink-0 rounded-lg p-1 text-slate-500 transition-colors duration-200 hover:text-red-400"
+                        aria-label="Remove logo"
+                      >
+                        <X className="size-3.5" />
+                      </button>
+                    </div>
+                  ) : (
+                    /* UPLOAD TRIGGER */
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex h-12 w-full items-center gap-3 rounded-2xl border border-dashed border-white/15 bg-white/3 px-4 text-left transition-all duration-200 hover:border-blue-500/30 hover:bg-blue-500/5"
+                    >
+                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5">
+                        <ImageIcon className="size-3.5 text-slate-500" />
+                      </div>
+                      <span className="flex-1 text-sm text-slate-500">
+                        Click to upload logo
+                      </span>
+                      <Upload className="size-3.5 shrink-0 text-slate-600" />
+                    </button>
+                  )}
                 </Field>
               </div>
             </div>
 
-            {/* GLOBAL ERROR — API failure only */}
+            {/* GLOBAL ERROR */}
             {!isPending && state?.success === false && !state.errors && (
               <div className="rounded-2xl border border-red-500/15 bg-red-500/10 px-4 py-3">
                 <p className="text-sm text-red-400">
@@ -284,8 +354,17 @@ export default function AddBusinessModal({
                 disabled={isPending}
                 className="group h-12 rounded-2xl border border-blue-500/20 bg-blue-500/10 px-7 text-sm font-medium text-blue-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.18)]"
               >
-                <Building2 className="size-4 transition-transform duration-300 group-hover:scale-110" />
-                {isPending ? "Creating Workspace..." : "Create Workspace"}
+                {isPending ? (
+                  <>
+                    <LoaderCircle className="size-4 animate-spin" />
+                    Creating Workspace...
+                  </>
+                ) : (
+                  <>
+                    <Building2 className="size-4 transition-transform duration-300 group-hover:scale-110" />
+                    Create Workspace
+                  </>
+                )}
               </Button>
             </div>
           </FieldGroup>

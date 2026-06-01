@@ -2,7 +2,13 @@
 
 import { serverFetch } from "@/lib/serverFetch";
 import { ActionResult } from "@/types/actions";
-import { GetAllInvoicesParams, IInvoice, IInvoiceItem, InvoiceStats } from "@/types/invoice";
+import {
+  GetAllInvoicesParams,
+  IInvoice,
+  IInvoiceItem,
+  InvoiceStats,
+} from "@/types/invoice";
+import { createInvoiceSchema } from "@/zod/invoice.validation";
 
 export const createInvoice = async (
   currentState: ActionResult<IInvoice> | null,
@@ -16,33 +22,34 @@ export const createInvoice = async (
     ? (JSON.parse(itemsRaw as string) as IInvoiceItem[])
     : [];
 
-  const payload: {
-    email: FormDataEntryValue | null;
-    dueDays: number;
-    taxRate: number;
-    method: "ONLINE" | "CASH";
-    items: IInvoiceItem[];
-    notes?: FormDataEntryValue;
-  } = {
-    email: formData.get("email"),
-    dueDays: Number(formData.get("dueDays")) || 3,
-    taxRate: Number(formData.get("taxRate")) || 0,
+  const payload = {
+    email: String(formData.get("email") ?? ""),
+    dueDays: Number(formData.get("dueDays")),
+    taxRate: Number(formData.get("taxRate")),
     method,
+    notes: typeof notes === "string" ? notes : undefined,
     items,
-    ...(notes ? { notes } : {}),
   };
 
-  if (!payload.email) return { success: false, error: "Email is required" };
-  if (!["ONLINE", "CASH"].includes(method))
-    return { success: false, error: "Invalid payment method" };
-  if (!payload.items.length)
-    return { success: false, error: "At least one item is required" };
-  if (payload.items.some((item) => !item.productId))
-    return { success: false, error: "All items must have a product selected" };
+  const validationResult = createInvoiceSchema.safeParse(payload);
+
+  if (!validationResult.success) {
+    return {
+      success: false,
+      error: "Please fix the highlighted fields.",
+      errors: validationResult.error.issues.map((issue) => ({
+        field:
+          issue.path[0] === "items"
+            ? "items"
+            : (issue.path[0]?.toString() ?? "form"),
+        message: issue.message,
+      })),
+    };
+  }
 
   return serverFetch<IInvoice>("/invoice/create", {
     method: "POST",
-    body: payload,
+    body: validationResult.data,
   });
 };
 
@@ -64,7 +71,9 @@ export const getAllInvoices = async (
   return serverFetch<IInvoice[]>(endpoint, { cache: "no-store" });
 };
 
-export const getInvoiceStats = async (): Promise<ActionResult<InvoiceStats>> => {
+export const getInvoiceStats = async (): Promise<
+  ActionResult<InvoiceStats>
+> => {
   return serverFetch<InvoiceStats>("/invoice/stats", { cache: "no-store" });
 };
 
@@ -72,10 +81,14 @@ export const updateInvStatus = async (): Promise<ActionResult<null>> => {
   return serverFetch<null>("/invoice/update-status", { method: "PATCH" });
 };
 
-export const getSingleInvoice = async (invId: string): Promise<ActionResult<IInvoice>> => {
+export const getSingleInvoice = async (
+  invId: string,
+): Promise<ActionResult<IInvoice>> => {
   return serverFetch<IInvoice>(`/invoice/${invId}`, { cache: "no-store" });
 };
 
-export const sendInvoice = async (invoiceId: string): Promise<ActionResult<null>> => {
+export const sendInvoice = async (
+  invoiceId: string,
+): Promise<ActionResult<null>> => {
   return serverFetch<null>(`/invoice/send/${invoiceId}`, { method: "POST" });
 };

@@ -6,7 +6,7 @@ import { Boxes, PackagePlus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-import AddProductModal from "./AddProductModule";
+import AddProductModal from "./AddProductModal";
 
 export default function ProductsHeader() {
   const [open, setOpen] = useState(false);

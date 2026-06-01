@@ -17,7 +17,6 @@ export const createBusiness = async (
     phone: formData.get("phone") || undefined,
     address: formData.get("address") || undefined,
     website: formData.get("website") || undefined,
-    logoUrl: formData.get("logoUrl") || undefined,
   };
 
   const validationResult = zodValidator(
@@ -29,9 +28,27 @@ export const createBusiness = async (
     return { success: false, errors: validationResult.errors };
   }
 
+  // Build a fresh FormData to send to the backend
+  const body = new FormData();
+
+  // Append all validated text fields
+  const { name, email, category, phone, address, website } =
+    validationResult.data;
+  body.append("name", name);
+  body.append("email", email);
+  body.append("category", category);
+  if (phone) body.append("phone", phone);
+  if (address) body.append("address", address);
+  if (website) body.append("website", website);
+
+  const logo = formData.get("logo");
+  if (logo instanceof File && logo.size > 0) {
+    body.append("logo", logo);
+  }
+
   return serverFetch<null>("/business/add", {
     method: "POST",
-    body: validationResult.data,
+    body,
     onResponse: (res) =>
       forwardResponseCookies(res, ["accessToken", "refreshToken"]),
   });

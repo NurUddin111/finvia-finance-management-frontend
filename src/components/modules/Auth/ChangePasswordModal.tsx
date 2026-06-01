@@ -3,7 +3,13 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
-import { ShieldCheck, LockKeyhole, KeyRound, Sparkles } from "lucide-react";
+import {
+  ShieldCheck,
+  LockKeyhole,
+  KeyRound,
+  Sparkles,
+  LoaderCircle,
+} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -155,8 +161,17 @@ export default function ChangePasswordModal({
                   disabled={isPending}
                   className="group h-10 flex-1 rounded-xl border border-blue-500/20 bg-blue-500/10 text-sm font-medium text-blue-400 transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300"
                 >
-                  <Sparkles className="size-3.5 transition-transform duration-300 group-hover:rotate-12" />
-                  {isPending ? "Updating..." : "Update"}
+                  {isPending ? (
+                    <>
+                      <LoaderCircle className="size-3.5 animate-spin" />
+                      Updating...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="size-3.5 transition-transform duration-300 group-hover:rotate-12" />
+                      Update
+                    </>
+                  )}
                 </Button>
               </div>
             </FieldGroup>

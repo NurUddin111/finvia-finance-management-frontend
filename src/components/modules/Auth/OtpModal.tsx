@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, MailCheck } from "lucide-react";
+import { ArrowLeft, LoaderCircle, MailCheck } from "lucide-react";
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -86,7 +86,14 @@ export default function SignUpVerifyModal() {
               disabled={isPending}
               className="mt-5 h-11 w-full rounded-2xl border border-blue-500/20 bg-blue-500/10 text-sm font-medium text-blue-400 transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_35px_rgba(59,130,246,0.16)] disabled:opacity-60"
             >
-              {isPending ? "Verifying..." : "Verify Email"}
+              {isPending ? (
+                <span className="flex items-center gap-2">
+                  <LoaderCircle className="size-4 animate-spin" />
+                  Verifying...
+                </span>
+              ) : (
+                "Verify Email"
+              )}
             </Button>
           </form>
 

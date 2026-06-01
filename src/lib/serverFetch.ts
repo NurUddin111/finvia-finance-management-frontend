@@ -31,7 +31,9 @@ export async function serverFetch<T = Record<string, unknown>>(
 ): Promise<ActionResult<T>> {
   const headers: Record<string, string> = { ...extraHeaders };
 
-  if (body) headers["Content-Type"] = "application/json";
+  if (body && !(body instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
+  }
 
   if (withCookies) {
     const store = await cookies();
@@ -41,7 +43,9 @@ export async function serverFetch<T = Record<string, unknown>>(
   const res = await fetch(`${BASE_URL}${endpoint}`, {
     method,
     headers,
-    ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
+    ...(body !== undefined
+      ? { body: body instanceof FormData ? body : JSON.stringify(body) }
+      : {}),
     ...(cache !== undefined ? { cache } : {}),
   });
 
