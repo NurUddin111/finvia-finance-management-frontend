@@ -13,7 +13,7 @@ const InputFieldError = ({ field, state }: InputFieldErrorProps) => {
   if (!error) return null;
 
   return (
-    <FieldDescription className="mt-1 text-sm text-red-500">
+    <FieldDescription className="mt-1 text-xs text-red-400">
       {error}
     </FieldDescription>
   );

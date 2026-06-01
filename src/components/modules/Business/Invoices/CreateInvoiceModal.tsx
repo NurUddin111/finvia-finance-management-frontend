@@ -23,6 +23,7 @@ import {
   Plus,
   CreditCard,
   Wallet,
+  LoaderCircle,
 } from "lucide-react";
 import {
   Popover,
@@ -43,6 +44,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { createInvoice } from "@/services/business/invoices.services";
 import { getAllProducts } from "@/services/business/product.services";
+import InputFieldError from "@/components/shared/InputFieldError";
 
 type PaymentMethod = "ONLINE" | "CASH";
 type Product = { id: string; name: string };
@@ -122,18 +124,17 @@ export default function CreateInvoiceModal({
   }, [open, search]);
 
   useEffect(() => {
-    if (!state) return;
-    if (state.success) {
-      if (method === "CASH") {
-        toast.success("Receipt sent successfully!");
-        onClose();
-        setTimeout(() => {
-          resetForm();
-          router.refresh();
-        }, 0);
-      }
-    } else {
-      toast.error(state.error ?? "Failed to create invoice!");
+    if (!state?.success) return;
+
+    if (method === "CASH") {
+      toast.success("Receipt sent successfully!");
+
+      onClose();
+
+      setTimeout(() => {
+        resetForm();
+        router.refresh();
+      }, 0);
     }
   }, [method, onClose, resetForm, router, state]);
 
@@ -233,6 +234,7 @@ export default function CreateInvoiceModal({
                             onChange={(e) => setEmail(e.target.value)}
                             className="h-11 rounded-xl border-white/10 bg-white/3 px-4 text-sm text-white placeholder:text-slate-500 focus-visible:ring-0"
                           />
+                          <InputFieldError field="email" state={state} />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">
@@ -250,6 +252,7 @@ export default function CreateInvoiceModal({
                               }
                               className="h-11 rounded-xl border-white/10 bg-white/3 pl-10 text-white focus-visible:ring-0"
                             />
+                            <InputFieldError field="dueDays" state={state} />
                           </div>
                         </div>
                       </div>
@@ -303,7 +306,9 @@ export default function CreateInvoiceModal({
                       </Button>
                     </div>
 
-                    <div className="space-y-3">
+                    <InputFieldError field="items" state={state} />
+
+                    <div className="space-y-3 mt-1">
                       {items.map((item, i) => (
                         <div
                           key={i}
@@ -504,6 +509,7 @@ export default function CreateInvoiceModal({
                           onChange={(e) => setTaxRate(Number(e.target.value))}
                           className="h-11 rounded-xl border-white/10 bg-white/3 text-white"
                         />
+                        <InputFieldError field="taxRate" state={state} />
                       </div>
 
                       <div className="flex items-center justify-between text-sm">
@@ -541,15 +547,16 @@ export default function CreateInvoiceModal({
                       placeholder="Add payment instructions or invoice notes..."
                       className="min-h-28 rounded-xl border-white/10 bg-white/3 text-sm text-white placeholder:text-slate-500 lg:min-h-36"
                     />
+                    <InputFieldError field="notes" state={state} />
                   </div>
                 </div>
               </div>
 
               {/* GLOBAL ERROR */}
-              {!isPending && state?.success === false && (
-                <p className="mt-4 text-center text-sm text-red-400">
-                  {state.error ?? "Failed to create invoice."}
-                </p>
+              {state?.success === false && state.error && (
+                <div className="mt-4 rounded-2xl border border-red-500/15 bg-red-500/8 px-4 py-3">
+                  <p className="text-sm text-red-400">{state.error}</p>
+                </div>
               )}
             </div>
 
@@ -574,13 +581,17 @@ export default function CreateInvoiceModal({
                     disabled={isPending}
                     className="h-10 flex-1 rounded-xl bg-blue-500 px-6 text-sm font-semibold text-white hover:bg-blue-400 disabled:opacity-60 sm:flex-none"
                   >
-                    {isPending
-                      ? method === "CASH"
-                        ? "Sending..."
-                        : "Creating..."
-                      : method === "CASH"
-                        ? "Send Receipt"
-                        : "Create Invoice"}
+                    {isPending ? (
+                      <>
+                        <LoaderCircle className="size-4 animate-spin" />
+
+                        {method === "CASH" ? "Sending..." : "Creating..."}
+                      </>
+                    ) : (
+                      <>
+                        {method === "CASH" ? "Send Receipt" : "Create Invoice"}
+                      </>
+                    )}
                   </Button>
                 </div>
               </div>

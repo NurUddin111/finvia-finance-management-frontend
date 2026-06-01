@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Package2, Plus, Trash2 } from "lucide-react";
+import { LoaderCircle, Package2, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { addProduct } from "@/services/business/product.services";
 
@@ -153,9 +153,16 @@ export default function AddProductModal({
                 disabled={isPending || productsPayload.length === 0}
                 className="h-11 flex-1 rounded-2xl border border-blue-500/20 bg-blue-500/10 text-blue-400 transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_25px_rgba(59,130,246,0.18)]"
               >
-                {isPending
-                  ? "Adding..."
-                  : `Add ${productsPayload.length || ""} Product${productsPayload.length !== 1 ? "s" : ""}`}
+                {isPending ? (
+                  <>
+                    <LoaderCircle className="size-4 animate-spin" />
+                    Adding Products...
+                  </>
+                ) : (
+                  `Add ${productsPayload.length || ""} Product${
+                    productsPayload.length !== 1 ? "s" : ""
+                  }`
+                )}
               </Button>
             </div>
           </form>

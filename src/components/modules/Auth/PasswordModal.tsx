@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Eye, EyeOff, Lock } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, LoaderCircle, Lock } from "lucide-react";
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -109,7 +109,14 @@ export default function SignUpPasswordModal() {
                 disabled={isPending}
                 className="h-11 w-full rounded-2xl border border-blue-500/20 bg-blue-500/10 text-sm font-medium text-blue-400 transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_35px_rgba(59,130,246,0.16)] disabled:opacity-60"
               >
-                {isPending ? "Creating account..." : "Create Account"}
+                {isPending ? (
+                  <span className="flex items-center gap-2">
+                    <LoaderCircle className="size-4 animate-spin" />
+                    Creating account...
+                  </span>
+                ) : (
+                  "Create Account"
+                )}
               </Button>
             </FieldGroup>
           </form>

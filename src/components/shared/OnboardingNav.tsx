@@ -17,6 +17,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { logoutUser } from "@/services/auth.services";
+import Image from "next/image";
 
 export default function OnboardingNav() {
   const [openLogout, setOpenLogout] = useState(false);
@@ -29,8 +30,14 @@ export default function OnboardingNav() {
         <div className="mx-auto flex h-18 w-full max-w-7xl items-center justify-between px-4 sm:px-6">
           {/* LEFT */}
           <Link href="/" className="group flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10 transition-all duration-300 group-hover:border-blue-400/30 group-hover:bg-blue-500/15">
-              <Building2 className="size-5 text-blue-400" />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-blue-500/20 bg-blue-500/10 transition-all duration-300 group-hover:border-blue-400/30 group-hover:bg-blue-500/15 sm:h-11 sm:w-11">
+              <Image
+                src="/favicon.ico"
+                alt="Finvia"
+                width={20}
+                height={20}
+                className="size-11"
+              />
             </div>
 
             <div>
