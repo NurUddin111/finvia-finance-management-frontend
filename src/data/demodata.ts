@@ -34,18 +34,18 @@ export const demoInvoiceStatus = {
 
 // ── Monthly Revenue ───────────────────────────────────────────────
 export const demoRevenueData = [
-  { month: "Jan", revenue: 142000 },
-  { month: "Feb", revenue: 58000 },
-  { month: "Mar", revenue: 49500 },
-  { month: "Apr", revenue: 94000 },
-  { month: "May", revenue: 78000 },
-  { month: "Jun", revenue: 160000 },
-  { month: "Jul", revenue: 45000 },
-  { month: "Aug", revenue: 90000 },
-  { month: "Sep", revenue: 52000 },
-  { month: "Oct", revenue: 62000 },
-  { month: "Nov", revenue: 43000 },
-  { month: "Dec", revenue: 120000 },
+  { month: "Jan", revenue: 85000 },
+  { month: "Feb", revenue: 102000 },
+  { month: "Mar", revenue: 97000 },
+  { month: "Apr", revenue: 118000 },
+  { month: "May", revenue: 138000 },
+  { month: "Jun", revenue: 125000 },
+  { month: "Jul", revenue: 148000 },
+  { month: "Aug", revenue: 132000 },
+  { month: "Sep", revenue: 165000 },
+  { month: "Oct", revenue: 154000 },
+  { month: "Nov", revenue: 182000 },
+  { month: "Dec", revenue: 205000 },
 ];
 
 // ── Top Clients ───────────────────────────────────────────────────

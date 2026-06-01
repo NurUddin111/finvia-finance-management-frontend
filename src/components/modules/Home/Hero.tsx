@@ -94,7 +94,7 @@ export default function Hero() {
           {/* PRIMARY */}
           <Button
             onClick={() =>
-              router.push("/login", {
+              router.push("/signup", {
                 scroll: false,
               })
             }
