@@ -15,7 +15,7 @@ export default function SignUpPasswordModal() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [state, formAction, isPending] = useActionState(signupPassword, null);
-
+  const [password, setPassword] = useState("");
   useEffect(() => {
     if (!state) return;
 
@@ -68,6 +68,8 @@ export default function SignUpPasswordModal() {
                     required
                     autoFocus
                     placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="h-11 rounded-2xl border border-white/10 bg-white/3 pl-11 pr-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
 

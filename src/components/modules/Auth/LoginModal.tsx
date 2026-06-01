@@ -15,6 +15,8 @@ import { login } from "@/services/auth.services";
 export default function LoginModal() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [state, formAction, isPending] = useActionState(login, null);
 
   useEffect(() => {
@@ -72,6 +74,8 @@ export default function LoginModal() {
                     placeholder="john@example.com"
                     required
                     autoFocus
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="h-11 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
                 </div>
@@ -90,6 +94,8 @@ export default function LoginModal() {
                     type={showPassword ? "text" : "password"}
                     required
                     placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="h-11 rounded-2xl border border-white/10 bg-white/3 pl-11 pr-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
                   <button

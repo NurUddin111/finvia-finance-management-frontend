@@ -47,7 +47,13 @@ export default function SignUpVerifyModal() {
           <form action={formAction}>
             {/* OTP */}
             <div className="flex justify-center">
-              <InputOTP maxLength={6} name="otp" autoFocus>
+              <InputOTP
+                maxLength={6}
+                name="otp"
+                autoFocus
+                inputMode="numeric"
+                pattern="[0-9]*"
+              >
                 <InputOTPGroup className="gap-1.5 sm:gap-2">
                   {[0, 1, 2, 3, 4, 5].map((i) => (
                     <InputOTPSlot

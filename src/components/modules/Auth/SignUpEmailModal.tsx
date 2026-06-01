@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Mail, User2, X } from "lucide-react";
 import { useActionState } from "react";
@@ -14,6 +14,8 @@ import { signup } from "@/services/auth.services";
 export default function SignUpEmailModal() {
   const [state, formAction, isPending] = useActionState(signup, null);
   const router = useRouter();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     if (state?.success) {
@@ -48,7 +50,7 @@ export default function SignUpEmailModal() {
         {/* BODY */}
         <div className="px-5 py-4 sm:px-6">
           <form action={formAction}>
-            <FieldGroup className="space-y-3">
+            <FieldGroup className="space-y-1">
               {/* NAME */}
               <Field>
                 <FieldLabel className="mb-2 block text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
@@ -62,6 +64,8 @@ export default function SignUpEmailModal() {
                     placeholder="John Doe"
                     required
                     autoFocus
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     className="h-11 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
                 </div>
@@ -81,6 +85,8 @@ export default function SignUpEmailModal() {
                     type="email"
                     placeholder="you@example.com"
                     required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="h-11 rounded-2xl border border-white/10 bg-white/3 pl-11 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
                 </div>

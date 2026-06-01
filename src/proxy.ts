@@ -20,13 +20,13 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (!creationToken && pathname === "/signup/verify") {
-    return NextResponse.redirect(new URL("/signup", request.url));
-  }
+  // if (!creationToken && pathname === "/signup/verify") {
+  //   return NextResponse.redirect(new URL("/signup", request.url));
+  // }
 
-  if (!verifiedCreationToken && pathname === "/signup/password") {
-    return NextResponse.redirect(new URL("/signup", request.url));
-  }
+  // if (!verifiedCreationToken && pathname === "/signup/password") {
+  //   return NextResponse.redirect(new URL("/signup", request.url));
+  // }
 
   if (accessToken) {
     try {

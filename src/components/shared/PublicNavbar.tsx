@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sheet";
 
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const navItems = [
   {
@@ -76,8 +77,14 @@ export default function Navbar() {
           href="/"
           className="group flex min-w-0 items-center gap-2 sm:gap-3"
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10 transition-all duration-300 group-hover:border-blue-400/30 group-hover:bg-blue-500/15 sm:h-11 sm:w-11">
-            <Building2 className="size-5 text-blue-400" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-blue-500/20 bg-blue-500/10 transition-all duration-300 group-hover:border-blue-400/30 group-hover:bg-blue-500/15 sm:h-11 sm:w-11">
+            <Image
+              src="/favicon.ico"
+              alt="Finvia"
+              width={20}
+              height={20}
+              className="size-11"
+            />
           </div>
 
           <div className="hidden min-w-0 sm:block">
@@ -158,8 +165,14 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                   className="flex min-w-0 items-center gap-3"
                 >
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
-                    <Building2 className="size-5 text-blue-400" />
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-blue-500/20 bg-blue-500/10">
+                    <Image
+                      src="/favicon.ico"
+                      alt="Finvia"
+                      width={20}
+                      height={20}
+                      className="size-11"
+                    />
                   </div>
 
                   <div className="min-w-0">
