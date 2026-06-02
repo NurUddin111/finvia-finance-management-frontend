@@ -130,10 +130,18 @@ export default function EditBusinessPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#050816] px-3 py-4 sm:px-5 sm:py-5 lg:px-8 lg:py-7">
-        <div className="mx-auto flex w-full max-w-350 flex-col gap-5 lg:gap-6">
-          <div className="rounded-3xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5 sm:p-6">
-            <p className="text-sm text-slate-400">
-              Loading business details...
+        <div className="mx-auto flex min-h-[70vh] max-w-350 items-center justify-center">
+          <div className="rounded-3xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] px-8 py-10 text-center shadow-[0_20px_80px_rgba(0,0,0,0.45)]">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
+              <LoaderCircle className="size-6 animate-spin text-blue-400" />
+            </div>
+
+            <h3 className="mt-4 text-lg font-semibold text-white">
+              Loading Business
+            </h3>
+
+            <p className="mt-2 text-sm text-slate-400">
+              Fetching your business information...
             </p>
           </div>
         </div>

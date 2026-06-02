@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   Upload,
   X,
+  LoaderCircle,
 } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -115,9 +116,19 @@ export default function EditProfilePage() {
   if (loading) {
     return (
       <div className="min-h-screen rounded-2xl bg-[#050816] px-4 py-5 sm:px-6 lg:px-6 lg:py-7">
-        <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
-          <div className="rounded-3xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-6">
-            <p className="text-sm text-slate-400">Loading profile...</p>
+        <div className="mx-auto flex min-h-[70vh] max-w-5xl items-center justify-center">
+          <div className="rounded-3xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] px-8 py-10 text-center shadow-[0_20px_80px_rgba(0,0,0,0.45)]">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
+              <LoaderCircle className="size-6 animate-spin text-blue-400" />
+            </div>
+
+            <h3 className="mt-4 text-lg font-semibold text-white">
+              Loading Profile
+            </h3>
+
+            <p className="mt-2 text-sm text-slate-400">
+              Fetching your account information...
+            </p>
           </div>
         </div>
       </div>
@@ -364,8 +375,17 @@ export default function EditProfilePage() {
                 disabled={isPending || !userId}
                 className="group h-11 w-full rounded-2xl border border-blue-500/20 bg-blue-500/10 px-6 text-sm font-medium text-blue-400 transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_25px_rgba(59,130,246,0.18)] sm:w-auto"
               >
-                <Sparkles className="size-4 transition-transform duration-300 group-hover:rotate-12" />
-                {isPending ? "Saving..." : "Save Changes"}
+                {isPending ? (
+                  <>
+                    <LoaderCircle className="size-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="size-4 transition-transform duration-300 group-hover:rotate-12" />
+                    Save Changes
+                  </>
+                )}
               </Button>
             </div>
           </form>

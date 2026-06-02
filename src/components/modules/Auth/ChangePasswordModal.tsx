@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 import {
@@ -30,6 +30,9 @@ export default function ChangePasswordModal({
   onClose: () => void;
 }) {
   const router = useRouter();
+  const [oldPass, setOldPass] = useState("");
+  const [newPass, setNewPass] = useState("");
+  const [confirmNewPass, setConfirmNewPass] = useState("");
   const [state, formAction, isPending] = useActionState(changePassword, null);
 
   useEffect(() => {
@@ -89,6 +92,8 @@ export default function ChangePasswordModal({
                   <Input
                     name="oldPass"
                     type="password"
+                    value={oldPass}
+                    onChange={(e) => setOldPass(e.target.value)}
                     placeholder="Current password"
                     className="h-10 rounded-xl border border-white/10 bg-white/3 px-3 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
@@ -109,6 +114,8 @@ export default function ChangePasswordModal({
                   <Input
                     name="newPass"
                     type="password"
+                    value={newPass}
+                    onChange={(e) => setNewPass(e.target.value)}
                     placeholder="New password"
                     className="h-10 rounded-xl border border-white/10 bg-white/3 px-3 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
@@ -129,6 +136,8 @@ export default function ChangePasswordModal({
                   <Input
                     name="confirmNewPass"
                     type="password"
+                    value={confirmNewPass}
+                    onChange={(e) => setConfirmNewPass(e.target.value)}
                     placeholder="Confirm password"
                     className="h-10 rounded-xl border border-white/10 bg-white/3 px-3 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
                   />
