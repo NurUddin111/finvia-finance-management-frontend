@@ -34,6 +34,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import InputFieldError from "@/components/shared/InputFieldError";
 import { toast } from "sonner";
 import { createBusiness } from "@/services/business/business.services";
+import Image from "next/image";
 
 export default function AddBusinessModal({
   open,
@@ -290,9 +291,12 @@ export default function AddBusinessModal({
                   {logoPreview && logoFile ? (
                     /* PREVIEW STATE */
                     <div className="flex h-12 items-center gap-3 rounded-2xl border border-white/10 bg-white/3 px-3">
-                      <img
+                      <Image
                         src={logoPreview}
                         alt="Logo preview"
+                        width={28}
+                        height={28}
+                        unoptimized
                         className="h-7 w-7 rounded-lg object-cover"
                       />
                       <span className="flex-1 truncate text-sm text-slate-300">
