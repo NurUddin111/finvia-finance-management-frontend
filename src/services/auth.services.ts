@@ -127,10 +127,12 @@ export const updateProfile = async (
   const userId = formData.get("userId") as string;
   if (!userId) return { success: false, error: "User ID is missing" };
 
+  const avatar = formData.get("avatar");
+  const hasNewAvatar = avatar instanceof File && avatar.size > 0;
+
   const payload = {
     name: formData.get("name") || undefined,
     phone: formData.get("phone") || undefined,
-    picture: formData.get("picture") || undefined,
     address: formData.get("address") || undefined,
   };
 
@@ -140,22 +142,28 @@ export const updateProfile = async (
     }
   });
 
-  if (!payload.name && !payload.phone && !payload.picture && !payload.address) {
+  // nothing changed — treat as success silently
+  if (!payload.name && !payload.phone && !payload.address && !hasNewAvatar) {
     return { success: true };
   }
 
-  const validationResult = zodValidator(
-    payload,
-    UpdateUserZodSchemaValidation.partial(),
-  );
-
+  const validationResult = zodValidator(payload, UpdateUserZodSchemaValidation);
   if (!validationResult.success) {
     return { success: false, errors: validationResult.errors };
   }
 
-  return serverFetch<null>(`/user/edit/${userId}`, {
+  const body = new FormData();
+  body.append("userId", userId);
+
+  const { name, phone, address } = validationResult.data;
+  if (name) body.append("name", name);
+  if (phone) body.append("phone", phone);
+  if (address) body.append("address", address);
+  if (hasNewAvatar) body.append("avatar", avatar as File);
+
+  return serverFetch<null>(`/user/update/${userId}`, {
     method: "PATCH",
-    body: validationResult.data,
+    body,
   });
 };
 

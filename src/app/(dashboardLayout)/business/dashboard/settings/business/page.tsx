@@ -60,6 +60,7 @@ export default function EditBusinessPage() {
   // New logo file the user picks — separate from the existing URL
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [state, formAction, isPending] = useActionState(updateBusiness, null);
@@ -104,6 +105,14 @@ export default function EditBusinessPage() {
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setFileError("Image must be smaller than 5MB.");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
+    setFileError(null);
     if (logoPreview) URL.revokeObjectURL(logoPreview);
     setLogoFile(file);
     setLogoPreview(URL.createObjectURL(file));
@@ -113,6 +122,7 @@ export default function EditBusinessPage() {
     if (logoPreview) URL.revokeObjectURL(logoPreview);
     setLogoFile(null);
     setLogoPreview(null);
+    setFileError(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -392,6 +402,10 @@ export default function EditBusinessPage() {
                   </button>
                 )}
               </div>
+
+              {fileError && (
+                <p className="mt-1.5 text-xs text-red-400">{fileError}</p>
+              )}
             </div>
 
             {/* ERROR */}
