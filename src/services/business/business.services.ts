@@ -4,7 +4,10 @@ import { forwardResponseCookies, serverFetch } from "@/lib/serverFetch";
 import { zodValidator } from "@/lib/zodValidator";
 import { ActionResult } from "@/types/actions";
 import { IBusiness } from "@/types/business";
-import { CreateBusinessZodSchemaValidation } from "@/zod/business.validation";
+import {
+  CreateBusinessZodSchemaValidation,
+  UpdateBusinessZodSchemaValidation,
+} from "@/zod/business.validation";
 
 export const createBusiness = async (
   currentState: ActionResult<null> | null,
@@ -67,6 +70,9 @@ export const updateBusiness = async (
   const businessId = formData.get("businessId") as string;
   if (!businessId) return { success: false, error: "Business ID is missing" };
 
+  const logo = formData.get("logo");
+  const hasNewLogo = logo instanceof File && logo.size > 0;
+
   const payload = {
     name: formData.get("name") || undefined,
     email: formData.get("email") || undefined,
@@ -74,7 +80,6 @@ export const updateBusiness = async (
     phone: formData.get("phone") || undefined,
     address: formData.get("address") || undefined,
     website: formData.get("website") || undefined,
-    logoUrl: formData.get("logoUrl") || undefined,
   };
 
   (Object.keys(payload) as (keyof typeof payload)[]).forEach((key) => {
@@ -91,23 +96,35 @@ export const updateBusiness = async (
     !payload.phone &&
     !payload.address &&
     !payload.website &&
-    !payload.logoUrl
+    !hasNewLogo
   ) {
     return { success: true };
   }
 
   const validationResult = zodValidator(
     payload,
-    CreateBusinessZodSchemaValidation.partial(),
+    UpdateBusinessZodSchemaValidation,
   );
-
   if (!validationResult.success) {
     return { success: false, errors: validationResult.errors };
   }
 
-  return serverFetch<null>(`/business/edit/${businessId}`, {
+  const body = new FormData();
+  body.append("businessId", businessId);
+
+  const { name, email, category, phone, address, website } =
+    validationResult.data;
+  if (name) body.append("name", name);
+  if (email) body.append("email", email);
+  if (category) body.append("category", category);
+  if (phone) body.append("phone", phone);
+  if (address) body.append("address", address);
+  if (website) body.append("website", website);
+  if (hasNewLogo) body.append("logo", logo as File);
+
+  return serverFetch<null>(`/business/update/${businessId}`, {
     method: "PATCH",
-    body: validationResult.data,
+    body,
   });
 };
 
