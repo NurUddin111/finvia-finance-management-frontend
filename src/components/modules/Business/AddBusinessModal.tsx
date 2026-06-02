@@ -47,6 +47,7 @@ export default function AddBusinessModal({
   const [state, formAction, isPending] = useActionState(createBusiness, null);
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -75,8 +76,14 @@ export default function AddBusinessModal({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (logoPreview) URL.revokeObjectURL(logoPreview);
+    if (file.size > 5 * 1024 * 1024) {
+      setFileError("Image must be smaller than 5MB.");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
 
+    setFileError(null);
+    if (logoPreview) URL.revokeObjectURL(logoPreview);
     setLogoFile(file);
     setLogoPreview(URL.createObjectURL(file));
   };
@@ -85,6 +92,7 @@ export default function AddBusinessModal({
     if (logoPreview) URL.revokeObjectURL(logoPreview);
     setLogoFile(null);
     setLogoPreview(null);
+    setFileError(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -329,6 +337,11 @@ export default function AddBusinessModal({
                       </span>
                       <Upload className="size-3.5 shrink-0 text-slate-600" />
                     </button>
+                  )}
+
+                  {/* FILE SIZE ERROR */}
+                  {fileError && (
+                    <p className="mt-1.5 text-xs text-red-400">{fileError}</p>
                   )}
                 </Field>
               </div>

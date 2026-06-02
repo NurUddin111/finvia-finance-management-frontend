@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useActionState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -11,10 +11,12 @@ import {
   User2,
   Sparkles,
   ChevronLeft,
+  Upload,
+  X,
 } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import InputFieldError from "@/components/shared/InputFieldError";
 import { getMe, updateProfile } from "@/services/auth.services";
@@ -22,7 +24,7 @@ import { getMe, updateProfile } from "@/services/auth.services";
 type ProfileForm = {
   name: string;
   phone: string;
-  avatar: string;
+  avatar: string; // existing avatar URL from DB
   role: string;
   address: string;
 };
@@ -39,7 +41,12 @@ export default function EditProfilePage() {
     address: "",
   });
 
-  // FIX: no .bind() — userId passed via hidden input instead
+  // New avatar file the user picks — separate from the existing URL
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [avatarError, setAvatarError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [state, formAction, isPending] = useActionState(updateProfile, null);
 
   /* FETCH PROFILE */
@@ -70,6 +77,40 @@ export default function EditProfilePage() {
     }
   }, [state, router]);
 
+  // Revoke blob URL when it changes or component unmounts
+  useEffect(() => {
+    return () => {
+      if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+    };
+  }, [avatarPreview]);
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setAvatarError("Image must be smaller than 5MB.");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
+    setAvatarError(null);
+    if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+    setAvatarFile(file);
+    setAvatarPreview(URL.createObjectURL(file));
+  };
+
+  const handleAvatarClear = () => {
+    if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+    setAvatarFile(null);
+    setAvatarPreview(null);
+    setAvatarError(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  // The src shown in the Avatar — new preview takes priority over existing URL
+  const displayAvatar = avatarPreview ?? form.avatar;
+
   /* LOADING */
   if (loading) {
     return (
@@ -97,6 +138,7 @@ export default function EditProfilePage() {
             Back
           </button>
         </div>
+
         {/* HEADER */}
         <div className="rounded-3xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-5 md:p-6">
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
@@ -106,11 +148,9 @@ export default function EditProfilePage() {
               </div>
 
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-blue-400">
-                    Profile Settings
-                  </span>
-                </div>
+                <span className="rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-blue-400">
+                  Profile Settings
+                </span>
 
                 <h1 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
                   Edit Profile
@@ -130,37 +170,89 @@ export default function EditProfilePage() {
           <form action={formAction} className="space-y-5 md:space-y-8">
             <input type="hidden" name="userId" value={userId} />
 
-            {/* PROFILE CARD */}
+            {/* Hidden real file input */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              name="avatar"
+              accept="image/*"
+              onChange={handleAvatarChange}
+              className="hidden"
+            />
+
+            {/* AVATAR CARD */}
             <div className="rounded-3xl border border-white/10 bg-white/2 p-4 sm:p-5">
               <div className="flex flex-col gap-5 md:flex-row md:items-center">
-                <div className="relative">
+                {/* AVATAR WITH CAMERA TRIGGER */}
+                <div className="relative shrink-0">
                   <Avatar className="h-24 w-24 rounded-3xl border border-white/10">
-                    <AvatarImage src={form.avatar} />
+                    <AvatarImage src={displayAvatar} asChild>
+                      <Image
+                        src={displayAvatar}
+                        alt="Profile avatar"
+                        width={96}
+                        height={96}
+                        unoptimized
+                        className="rounded-3xl object-cover"
+                      />
+                    </AvatarImage>
                     <AvatarFallback className="rounded-3xl bg-blue-500/10 text-2xl font-semibold text-blue-400">
                       {form.name?.charAt(0) || "U"}
                     </AvatarFallback>
                   </Avatar>
 
-                  <div className="absolute -bottom-2 -right-2 flex h-9 w-9 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="absolute -bottom-2 -right-2 flex h-9 w-9 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10 transition-all duration-200 hover:border-blue-400/40 hover:bg-blue-500/20"
+                    aria-label="Upload avatar"
+                  >
                     <Camera className="size-4 text-blue-400" />
-                  </div>
+                  </button>
                 </div>
 
+                {/* FILE INFO / UPLOAD PROMPT */}
                 <div className="flex-1 space-y-2">
-                  <Label className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
-                    Profile Picture URL
-                  </Label>
-
-                  <Input
-                    name="picture"
-                    value={form.avatar}
-                    onChange={(e) =>
-                      setForm({ ...form, avatar: e.target.value })
-                    }
-                    placeholder="https://example.com/avatar.png"
-                    className="h-12 rounded-2xl border border-white/10 bg-white/3 text-sm text-white placeholder:text-slate-500 focus:border-blue-500/20 focus:bg-white/5 focus-visible:ring-0"
-                  />
-                  <InputFieldError field="picture" state={state} />
+                  {avatarFile ? (
+                    /* NEW FILE SELECTED */
+                    <div className="flex h-12 items-center gap-3 rounded-2xl border border-white/10 bg-white/3 px-3">
+                      <span className="flex-1 truncate text-sm text-slate-300">
+                        {avatarFile.name}
+                      </span>
+                      <span className="shrink-0 text-xs text-slate-500">
+                        {(avatarFile.size / 1024).toFixed(0)} KB
+                      </span>
+                      <button
+                        type="button"
+                        onClick={handleAvatarClear}
+                        className="shrink-0 rounded-lg p-1 text-slate-500 transition-colors duration-200 hover:text-red-400"
+                        aria-label="Remove selected avatar"
+                      >
+                        <X className="size-3.5" />
+                      </button>
+                    </div>
+                  ) : (
+                    /* NO NEW FILE — prompt to upload */
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex h-12 w-full items-center gap-3 rounded-2xl border border-dashed border-white/15 bg-white/3 px-4 text-left transition-all duration-200 hover:border-blue-500/30 hover:bg-blue-500/5"
+                    >
+                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5">
+                        <Upload className="size-3.5 text-slate-500" />
+                      </div>
+                      <span className="flex-1 text-sm text-slate-500">
+                        {form.avatar
+                          ? "Click to replace avatar"
+                          : "Click to upload avatar"}
+                      </span>
+                      <Camera className="size-3.5 shrink-0 text-slate-600" />
+                    </button>
+                  )}
+                  <InputFieldError field="avatar" state={state} />
+                  {avatarError && (
+                    <p className="text-xs text-red-400">{avatarError}</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -217,13 +309,11 @@ export default function EditProfilePage() {
                     Account Role
                   </p>
                 </div>
-                <div className="space-y-2">
-                  <Input
-                    value={form.role}
-                    disabled
-                    className="h-12 rounded-2xl border border-white/10 bg-white/3 text-sm text-slate-400 focus-visible:ring-0"
-                  />
-                </div>
+                <Input
+                  value={form.role}
+                  disabled
+                  className="h-12 rounded-2xl border border-white/10 bg-white/3 text-sm text-slate-400 focus-visible:ring-0"
+                />
               </div>
 
               {/* ADDRESS */}
