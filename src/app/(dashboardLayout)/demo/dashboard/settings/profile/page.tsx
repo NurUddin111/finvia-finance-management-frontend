@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
+import Image from "next/image";
 import {
   User2,
   Phone,
@@ -11,8 +11,8 @@ import {
   Sparkles,
   Lock,
   ChevronLeft,
+  Upload,
 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -20,18 +20,16 @@ import { useRouter } from "next/navigation";
 
 const demoProfileForm = {
   name: "Demo User",
-
   phone: "01700-000000",
-
   avatar: "",
-
   role: "BUSINESS_OWNER",
-
   address: "Dhaka, Bangladesh",
 };
 
 export default function DemoProfilePage() {
-  const [showNudge, setShowNudge] = useState(false);
+  const [nudgeTarget, setNudgeTarget] = useState<"avatar" | "save" | null>(
+    null,
+  );
   const router = useRouter();
 
   return (
@@ -47,6 +45,7 @@ export default function DemoProfilePage() {
             Back
           </button>
         </div>
+
         {/* HEADER */}
         <div className="rounded-3xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-4 sm:p-5 md:p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
@@ -77,32 +76,72 @@ export default function DemoProfilePage() {
             {/* PROFILE CARD */}
             <div className="rounded-3xl border border-white/10 bg-white/2 p-4 sm:p-5">
               <div className="flex flex-col gap-5 lg:flex-row lg:items-center">
-                {/* AVATAR */}
-                <div className="relative mx-auto lg:mx-0">
+                {/* AVATAR WITH CAMERA TRIGGER */}
+                <div className="relative mx-auto shrink-0 lg:mx-0">
                   <Avatar className="h-24 w-24 rounded-3xl border border-white/10">
-                    <AvatarImage src={demoProfileForm.avatar} />
-
+                    {demoProfileForm.avatar ? (
+                      <AvatarImage asChild>
+                        <Image
+                          src={demoProfileForm.avatar}
+                          alt="Profile avatar"
+                          width={96}
+                          height={96}
+                          unoptimized
+                          className="rounded-3xl object-cover"
+                        />
+                      </AvatarImage>
+                    ) : null}
                     <AvatarFallback className="rounded-3xl bg-blue-500/10 text-2xl font-semibold text-blue-400">
                       D
                     </AvatarFallback>
                   </Avatar>
 
-                  <div className="absolute -bottom-2 -right-2 flex h-9 w-9 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setNudgeTarget((v) => (v === "avatar" ? null : "avatar"))
+                    }
+                    className="absolute -bottom-2 -right-2 flex h-9 w-9 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10 transition-all duration-200 hover:border-blue-400/40 hover:bg-blue-500/20"
+                    aria-label="Upload avatar"
+                  >
                     <Camera className="size-4 text-blue-400" />
-                  </div>
+                  </button>
                 </div>
 
-                {/* INPUT */}
+                {/* FILE INFO / UPLOAD PROMPT */}
                 <div className="flex-1 space-y-2">
                   <p className="text-sm font-medium uppercase tracking-[0.18em] text-white">
-                    Profile Picture URL
+                    Profile Picture
                   </p>
 
-                  <Input
-                    value={demoProfileForm.avatar}
-                    disabled
-                    className="h-12 rounded-2xl border border-white/10 bg-white/3 text-sm text-slate-400 placeholder:text-slate-500"
-                  />
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setNudgeTarget((v) =>
+                          v === "avatar" ? null : "avatar",
+                        )
+                      }
+                      className="flex h-12 w-full items-center gap-3 rounded-2xl border border-dashed border-white/15 bg-white/3 px-4 text-left transition-all duration-200 hover:border-blue-500/30 hover:bg-blue-500/5"
+                    >
+                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5">
+                        <Upload className="size-3.5 text-slate-500" />
+                      </div>
+                      <span className="flex-1 text-sm text-slate-500">
+                        Click to upload avatar
+                      </span>
+                      <Camera className="size-3.5 shrink-0 text-slate-600" />
+                    </button>
+
+                    {nudgeTarget === "avatar" && (
+                      <div className="absolute -top-12 left-0 z-50 flex w-fit items-center gap-2 rounded-2xl border border-red-500/15 bg-[#140809] px-4 py-3 shadow-2xl">
+                        <Lock className="size-3.5 shrink-0 text-red-400" />
+                        <p className="text-xs font-medium text-red-300">
+                          Sign up to edit your profile
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -113,12 +152,10 @@ export default function DemoProfilePage() {
               <div className="rounded-3xl border border-white/10 bg-white/2 p-4 sm:p-5">
                 <div className="mb-4 flex items-center gap-2">
                   <User2 className="size-4 text-blue-400" />
-
                   <p className="text-sm font-medium uppercase tracking-[0.18em] text-white">
                     Full Name
                   </p>
                 </div>
-
                 <Input
                   value={demoProfileForm.name}
                   disabled
@@ -130,12 +167,10 @@ export default function DemoProfilePage() {
               <div className="rounded-3xl border border-white/10 bg-white/2 p-4 sm:p-5">
                 <div className="mb-4 flex items-center gap-2">
                   <Phone className="size-4 text-emerald-400" />
-
                   <p className="text-sm font-medium uppercase tracking-[0.18em] text-white">
                     Phone
                   </p>
                 </div>
-
                 <Input
                   value={demoProfileForm.phone}
                   disabled
@@ -147,12 +182,10 @@ export default function DemoProfilePage() {
               <div className="rounded-3xl border border-white/10 bg-white/2 p-4 sm:p-5">
                 <div className="mb-4 flex items-center gap-2">
                   <ShieldCheck className="size-4 text-violet-400" />
-
                   <p className="text-sm font-medium uppercase tracking-[0.18em] text-white">
                     Role
                   </p>
                 </div>
-
                 <Input
                   value={demoProfileForm.role}
                   disabled
@@ -164,12 +197,10 @@ export default function DemoProfilePage() {
               <div className="rounded-3xl border border-white/10 bg-white/2 p-4 sm:p-5">
                 <div className="mb-4 flex items-center gap-2">
                   <MapPin className="size-4 text-amber-400" />
-
                   <p className="text-sm font-medium uppercase tracking-[0.18em] text-white">
                     Address
                   </p>
                 </div>
-
                 <Input
                   value={demoProfileForm.address}
                   disabled
@@ -181,17 +212,18 @@ export default function DemoProfilePage() {
             {/* ACTION */}
             <div className="relative flex flex-col items-stretch gap-3 pt-2 sm:items-end">
               <Button
-                onClick={() => setShowNudge((v) => !v)}
+                onClick={() =>
+                  setNudgeTarget((v) => (v === "save" ? null : "save"))
+                }
                 className="group h-11 w-full rounded-2xl border border-blue-500/20 bg-blue-500/10 px-6 text-sm font-medium text-blue-400 transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_25px_rgba(59,130,246,0.18)] sm:w-auto"
               >
                 <Sparkles className="size-4 transition-transform duration-300 group-hover:rotate-12" />
                 Save Changes
               </Button>
 
-              {showNudge && (
+              {nudgeTarget === "save" && (
                 <div className="absolute -top-18 right-0 left-0 z-50 mx-auto flex w-fit max-w-65 items-center gap-2 rounded-2xl border border-red-500/15 bg-[#140809] px-4 py-3 shadow-2xl sm:left-auto sm:mx-0">
                   <Lock className="size-3.5 shrink-0 text-red-400" />
-
                   <p className="text-xs font-medium text-red-300">
                     Sign up to edit your profile
                   </p>

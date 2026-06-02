@@ -13,14 +13,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import {
-  Building2,
-  Lock,
-  LogOut,
-  Settings,
-  Shield,
-  User,
-} from "lucide-react";
+import { Building2, Lock, LogOut, Settings, Shield, User } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -45,17 +38,15 @@ const settingsItems = [
     slug: "business",
     icon: Building2,
   },
-
-  {
-    label: "Account",
-    slug: "account",
-    icon: Shield,
-  },
-
   {
     label: "Password",
     slug: "password",
     icon: Lock,
+  },
+  {
+    label: "Account",
+    slug: "account",
+    icon: Shield,
   },
 ];
 
@@ -212,7 +203,6 @@ export default function DemoSettingsAccordion({
                 className="h-11 flex-1 rounded-2xl border border-red-500/20 bg-red-500/10 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300"
               >
                 <LogOut className="size-4" />
-
                 Logout
               </Button>
 

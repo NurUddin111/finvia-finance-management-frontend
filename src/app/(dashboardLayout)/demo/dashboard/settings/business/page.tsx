@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
+import Image from "next/image";
 import {
   Building2,
   Mail,
@@ -13,12 +13,10 @@ import {
   ImageIcon,
   Lock,
   ChevronLeft,
+  Upload,
 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
-
 import {
   Select,
   SelectContent,
@@ -30,22 +28,16 @@ import { useRouter } from "next/navigation";
 
 const demoBusinessForm = {
   name: "Finvia Demo",
-
   email: "demo@finvia.app",
-
   category: "SOFTWARE_COMPANY",
-
   phone: "01700-000001",
-
   address: "Dhaka, Bangladesh",
-
   website: "https://finvia.app",
-
   logoUrl: "",
 };
 
 export default function DemoBusinessPage() {
-  const [showNudge, setShowNudge] = useState(false);
+  const [nudgeTarget, setNudgeTarget] = useState<"logo" | "save" | null>(null);
   const router = useRouter();
 
   return (
@@ -61,6 +53,7 @@ export default function DemoBusinessPage() {
             Back
           </button>
         </div>
+
         {/* HEADER */}
         <div className="rounded-3xl border border-white/10 bg-linear-to-b from-[#0B1120] to-[#050816] p-4 sm:p-5 md:p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
@@ -94,12 +87,10 @@ export default function DemoBusinessPage() {
               <div className="rounded-3xl border border-white/10 bg-white/2 p-4 sm:p-5">
                 <div className="mb-4 flex items-center gap-2">
                   <Building2 className="size-4 text-blue-400" />
-
                   <p className="text-sm font-medium uppercase tracking-[0.18em] text-white">
                     Business Name
                   </p>
                 </div>
-
                 <Input
                   value={demoBusinessForm.name}
                   disabled
@@ -111,12 +102,10 @@ export default function DemoBusinessPage() {
               <div className="rounded-3xl border border-white/10 bg-white/2 p-4 sm:p-5">
                 <div className="mb-4 flex items-center gap-2">
                   <Mail className="size-4 text-emerald-400" />
-
                   <p className="text-sm font-medium uppercase tracking-[0.18em] text-white">
                     Business Email
                   </p>
                 </div>
-
                 <Input
                   value={demoBusinessForm.email}
                   disabled
@@ -128,17 +117,14 @@ export default function DemoBusinessPage() {
               <div className="rounded-3xl border border-white/10 bg-white/2 p-4 sm:p-5">
                 <div className="mb-4 flex items-center gap-2">
                   <BriefcaseBusiness className="size-4 text-violet-400" />
-
                   <p className="text-sm font-medium uppercase tracking-[0.18em] text-white">
                     Category
                   </p>
                 </div>
-
                 <Select value={demoBusinessForm.category} disabled>
                   <SelectTrigger className="h-12 rounded-2xl border border-white/10 bg-white/3 text-sm text-slate-400 opacity-70">
                     <SelectValue />
                   </SelectTrigger>
-
                   <SelectContent className="border-white/10 bg-[#050816] text-white">
                     <SelectItem value="SOFTWARE_COMPANY">
                       Software Company
@@ -151,12 +137,10 @@ export default function DemoBusinessPage() {
               <div className="rounded-3xl border border-white/10 bg-white/2 p-4 sm:p-5">
                 <div className="mb-4 flex items-center gap-2">
                   <Phone className="size-4 text-amber-400" />
-
                   <p className="text-sm font-medium uppercase tracking-[0.18em] text-white">
                     Phone
                   </p>
                 </div>
-
                 <Input
                   value={demoBusinessForm.phone}
                   disabled
@@ -168,12 +152,10 @@ export default function DemoBusinessPage() {
               <div className="rounded-3xl border border-white/10 bg-white/2 p-4 sm:p-5 md:col-span-2">
                 <div className="mb-4 flex items-center gap-2">
                   <MapPin className="size-4 text-red-400" />
-
                   <p className="text-sm font-medium uppercase tracking-[0.18em] text-white">
                     Address
                   </p>
                 </div>
-
                 <Input
                   value={demoBusinessForm.address}
                   disabled
@@ -185,12 +167,10 @@ export default function DemoBusinessPage() {
               <div className="rounded-3xl border border-white/10 bg-white/2 p-4 sm:p-5">
                 <div className="mb-4 flex items-center gap-2">
                   <Globe className="size-4 text-cyan-400" />
-
                   <p className="text-sm font-medium uppercase tracking-[0.18em] text-white">
                     Website
                   </p>
                 </div>
-
                 <Input
                   value={demoBusinessForm.website}
                   disabled
@@ -202,34 +182,82 @@ export default function DemoBusinessPage() {
               <div className="rounded-3xl border border-white/10 bg-white/2 p-4 sm:p-5">
                 <div className="mb-4 flex items-center gap-2">
                   <ImageIcon className="size-4 text-pink-400" />
-
-                  <p className="text-sm font-medium uppercase tracking-[0.18em] text-white">
-                    Logo URL
+                  <p className="text-xs font-medium uppercase tracking-[0.14em] text-white sm:text-sm sm:tracking-[0.18em]">
+                    Business Logo
                   </p>
                 </div>
 
-                <Input
-                  value={demoBusinessForm.logoUrl}
-                  disabled
-                  className="h-12 rounded-2xl border border-white/10 bg-white/3 text-sm text-slate-400"
-                />
+                {demoBusinessForm.logoUrl ? (
+                  /* EXISTING LOGO */
+                  <div className="flex h-11 items-center gap-3 rounded-2xl border border-white/10 bg-white/3 px-3 sm:h-12">
+                    <Image
+                      src={demoBusinessForm.logoUrl}
+                      alt="Business logo"
+                      width={28}
+                      height={28}
+                      unoptimized
+                      className="h-7 w-7 rounded-lg object-cover"
+                    />
+                    <span className="flex-1 truncate text-sm text-slate-400">
+                      Current logo
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setNudgeTarget((v) => (v === "logo" ? null : "logo"))
+                      }
+                      className="shrink-0 rounded-lg border border-white/10 px-2 py-1 text-xs text-slate-400 transition-colors duration-200 hover:border-blue-500/30 hover:text-blue-400"
+                    >
+                      Replace
+                    </button>
+                  </div>
+                ) : (
+                  /* NO LOGO YET */
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setNudgeTarget((v) => (v === "logo" ? null : "logo"))
+                      }
+                      className="flex h-11 w-full items-center gap-3 rounded-2xl border border-dashed border-white/15 bg-white/3 px-4 text-left transition-all duration-200 hover:border-pink-500/30 hover:bg-pink-500/5 sm:h-12"
+                    >
+                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5">
+                        <ImageIcon className="size-3.5 text-slate-500" />
+                      </div>
+                      <span className="flex-1 text-sm text-slate-500">
+                        Click to upload logo
+                      </span>
+                      <Upload className="size-3.5 shrink-0 text-slate-600" />
+                    </button>
+
+                    {nudgeTarget === "logo" && (
+                      <div className="absolute -top-12 left-0 z-50 flex w-fit items-center gap-2 rounded-2xl border border-red-500/15 bg-[#140809] px-4 py-3 shadow-2xl">
+                        <Lock className="size-3.5 shrink-0 text-red-400" />
+                        <p className="text-xs font-medium text-red-300">
+                          Sign up to edit your business
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
             {/* ACTION */}
             <div className="relative flex flex-col items-stretch gap-3 pt-2 sm:items-end">
               <Button
-                onClick={() => setShowNudge((v) => !v)}
+                onClick={() =>
+                  setNudgeTarget((v) => (v === "save" ? null : "save"))
+                }
                 className="group h-11 w-full rounded-2xl border border-blue-500/20 bg-blue-500/10 px-6 text-sm font-medium text-blue-400 transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_25px_rgba(59,130,246,0.18)] sm:w-auto"
               >
                 <Sparkles className="size-4 transition-transform duration-300 group-hover:rotate-12" />
                 Save Changes
               </Button>
 
-              {showNudge && (
+              {nudgeTarget === "save" && (
                 <div className="absolute -top-18 right-0 left-0 z-50 mx-auto flex w-fit max-w-65 items-center gap-2 rounded-2xl border border-red-500/15 bg-[#140809] px-4 py-3 shadow-2xl sm:left-auto sm:mx-0">
                   <Lock className="size-3.5 shrink-0 text-red-400" />
-
                   <p className="text-xs font-medium text-red-300">
                     Sign up to edit your business
                   </p>
