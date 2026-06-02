@@ -40,17 +40,15 @@ const settingsItems = [
     slug: "business",
     icon: Building2,
   },
-
-  {
-    label: "Account",
-    slug: "account",
-    icon: Shield,
-  },
-
   {
     label: "Password",
     slug: "password",
     icon: Lock,
+  },
+  {
+    label: "Account",
+    slug: "account",
+    icon: Shield,
   },
 ];
 

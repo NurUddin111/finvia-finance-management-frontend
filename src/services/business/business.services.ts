@@ -132,6 +132,8 @@ export const deleteMyBusiness = async (
   businessId: string,
 ): Promise<ActionResult<null>> => {
   return serverFetch<null>(`/business/delete/${businessId}`, {
-    method: "DELETE",
+    method: "PATCH",
+    onResponse: (res) =>
+      forwardResponseCookies(res, ["accessToken", "refreshToken"]),
   });
 };

@@ -73,7 +73,7 @@ export default function AccountPage() {
     setLoadingAccount(false);
 
     if (res?.success) {
-      router.push("/login");
+      router.refresh();
     }
   };
 
@@ -178,10 +178,19 @@ export default function AccountPage() {
                     Delete Account
                   </h2>
 
-                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">
-                    Permanently remove your account and all related data. You
-                    will be logged out immediately after deletion.
-                  </p>
+                  <div className="mt-3 space-y-3">
+                    <p className="max-w-2xl text-sm leading-relaxed text-slate-400">
+                      Permanently remove your account and all related data. You
+                      will be logged out immediately after deletion.
+                    </p>
+
+                    <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-3">
+                      <p className="text-sm font-medium text-amber-300">
+                        ⚠️ Important: Before deleting your account, you must
+                        delete all business data associated with your workspace.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 

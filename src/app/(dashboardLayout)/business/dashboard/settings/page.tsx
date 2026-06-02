@@ -35,16 +35,16 @@ const settingsItems = [
     color: "border-emerald-500/20 bg-emerald-500/10 text-emerald-400",
   },
   {
-    label: "Account",
-    slug: "account",
-    icon: Shield,
-    color: "border-violet-500/20 bg-violet-500/10 text-violet-400",
-  },
-  {
     label: "Password",
     slug: "password",
     icon: Lock,
     color: "border-amber-500/20 bg-amber-500/10 text-amber-400",
+  },
+  {
+    label: "Account",
+    slug: "account",
+    icon: Shield,
+    color: "border-violet-500/20 bg-violet-500/10 text-violet-400",
   },
 ];
 
