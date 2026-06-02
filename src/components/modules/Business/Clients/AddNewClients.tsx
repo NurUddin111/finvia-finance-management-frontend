@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 import { Loader2, User, Mail, Phone, MapPin, Users2 } from "lucide-react";
@@ -25,6 +25,8 @@ function FormField({
   type = "text",
   placeholder,
   state,
+  value,
+  onChange,
 }: {
   label: string;
   required?: boolean;
@@ -32,8 +34,9 @@ function FormField({
   name: string;
   type?: string;
   placeholder?: string;
-  // FIX: accept state so each field can render its own inline error
   state: ActionResult<unknown> | null;
+  value: string;
+  onChange: (value: string) => void;
 }) {
   return (
     <div className="space-y-1.5">
@@ -51,6 +54,8 @@ function FormField({
         <input
           name={name}
           type={type}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={cn(
             "h-10 w-full rounded-2xl border border-white/10 bg-white/3",
@@ -81,6 +86,14 @@ export default function AddNewClientModal({
   const router = useRouter();
   const [state, formAction, isPending] = useActionState(addClient, null);
 
+  const EMPTY_FORM = {
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+  };
+  const [form, setForm] = useState(EMPTY_FORM);
+
   useEffect(() => {
     if (!state) return;
 
@@ -91,14 +104,21 @@ export default function AddNewClientModal({
       return;
     }
 
-    // FIX: only toast on API failure, not Zod field errors
     if (!state.errors) {
       toast.error(state.error ?? "Failed to add client");
     }
   }, [state, onClose, router]);
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (!nextOpen) {
+          setForm(EMPTY_FORM);
+          onClose();
+        }
+      }}
+    >
       <DialogContent
         className={cn(
           "overflow-hidden rounded-3xl border border-white/10",
@@ -138,6 +158,8 @@ export default function AddNewClientModal({
             name="name"
             placeholder="Finvia Ltd"
             state={state}
+            value={form.name}
+            onChange={(value) => setForm((prev) => ({ ...prev, name: value }))}
           />
 
           <FormField
@@ -148,6 +170,8 @@ export default function AddNewClientModal({
             type="email"
             placeholder="business@example.com"
             state={state}
+            value={form.email}
+            onChange={(value) => setForm((prev) => ({ ...prev, email: value }))}
           />
 
           <FormField
@@ -156,6 +180,8 @@ export default function AddNewClientModal({
             name="phone"
             placeholder="+8801XXXXXXXXX"
             state={state}
+            value={form.phone}
+            onChange={(value) => setForm((prev) => ({ ...prev, phone: value }))}
           />
 
           <FormField
@@ -164,6 +190,10 @@ export default function AddNewClientModal({
             name="address"
             placeholder="Dhaka, Bangladesh"
             state={state}
+            value={form.address}
+            onChange={(value) =>
+              setForm((prev) => ({ ...prev, address: value }))
+            }
           />
 
           {/* GLOBAL ERROR — API failure only */}
@@ -177,7 +207,10 @@ export default function AddNewClientModal({
           <div className="flex items-center gap-3 pt-1">
             <button
               type="button"
-              onClick={onClose}
+              onClick={() => {
+                setForm(EMPTY_FORM);
+                onClose();
+              }}
               className="h-10 flex-1 rounded-2xl border border-white/10 bg-white/3 px-4 text-[13px] font-medium text-slate-400 transition-all duration-300 hover:bg-white/5 hover:text-white"
             >
               Cancel
