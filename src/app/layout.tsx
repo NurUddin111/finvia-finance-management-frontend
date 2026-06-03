@@ -4,9 +4,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "sonner";
+import GoogleAnalytics from "@/components/providers/GoogleAnalytics";
 
 import "./globals.css";
-import GoogleAnalytics from "@/components/providers/GoogleAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
