@@ -1,5 +1,3 @@
-"use client";
-
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { ArrowRight, Building2, Menu, Sparkles, X } from "lucide-react";
+import { ArrowRight, Menu, Sparkles, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -36,8 +35,6 @@ const navItems = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-
-  const router = useRouter();
 
   useEffect(() => {
     const onScroll = () => {
@@ -119,29 +116,21 @@ export default function Navbar() {
 
         {/* RIGHT */}
         <div className="hidden items-center gap-3 lg:flex">
-          <Button
-            variant="ghost"
-            onClick={() =>
-              router.push("/login", {
-                scroll: false,
-              })
-            }
-            className="h-11 rounded-2xl px-5 text-sm font-medium text-slate-400 transition-all duration-300 hover:bg-white/5 hover:text-white"
-          >
-            Log in
-          </Button>
+          <Link href="/login" scroll={false}>
+            <Button
+              variant="ghost"
+              className="h-11 rounded-2xl px-5 text-sm font-medium text-slate-400 transition-all duration-300 hover:bg-white/5 hover:text-white"
+            >
+              Log in
+            </Button>
+          </Link>
 
-          <Button
-            onClick={() =>
-              router.push("/signup", {
-                scroll: false,
-              })
-            }
-            className="group h-11 rounded-2xl border border-blue-500/20 bg-blue-500/10 px-5 text-sm font-medium text-blue-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.18)]"
-          >
-            Get Started
-            <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-          </Button>
+          <Link href="/signup" scroll={false}>
+            <Button className="group h-11 rounded-2xl border border-blue-500/20 bg-blue-500/10 px-5 text-sm font-medium text-blue-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.18)]">
+              Get Started
+              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </Button>
+          </Link>
         </div>
 
         {/* MOBILE MENU */}
@@ -214,32 +203,26 @@ export default function Navbar() {
 
               {/* CTA */}
               <div className="mt-auto space-y-3 pt-8">
-                <Button
-                  onClick={() => {
-                    router.push("/login", {
-                      scroll: false,
-                    });
-
-                    setOpen(false);
-                  }}
-                  className="h-12 w-full rounded-2xl border border-white/10 bg-white/3 text-sm font-medium text-slate-300 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:text-white"
+                <Link
+                  href="/login"
+                  scroll={false}
+                  onClick={() => setOpen(false)}
                 >
-                  Log in
-                </Button>
+                  <Button className="h-12 w-full rounded-2xl border border-white/10 bg-white/3 text-sm font-medium text-slate-300 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:text-white">
+                    Log in
+                  </Button>
+                </Link>
 
-                <Button
-                  onClick={() => {
-                    router.push("/signup", {
-                      scroll: false,
-                    });
-
-                    setOpen(false);
-                  }}
-                  className="group h-12 w-full rounded-2xl border border-blue-500/20 bg-blue-500/10 text-sm font-medium text-blue-400 transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.18)]"
+                <Link
+                  href="/signup"
+                  scroll={false}
+                  onClick={() => setOpen(false)}
                 >
-                  Get Started
-                  <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                </Button>
+                  <Button className="group h-12 w-full rounded-2xl border border-blue-500/20 bg-blue-500/10 text-sm font-medium text-blue-400 transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.18)]">
+                    Get Started
+                    <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                  </Button>
+                </Link>
               </div>
             </div>
           </SheetContent>
