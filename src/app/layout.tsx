@@ -27,8 +27,8 @@ const APP_URL =
 
 export const metadata: Metadata = {
   title: {
-    default: "Finvia — Business Finance Management",
-    template: "Finvia",
+    default: "Finvia — Invoice & Finance Management for Small Businesses",
+    template: "%s • Finvia",
   },
 
   applicationName: "Finvia",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   category: "Business Software",
 
   description:
-    "Finvia helps freelancers and small businesses manage invoices, clients, expenses, payments, and financial analytics from a single dashboard.",
+    "Finvia is a modern finance workspace for freelancers and small businesses. Create invoices, manage clients, track payments, and monitor your business analytics — all in one place.",
 
   keywords: [
     "invoice management software",

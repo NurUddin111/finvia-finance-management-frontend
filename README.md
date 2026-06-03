@@ -31,25 +31,112 @@ This frontend consumes the Finvia backend APIs to manage authentication, busines
     src/
     ├─ app/
     │  ├─ (commonLayout)/
+    │  │  ├─ (.)login/
+    │  │  │  └─ page.tsx
+    │  │  ├─ (.)signup/
+    │  │  │  ├─ password/
+    │  │  │  │  └─ page.tsx
+    │  │  │  ├─ verify/
+    │  │  │  │  └─ page.tsx
+    │  │  │  └─ page.tsx
+    │  │  ├─ login/
+    │  │  │  └─ page.tsx
+    │  │  ├─ signup/
+    │  │  │  ├─ password/
+    │  │  │  │  └─ page.tsx
+    │  │  │  ├─ verify/
+    │  │  │  │  └─ page.tsx
+    │  │  │  └─ page.tsx
     │  │  ├─ layout.tsx
     │  │  └─ page.tsx
     │  │
     │  ├─ (dashboardLayout)/
-    │  │  ├─ admin/dashboard
-    │  │  └─ business/dashboard
+    │  │  ├─ admin/
+    │  │  │  └─ dashboard/
+    │  │  │     ├─ clients/
+    │  │  │     │  └─ page.tsx
+    │  │  │     ├─ settings/
+    │  │  │     │  ├─ account/
+    │  │  │     │  │  └─ page.tsx
+    │  │  │     │  ├─ password/
+    │  │  │     │  │  └─ page.tsx
+    │  │  │     │  ├─ profile/
+    │  │  │     │  │  └─ page.tsx
+    │  │  │     │  └─ page.tsx
+    │  │  │     └─ page.tsx
+    │  │  ├─ business/
+    │  │  │  └─ dashboard/
+    │  │  │     ├─ clients/
+    │  │  │     │  └─ page.tsx
+    │  │  │     ├─ invoices/
+    │  │  │     │  └─ page.tsx
+    │  │  │     ├─ products/
+    │  │  │     │  └─ page.tsx
+    │  │  │     ├─ settings/
+    │  │  │     │  ├─ account/
+    │  │  │     │  │  └─ page.tsx
+    │  │  │     │  ├─ business/
+    │  │  │     │  │  └─ page.tsx
+    │  │  │     │  ├─ password/
+    │  │  │     │  │  └─ page.tsx
+    │  │  │     │  ├─ profile/
+    │  │  │     │  │  └─ page.tsx
+    │  │  │     │  └─ page.tsx
+    │  │  │     └─ page.tsx
+    │  │  ├─ demo/
+    │  │  │  └─ dashboard/
+    │  │  │     ├─ clients/
+    │  │  │     │  └─ page.tsx
+    │  │  │     ├─ invoices/
+    │  │  │     │  └─ page.tsx
+    │  │  │     ├─ products/
+    │  │  │     │  └─ page.tsx
+    │  │  │     ├─ settings/
+    │  │  │     │  ├─ account/
+    │  │  │     │  │  └─ page.tsx
+    │  │  │     │  ├─ business/
+    │  │  │     │  │  └─ page.tsx
+    │  │  │     │  ├─ password/
+    │  │  │     │  │  └─ page.tsx
+    │  │  │     │  ├─ profile/
+    │  │  │     │  │  └─ page.tsx
+    │  │  │     │  └─ page.tsx
+    │  │  │     └─ page.tsx
+    │  │  └─ layout.tsx
     │  │
     │  ├─ (onboardingLayout)/
-    │  │  └─ page.tsx
+    │  │  ├─ onboarding/
+    │  │  │  └─ page.tsx
+    │  │  └─ layout.tsx
+    │  │
+    │  ├─ api/
+    │  │  ├─ auth/
+    │  │  │  └─ callback/
+    │  │  │     └─ google/
+    │  │  │        └─ route.ts
+    │  │  └─ cron/
+    │  │     └─ ping/
+    │  │        └─ route.ts
+    │  │
+    │  ├─ auth/
+    │  │  └─ google/
+    │  │     └─ callback/
+    │  │        └─ page.tsx
     │  │
     │  ├─ payment/
-    │  │  ├─ success
-    │  │  ├─ fail
-    │  │  ├─ cancel
+    │  │  ├─ cancel/
+    │  │  │  └─ page.tsx
+    │  │  ├─ fail/
+    │  │  │  └─ page.tsx
+    │  │  ├─ success/
+    │  │  │  └─ page.tsx
     │  │  └─ page.tsx
     │  │
     │  ├─ favicon.ico
     │  ├─ globals.css
-    │  └─ layout.tsx
+    │  ├─ layout.tsx
+    │  ├─ robots.ts
+    │  └─ sitemap.ts
     │
     ├─ components/
     │  ├─ ui/
@@ -67,11 +154,13 @@ This frontend consumes the Finvia backend APIs to manage authentication, busines
     │  ├─ admin/
     │  └─ user/
     │
+    ├─ types/
+    │
     ├─ zod/
     │  ├─ auth.validation.ts
     │  └─ business.validation.ts
     │
-    ├─ proxy.ts
+    └─ proxy.ts
 
 ## ⚙️ Environment Variables
 
