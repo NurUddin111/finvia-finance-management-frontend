@@ -6,6 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "sonner";
 
 import "./globals.css";
+import GoogleAnalytics from "@/components/providers/GoogleAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -143,7 +144,10 @@ export default function RootLayout({
           }}
         />
 
+        <GoogleAnalytics />
+
         {/* SPEED INSIGHTS */}
+
         <SpeedInsights />
         <script
           type="application/ld+json"
