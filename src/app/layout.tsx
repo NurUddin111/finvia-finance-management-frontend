@@ -31,6 +31,10 @@ export const metadata: Metadata = {
     template: "%s • Finvia",
   },
 
+  verification: {
+    google: "FYy51lxg2VvFepQpHXz6dymDvFhtwWjStJFkxxNHT0I",
+  },
+
   applicationName: "Finvia",
 
   authors: [
