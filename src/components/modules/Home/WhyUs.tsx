@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Clock3,
   LineChart,

@@ -1,5 +1,3 @@
-"use client";
-
 import { BadgeCheck, Lock, Server, ShieldCheck, Sparkles } from "lucide-react";
 
 export default function TrustSection() {

@@ -1,5 +1,3 @@
-"use client";
-
 import { CheckCircle2, Sparkles, XCircle } from "lucide-react";
 
 export default function ProblemSolutionSection() {

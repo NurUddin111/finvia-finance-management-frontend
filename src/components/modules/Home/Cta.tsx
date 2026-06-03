@@ -1,14 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import { ArrowRight, Sparkles } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function FinalCTASection() {
-  const router = useRouter();
-
   return (
     <section
       id="cta"
@@ -54,29 +50,21 @@ export default function FinalCTASection() {
 
           {/* CTA */}
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button
-              onClick={() =>
-                router.push("/signup", {
-                  scroll: false,
-                })
-              }
-              className="group h-13 w-full rounded-2xl border border-blue-500/20 bg-blue-500/10 px-8 text-sm font-medium text-blue-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.18)] sm:w-auto"
-            >
-              Create Free Account
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </Button>
+            <Link href="/signup" scroll={false}>
+              <Button className="group h-13 w-full rounded-2xl border border-blue-500/20 bg-blue-500/10 px-8 text-sm font-medium text-blue-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.18)] sm:w-auto">
+                Create Free Account
+                <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+              </Button>
+            </Link>
 
-            <Button
-              variant="outline"
-              onClick={() =>
-                router.push("/demo/dashboard", {
-                  scroll: false,
-                })
-              }
-              className="h-13 w-full rounded-2xl border border-white/10 bg-white/3 px-8 text-sm font-medium text-slate-300 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:text-white sm:w-auto"
-            >
-              Explore Demo
-            </Button>
+            <Link href="/demo/dashboard" scroll={false}>
+              <Button
+                variant="outline"
+                className="h-13 w-full rounded-2xl border border-white/10 bg-white/3 px-8 text-sm font-medium text-slate-300 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:text-white sm:w-auto"
+              >
+                Explore Demo
+              </Button>
+            </Link>
           </div>
 
           {/* FOOTER TEXT */}
