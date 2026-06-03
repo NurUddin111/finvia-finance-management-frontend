@@ -1,5 +1,17 @@
 import { XCircle } from "lucide-react";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Payment Failed",
+  description:
+    "The payment could not be completed. Please try again or contact support.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
 export default function PaymentFailedPage() {
   return (
     <main className="flex min-h-screen items-center justify-center px-4">

@@ -1,4 +1,14 @@
 import { CircleAlert } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Payment Cancelled",
+  description: "The payment process was cancelled before completion.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function PaymentCancelPage() {
   return (
