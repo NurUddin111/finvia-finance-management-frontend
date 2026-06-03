@@ -14,6 +14,7 @@ export default function FeaturesSection() {
   return (
     <section
       id="features"
+      aria-labelledby="features-heading"
       className="relative overflow-hidden px-3 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16"
     >
       {/* BACKGROUND */}
@@ -34,7 +35,10 @@ export default function FeaturesSection() {
             </span>
           </div>
 
-          <h2 className="text-2xl font-semibold leading-[1.02] tracking-tight text-white sm:text-4xl lg:text-[2.3rem]">
+          <h2
+            id="features-heading"
+            className="text-2xl font-semibold leading-[1.02] tracking-tight text-white sm:text-4xl lg:text-[2.3rem]"
+          >
             Everything you need
             <br className="hidden sm:block" />
             <span className="bg-linear-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">

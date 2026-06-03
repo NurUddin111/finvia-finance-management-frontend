@@ -10,7 +10,11 @@ import {
 
 export default function HowItWorksSection() {
   return (
-    <section className="relative overflow-hidden px-3 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+    <section
+      id="how-it-works"
+      aria-labelledby="how-it-works-heading"
+      className="relative overflow-hidden px-3 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16"
+    >
       {/* BACKGROUND */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 rounded-full bg-blue-500/8 blur-3xl sm:h-72 sm:w-72" />
@@ -27,7 +31,10 @@ export default function HowItWorksSection() {
             </span>
           </div>
 
-          <h2 className="text-2xl font-semibold leading-[1.02] tracking-tight text-white sm:text-4xl lg:text-[2.3rem]">
+          <h2
+            id="how-it-works-heading"
+            className="text-2xl font-semibold leading-[1.02] tracking-tight text-white sm:text-4xl lg:text-[2.3rem]"
+          >
             Get started
             <br className="hidden sm:block" />
             <span className="bg-linear-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">

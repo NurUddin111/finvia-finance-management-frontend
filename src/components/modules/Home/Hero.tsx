@@ -10,7 +10,10 @@ export default function Hero() {
   const router = useRouter();
 
   return (
-    <section className="relative overflow-hidden px-3 pt-24 sm:px-6 sm:pt-32 lg:px-8 lg:pt-40">
+    <section
+      aria-labelledby="hero-heading"
+      className="relative overflow-hidden px-3 pt-24 sm:px-6 sm:pt-32 lg:px-8 lg:pt-40"
+    >
       {/* BACKGROUND */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         {/* TOP GLOW */}
@@ -59,19 +62,21 @@ export default function Hero() {
           }}
           className="max-w-5xl text-center"
         >
-          <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight text-white xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
-            Manage your business
+          <h1
+            id="hero-heading"
+            className="text-3xl font-semibold leading-[1.05] tracking-tight text-white xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
+          >
+            Business Finance Management
             <br className="hidden sm:block" />
             <span className="bg-linear-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
-              {" "}
-              with clarity & confidence
+              for Freelancers & Small Businesses
             </span>
           </h1>
 
           <p className="mx-auto mt-5 max-w-2xl px-1 text-sm leading-relaxed text-slate-400 sm:mt-6 sm:px-0 sm:text-base md:text-lg">
-            Finvia helps freelancers, agencies, and modern businesses manage
-            invoices, clients, products, payments, and analytics from one
-            beautifully designed workspace.
+            Finvia helps freelancers, agencies, and small businesses manage
+            invoices, clients, expenses, payments, products, and financial
+            analytics from a single modern dashboard.
           </p>
         </motion.div>
 

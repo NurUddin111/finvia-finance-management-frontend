@@ -4,7 +4,10 @@ import { CheckCircle2, Sparkles, XCircle } from "lucide-react";
 
 export default function ProblemSolutionSection() {
   return (
-    <section className="relative overflow-hidden px-3 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+    <section
+      id="problem-solution"
+      className="relative overflow-hidden px-3 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16"
+    >
       {/* BACKGROUND */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-0 top-1/3 h-52 w-52 rounded-full bg-red-500/6 blur-3xl sm:h-64 sm:w-64" />
@@ -24,18 +27,17 @@ export default function ProblemSolutionSection() {
           </div>
 
           <h2 className="text-2xl font-semibold leading-[1.02] tracking-tight text-white sm:text-4xl lg:text-[2.3rem]">
-            From messy workflows
+            Invoice, Client & Payment Management
             <br className="hidden sm:block" />
             <span className="bg-linear-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
-              {" "}
-              to organized business operations
+              for modern businesses
             </span>
           </h2>
 
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-slate-400 sm:mt-4 sm:text-base">
-            Most businesses still manage invoices, payments, and client records
-            manually. Finvia brings everything together into one clean, modern
-            workspace.
+            Most small businesses still manage invoices, payments, expenses, and
+            client records manually. Finvia centralizes business finance
+            management into one modern dashboard.
           </p>
         </div>
 
@@ -58,7 +60,7 @@ export default function ProblemSolutionSection() {
                 </p>
 
                 <h3 className="mt-1 text-xl font-semibold tracking-tight text-white sm:text-xl">
-                  Business chaos
+                  Invoice & Payment Challenges
                 </h3>
 
                 <p className="mt-1 text-sm leading-relaxed text-slate-400">
@@ -70,7 +72,7 @@ export default function ProblemSolutionSection() {
 
             {/* ITEMS */}
             <div className="relative mt-5 space-y-2">
-              <ProblemItem text="Invoices scattered across WhatsApp, Excel, and PDFs" />
+              <ProblemItem text="Invoices scattered across WhatsApp, spreadsheets, and PDF files" />
 
               <ProblemItem text="No clear idea who has paid and who hasn’t" />
 
@@ -97,7 +99,7 @@ export default function ProblemSolutionSection() {
                 </p>
 
                 <h3 className="mt-1 text-xl font-semibold tracking-tight text-white sm:text-xl">
-                  Complete clarity
+                  Centralized Financial Management
                 </h3>
 
                 <p className="mt-1 text-sm leading-relaxed text-slate-400">

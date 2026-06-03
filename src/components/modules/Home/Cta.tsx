@@ -10,7 +10,11 @@ export default function FinalCTASection() {
   const router = useRouter();
 
   return (
-    <section className="relative overflow-hidden px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+    <section
+      id="cta"
+      aria-labelledby="cta-heading"
+      className="relative overflow-hidden px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-32"
+    >
       {/* BACKGROUND */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-1/2 top-1/2 h-105 w-105 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/10 blur-3xl" />
@@ -30,7 +34,10 @@ export default function FinalCTASection() {
           </div>
 
           {/* HEADING */}
-          <h2 className="text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+          <h2
+            id="cta-heading"
+            className="text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl"
+          >
             Start managing your business
             <br />
             <span className="bg-linear-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">

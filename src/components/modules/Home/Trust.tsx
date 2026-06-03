@@ -4,7 +4,11 @@ import { BadgeCheck, Lock, Server, ShieldCheck, Sparkles } from "lucide-react";
 
 export default function TrustSection() {
   return (
-    <section className="relative overflow-hidden px-3 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+    <section
+      id="trust-security"
+      aria-labelledby="trust-security-heading"
+      className="relative overflow-hidden px-3 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16"
+    >
       {/* BACKGROUND */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-0 top-1/3 h-52 w-52 rounded-full bg-blue-500/8 blur-3xl sm:h-64 sm:w-64" />
@@ -23,7 +27,10 @@ export default function TrustSection() {
             </span>
           </div>
 
-          <h2 className="text-2xl font-semibold leading-[1.02] tracking-tight text-white sm:text-4xl lg:text-[2.3rem]">
+          <h2
+            id="trust-security-heading"
+            className="text-2xl font-semibold leading-[1.02] tracking-tight text-white sm:text-4xl lg:text-[2.3rem]"
+          >
             Built for reliability,
             <br className="hidden sm:block" />
             <span className="bg-linear-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">

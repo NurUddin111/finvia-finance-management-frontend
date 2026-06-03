@@ -13,6 +13,7 @@ export default function WhyFinviaSection() {
   return (
     <section
       id="benefits"
+      aria-labelledby="benefits-heading"
       className="relative overflow-hidden px-3 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16"
     >
       {/* BACKGROUND */}
@@ -37,7 +38,10 @@ export default function WhyFinviaSection() {
           </div>
 
           {/* HEADING */}
-          <h2 className="text-center text-2xl font-semibold leading-[1.02] tracking-tight text-white sm:text-4xl lg:text-left lg:text-[2.3rem]">
+          <h2
+            id="benefits-heading"
+            className="text-center text-2xl font-semibold ..."
+          >
             Focus on growth,
             <br className="hidden sm:block" />
             <span className="bg-linear-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
