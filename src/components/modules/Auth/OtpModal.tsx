@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/input-otp";
 import InputFieldError from "@/components/shared/InputFieldError";
 import { verifyOtp } from "@/services/auth.services";
+import { trackEvent } from "@/lib/analytics";
 
 export default function SignUpVerifyModal() {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function SignUpVerifyModal() {
 
   useEffect(() => {
     if (state?.success) {
+      trackEvent("signup_email_verified");
       router.push("/signup/password", { scroll: false });
     }
   }, [state, router]);

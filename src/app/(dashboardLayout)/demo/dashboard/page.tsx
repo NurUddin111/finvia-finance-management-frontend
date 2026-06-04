@@ -1,5 +1,6 @@
 // src/app/(dashboardLayout)/demo/dashboard/page.tsx
 
+import DemoPageTracker from "@/components/analytics/DemoPageTracker";
 import {
   OverdueInvoices,
   UpcomingDueDates,
@@ -41,6 +42,7 @@ import {
 export default function DemoDashboardPage() {
   return (
     <div className="min-h-screen bg-[#050816] px-3 py-4 sm:px-5 sm:py-5 lg:px-8 lg:py-7">
+      <DemoPageTracker />
       <div className="mx-auto flex w-full max-w-475 flex-col gap-5 lg:gap-6">
         {/* ── Page heading ── */}
         <DashboardHeader

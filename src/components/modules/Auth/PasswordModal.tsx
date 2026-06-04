@@ -10,6 +10,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import InputFieldError from "@/components/shared/InputFieldError";
 import { toast } from "sonner";
 import { signupPassword } from "@/services/auth.services";
+import { trackEvent } from "@/lib/analytics";
 
 export default function SignUpPasswordModal() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function SignUpPasswordModal() {
     if (!state) return;
 
     if (state.success) {
+      trackEvent("signup_completed");
       toast.success("Registered account successfully!");
       router.push("/login", { scroll: false });
       return;

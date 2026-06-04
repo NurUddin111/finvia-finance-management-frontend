@@ -10,6 +10,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import InputFieldError from "@/components/shared/InputFieldError";
 import GoogleIcon from "@/components/shared/icons/Google";
 import { signup } from "@/services/auth.services";
+import { trackEvent } from "@/lib/analytics";
 
 export default function SignUpEmailModal() {
   const [state, formAction, isPending] = useActionState(signup, null);
@@ -19,6 +20,10 @@ export default function SignUpEmailModal() {
 
   useEffect(() => {
     if (state?.success) {
+      trackEvent("signup_started", {
+        method: "email",
+      });
+
       router.push("/signup/verify", { scroll: false });
     }
   }, [state, router]);
@@ -143,6 +148,9 @@ export default function SignUpEmailModal() {
               <Button
                 type="button"
                 onClick={() => {
+                  trackEvent("signup_started", {
+                    method: "google",
+                  });
                   window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
                 }}
                 className="h-11 w-full rounded-2xl border border-white/10 bg-white/3 text-sm font-medium text-slate-300 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:text-white"
