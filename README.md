@@ -1,30 +1,111 @@
 ## 💼 Finvia — Frontend
 
-A modern, responsive frontend application for Finvia, built with Next.js and ShadCN UI, focused on performance, accessibility, and clean UI/UX.
-This frontend consumes the Finvia backend APIs to manage authentication, businesses, clients, invoices, and dashboards.
+![Live](https://img.shields.io/badge/Status-Live-success?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-1.0-blue?style=for-the-badge)
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![ShadCN](https://img.shields.io/badge/ShadCN_UI-000000?style=for-the-badge)
+
+Finvia is a modern finance management platform built for freelancers and small businesses.
+
+The platform enables businesses to manage invoices, clients, products, payments, and business analytics from a single workspace. Built with Next.js, TypeScript, and ShadCN UI, Finvia focuses on performance, scalability, accessibility, and an exceptional user experience.
+
+## 🔗 Links
+
+- Live Application: https://finvia-finance-management.vercel.app
+- Backend Repository: https://github.com/NurUddin111/finvia-finance-management-backend
+- Creator: Muhammad Nur Uddin
+## 📸 Preview
+
+### Dashboard  
+<img width="620" height="910" alt="chrome_wkvyJJaYlq" src="https://github.com/user-attachments/assets/43941863-9936-4d56-a59b-739bf64b2729" />
+
+### Invoices
+<img width="1036" height="892" alt="chrome_kdO1KYbf0g" src="https://github.com/user-attachments/assets/5a4fefd7-766c-4b31-8ac5-ad1920cc3d51" />
+
+### Clients
+<img width="1232" height="781" alt="chrome_T0NeDJgzKs" src="https://github.com/user-attachments/assets/2af0e9fa-012c-46dd-902e-d12d2c78f983" />
+
+### Products
+<img width="1229" height="899" alt="chrome_Iciu3C3tRo" src="https://github.com/user-attachments/assets/03fedc04-db17-4be5-88d5-92aa31144521" />
+
+
+## 🚀 Highlights
+- Invoice Management
+- Client Management
+- Product Management
+- Business Analytics Dashboard
+- Google Authentication
+- Responsive Design
+- SEO Optimized
+- Google Analytics Integrated
+- Demo Workspace
 
 ## ✨ Features
 
-    ⚡ Next.js App Router (latest architecture)
-    🎨 ShadCN UI as the primary design system
-    💅 Tailwind CSS for utility-first styling
-    🔐 Authentication-ready UI (Login / Register / OTP flow)
-    🧾 Invoice management UI
-    👥 Client management dashboard
-    🏢 Business settings & profile management
-    📱 Fully responsive (mobile → desktop)
-    ♿ Accessible & semantic components
-    🧩 Scalable folder structure
-    🛠 Tech Stack
+### Authentication
 
-## ⚡ Framework: Next.js
+* Email & OTP Registration Flow
+* Google OAuth Login
+* Secure Cookie-Based Authentication
 
-    Language: TypeScript
-    Styling: Tailwind CSS
-    UI Library: ShadCN UI
-    Icons: Lucide Icons
-    State Handling: URL state, server actions, and local state
-    API Communication: Fetch / Server Actions
+### Business Management
+
+* Business Profile Management
+* Multi-Step Onboarding Flow
+* Business Settings Dashboard
+
+### Invoice System
+
+* Create and Manage Invoices
+* Draft, Sent, Paid & Overdue Status Tracking
+* Payment Workflow Integration
+
+### Client Management
+
+* Add, Edit and Organize Clients
+* Client Revenue Insights
+
+### Product Management
+
+* Product Catalog Management
+* Product-Based Invoice Generation
+
+### Analytics Dashboard
+
+* Revenue Tracking
+* Client Growth Analytics
+* Invoice Status Insights
+* Payment Distribution Reports
+
+### User Experience
+
+* Fully Responsive Design
+* Accessibility Focused
+* SEO Optimized
+* Demo Workspace
+
+## 🎯 Project Goals
+
+Finvia was built to help freelancers and small businesses manage their operations from a single platform.
+
+The project focuses on:
+
+* Simplifying invoice management
+* Improving payment tracking
+* Centralizing client management
+* Providing actionable business analytics
+* Delivering a modern SaaS experience
+
+
+## 🏗 Architecture
+
+- Next.js App Router
+- Server Actions
+- Route Groups
+- Feature-Based Module Structure
+- ShadCN UI Design System
 
 ## 📁 Project Structure
 
