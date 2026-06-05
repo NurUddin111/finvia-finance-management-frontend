@@ -11,11 +11,11 @@ Finvia is a modern finance management platform built for freelancers and small b
 
 The platform enables businesses to manage invoices, clients, products, payments, and business analytics from a single workspace. Built with Next.js, TypeScript, and ShadCN UI, Finvia focuses on performance, scalability, accessibility, and an exceptional user experience.
 
-## 🔗 Links
+## 🚀 Live Demo
 
-- Live Application: https://finvia-finance-management.vercel.app
-- Backend Repository: https://github.com/NurUddin111/finvia-finance-management-backend
-- Creator: Muhammad Nur Uddin
+🔗 Live Application: https://finvia-finance-management.vercel.app
+🔗 Backend Repository: https://github.com/NurUddin111/finvia-finance-management-backend
+
 ## 📸 Preview
 
 ### Dashboard  
@@ -98,7 +98,15 @@ The project focuses on:
 * Providing actionable business analytics
 * Delivering a modern SaaS experience
 
+## 🏆 Key Achievements
 
+- Built a production-ready SaaS platform
+- Implemented Google OAuth authentication
+- Integrated payment workflows
+- Achieved Lighthouse SEO score of 100
+- Configured Google Analytics and Search Console
+- Designed a responsive dashboard experience
+- 
 ## 🏗 Architecture
 
 - Next.js App Router
@@ -112,107 +120,11 @@ The project focuses on:
     src/
     ├─ app/
     │  ├─ (commonLayout)/
-    │  │  ├─ (.)login/
-    │  │  │  └─ page.tsx
-    │  │  ├─ (.)signup/
-    │  │  │  ├─ password/
-    │  │  │  │  └─ page.tsx
-    │  │  │  ├─ verify/
-    │  │  │  │  └─ page.tsx
-    │  │  │  └─ page.tsx
-    │  │  ├─ login/
-    │  │  │  └─ page.tsx
-    │  │  ├─ signup/
-    │  │  │  ├─ password/
-    │  │  │  │  └─ page.tsx
-    │  │  │  ├─ verify/
-    │  │  │  │  └─ page.tsx
-    │  │  │  └─ page.tsx
-    │  │  ├─ layout.tsx
-    │  │  └─ page.tsx
-    │  │
     │  ├─ (dashboardLayout)/
-    │  │  ├─ admin/
-    │  │  │  └─ dashboard/
-    │  │  │     ├─ clients/
-    │  │  │     │  └─ page.tsx
-    │  │  │     ├─ settings/
-    │  │  │     │  ├─ account/
-    │  │  │     │  │  └─ page.tsx
-    │  │  │     │  ├─ password/
-    │  │  │     │  │  └─ page.tsx
-    │  │  │     │  ├─ profile/
-    │  │  │     │  │  └─ page.tsx
-    │  │  │     │  └─ page.tsx
-    │  │  │     └─ page.tsx
-    │  │  ├─ business/
-    │  │  │  └─ dashboard/
-    │  │  │     ├─ clients/
-    │  │  │     │  └─ page.tsx
-    │  │  │     ├─ invoices/
-    │  │  │     │  └─ page.tsx
-    │  │  │     ├─ products/
-    │  │  │     │  └─ page.tsx
-    │  │  │     ├─ settings/
-    │  │  │     │  ├─ account/
-    │  │  │     │  │  └─ page.tsx
-    │  │  │     │  ├─ business/
-    │  │  │     │  │  └─ page.tsx
-    │  │  │     │  ├─ password/
-    │  │  │     │  │  └─ page.tsx
-    │  │  │     │  ├─ profile/
-    │  │  │     │  │  └─ page.tsx
-    │  │  │     │  └─ page.tsx
-    │  │  │     └─ page.tsx
-    │  │  ├─ demo/
-    │  │  │  └─ dashboard/
-    │  │  │     ├─ clients/
-    │  │  │     │  └─ page.tsx
-    │  │  │     ├─ invoices/
-    │  │  │     │  └─ page.tsx
-    │  │  │     ├─ products/
-    │  │  │     │  └─ page.tsx
-    │  │  │     ├─ settings/
-    │  │  │     │  ├─ account/
-    │  │  │     │  │  └─ page.tsx
-    │  │  │     │  ├─ business/
-    │  │  │     │  │  └─ page.tsx
-    │  │  │     │  ├─ password/
-    │  │  │     │  │  └─ page.tsx
-    │  │  │     │  ├─ profile/
-    │  │  │     │  │  └─ page.tsx
-    │  │  │     │  └─ page.tsx
-    │  │  │     └─ page.tsx
-    │  │  └─ layout.tsx
-    │  │
     │  ├─ (onboardingLayout)/
-    │  │  ├─ onboarding/
-    │  │  │  └─ page.tsx
-    │  │  └─ layout.tsx
-    │  │
     │  ├─ api/
-    │  │  ├─ auth/
-    │  │  │  └─ callback/
-    │  │  │     └─ google/
-    │  │  │        └─ route.ts
-    │  │  └─ cron/
-    │  │     └─ ping/
-    │  │        └─ route.ts
-    │  │
     │  ├─ auth/
-    │  │  └─ google/
-    │  │     └─ callback/
-    │  │        └─ page.tsx
-    │  │
     │  ├─ payment/
-    │  │  ├─ cancel/
-    │  │  │  └─ page.tsx
-    │  │  ├─ fail/
-    │  │  │  └─ page.tsx
-    │  │  ├─ success/
-    │  │  │  └─ page.tsx
-    │  │  └─ page.tsx
-    │  │
     │  ├─ favicon.ico
     │  ├─ globals.css
     │  ├─ layout.tsx
@@ -220,35 +132,23 @@ The project focuses on:
     │  └─ sitemap.ts
     │
     ├─ components/
-    │  ├─ ui/
-    │  ├─ shared/
-    │  └─ modules/
-    │
     ├─ lib/
-    │  ├─ getInputFieldError.ts
-    │  ├─ utils.ts
-    │  └─ zodValidator.ts
-    │
     ├─ services/
-    │  ├─ auth/
-    │  ├─ business/
-    │  ├─ admin/
-    │  └─ user/
-    │
     ├─ types/
-    │
     ├─ zod/
-    │  ├─ auth.validation.ts
-    │  └─ business.validation.ts
-    │
     └─ proxy.ts
 
 ## ⚙️ Environment Variables
 
     Create a .env.local file in the root directory:
 
-    NEXT_PUBLIC_API_BASE_URL=
-    NEXT_PUBLIC_APP_NAME=
+    NODE_ENV=development
+    NEXT_PUBLIC_API_URL=http://localhost:1126/api/v1
+    NEXT_PUBLIC_APP_URL=https://finvia-finance-management.vercel.app
+    NEXT_PUBLIC_GA_MEASUREMENT_ID=G-**********
+    
+    # JWT
+    JWT_ACCESS_SECRET=access_secret_here 
 
     Make sure the backend server is running before starting the frontend!
 
@@ -299,6 +199,12 @@ The project focuses on:
 
     This is a private project.
     Follow existing patterns and conventions before adding new features.
+
+## ☁️ Deployment
+
+- Frontend: Vercel
+- Backend: Railway
+- Database: PostgreSQL
 
 ## 👨‍💻 Author
 
