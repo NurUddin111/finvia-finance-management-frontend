@@ -102,7 +102,7 @@ The platform enables businesses to manage invoices, clients, products, payments,
 
 Explore the application without creating an account:
 
-https://finvia-finance-management.vercel.app/demo/dashboard
+[Open Demo Workspace](https://finvia-finance-management.vercel.app/demo/dashboard)
 
 ## 🎯 Project Goals
 
@@ -124,6 +124,7 @@ The project focuses on:
 - Achieved Lighthouse SEO score of 100
 - Configured Google Analytics and Search Console
 - Designed a responsive dashboard experience
+- Implemented role-based access control for multiple user types
   
 ## 🏗 Architecture
 
@@ -165,8 +166,8 @@ The project focuses on:
     NEXT_PUBLIC_APP_URL=https://finvia-finance-management.vercel.app
     NEXT_PUBLIC_GA_MEASUREMENT_ID=G-**********
     
-    # JWT
-    JWT_ACCESS_SECRET=access_secret_here 
+    Required for middleware token verification and role-based redirects
+    JWT_ACCESS_SECRET=your_access_token_secret
 
     Make sure the backend server is running before starting the frontend!
 
@@ -223,6 +224,8 @@ The project focuses on:
 - Frontend: Vercel
 - Backend: Railway
 - Database: PostgreSQL
+- Analytics: Google Analytics
+- SEO: Google Search Console
 
 ## 👨‍💻 Author
 
