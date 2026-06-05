@@ -13,22 +13,34 @@ The platform enables businesses to manage invoices, clients, products, payments,
 
 ## 🚀 Live Demo
 
-🔗 Live Application: https://finvia-finance-management.vercel.app
-🔗 Backend Repository: https://github.com/NurUddin111/finvia-finance-management-backend
+- 🔗 Live Application: https://finvia-finance-management.vercel.app
+- 🔗 Backend Repository: https://github.com/NurUddin111/finvia-finance-management-backend
 
 ## 📸 Preview
 
-### Dashboard  
-<img width="620" height="910" alt="chrome_wkvyJJaYlq" src="https://github.com/user-attachments/assets/43941863-9936-4d56-a59b-739bf64b2729" />
+<table>
+  <tr>
+    <td align="center">
+      <strong>Dashboard</strong><br/><br/>
+      <img src="https://github.com/user-attachments/assets/43941863-9936-4d56-a59b-739bf64b2729" width="100%" />
+    </td>
+    <td align="center">
+      <strong>Invoices</strong><br/><br/>
+      <img src="https://github.com/user-attachments/assets/5a4fefd7-766c-4b31-8ac5-ad1920cc3d51" width="100%" />
+    </td>
+  </tr>
 
-### Invoices
-<img width="1036" height="892" alt="chrome_kdO1KYbf0g" src="https://github.com/user-attachments/assets/5a4fefd7-766c-4b31-8ac5-ad1920cc3d51" />
-
-### Clients
-<img width="1232" height="781" alt="chrome_T0NeDJgzKs" src="https://github.com/user-attachments/assets/2af0e9fa-012c-46dd-902e-d12d2c78f983" />
-
-### Products
-<img width="1229" height="899" alt="chrome_Iciu3C3tRo" src="https://github.com/user-attachments/assets/03fedc04-db17-4be5-88d5-92aa31144521" />
+  <tr>
+    <td align="center">
+      <strong>Clients</strong><br/><br/>
+      <img src="https://github.com/user-attachments/assets/2af0e9fa-012c-46dd-902e-d12d2c78f983" width="100%" />
+    </td>
+    <td align="center">
+      <strong>Products</strong><br/><br/>
+      <img src="https://github.com/user-attachments/assets/03fedc04-db17-4be5-88d5-92aa31144521" width="100%" />
+    </td>
+  </tr>
+</table>
 
 
 ## 🚀 Highlights
@@ -86,6 +98,12 @@ The platform enables businesses to manage invoices, clients, products, payments,
 * SEO Optimized
 * Demo Workspace
 
+## 🧪 Demo Workspace
+
+Explore the application without creating an account:
+
+https://finvia-finance-management.vercel.app/demo/dashboard
+
 ## 🎯 Project Goals
 
 Finvia was built to help freelancers and small businesses manage their operations from a single platform.
@@ -106,7 +124,7 @@ The project focuses on:
 - Achieved Lighthouse SEO score of 100
 - Configured Google Analytics and Search Console
 - Designed a responsive dashboard experience
-- 
+  
 ## 🏗 Architecture
 
 - Next.js App Router
