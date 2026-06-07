@@ -269,7 +269,7 @@ npm run dev
 
 Backend-Focused Full-Stack Developer
 
-📧 Email: nuruddinmuhammad38@gmail.com
+📧 Email: muhammadnur.codes@gmail.com
 
 💼 [LinkedIn](https://www.linkedin.com/in/muhammad-nur-uddin)
 
