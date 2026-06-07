@@ -13,10 +13,14 @@ Finvia is a modern finance management platform built for freelancers and small b
 
 The platform enables businesses to manage invoices, clients, products, payments, and business analytics from a single workspace. Built with Next.js, TypeScript, and ShadCN UI, Finvia focuses on performance, scalability, accessibility, and an exceptional user experience.
 
+---
+
 ## 🚀 Live Demo
 
 - 🔗 Live Application: https://finvia-finance-management.vercel.app
 - 🔗 Backend Repository: https://github.com/NurUddin111/finvia-finance-management-backend
+
+---
 
 ## 📸 Preview
 
@@ -44,8 +48,29 @@ The platform enables businesses to manage invoices, clients, products, payments,
   </tr>
 </table>
 
+---
 
-## 🚀 Highlights
+## 🎯 Problem Statement
+
+Freelancers and small businesses often rely on multiple disconnected tools to manage clients, invoices, products, payments, and business performance.
+
+This fragmented workflow can lead to inefficient operations, delayed payments, scattered data, and limited visibility into overall business health.
+
+Many existing solutions are either overly complex, expensive, or designed for larger organizations, making them less suitable for growing businesses.
+
+---
+
+## 💡 Solution
+
+Finvia provides a centralized SaaS platform that helps businesses manage clients, invoices, products, payments, and analytics from a single workspace.
+
+By combining intuitive user experiences, secure authentication, business-focused workflows, and actionable insights, Finvia simplifies day-to-day operations while helping organizations make data-driven decisions.
+
+The platform is designed to deliver the flexibility, scalability, and usability that modern freelancers and small businesses need.
+
+---
+
+## 🔥 Highlights
 - Invoice Management
 - Client Management
 - Product Management
@@ -178,9 +203,6 @@ cp .env.example .env
 # (Add your environment variables)
 # (Make sure the backend server is running before starting the frontend!)
   
-# Run database migrations
-npx prisma migrate dev
-  
 # Run the development server
 npm run dev
 ```
@@ -194,6 +216,8 @@ npm run dev
 
     ⚠️ Do not mix other UI libraries to maintain design consistency.
 
+---
+
 ## 🔐 Authentication Flow (UI)
 
     User clicks Register
@@ -205,6 +229,8 @@ npm run dev
     Email → OTP → Password (multi-phase flow)
 
     Secure cookie-based authentication handled by backend
+
+---
 
 ## 📐 Design Principles
 
@@ -218,10 +244,14 @@ npm run dev
 
     Mobile-first responsiveness
 
+---
+
 ## 🤝 Contribution
 
     This is a private project.
     Follow existing patterns and conventions before adding new features.
+
+--
 
 ## ☁️ Deployment
 
@@ -231,10 +261,18 @@ npm run dev
 - Analytics: Google Analytics
 - SEO: Google Search Console
 
+---
+
 ## 👨‍💻 Author
 
-    Muhammad Nur Uddin
+**Muhammad Nur Uddin**
 
-    “Don’t be shy, know the why!”
-    📧 nuruddinmuhammad38@gmail.com
-    🌐 https://github.com/NurUddin111
+Backend-Focused Full-Stack Developer
+
+📧 Email: nuruddinmuhammad38@gmail.com
+
+💼 [LinkedIn](https://www.linkedin.com/in/muhammad-nur-uddin)
+
+🐙 [GitHub](https://github.com/NurUddin111)
+
+> "Don't be shy, know the why!"
