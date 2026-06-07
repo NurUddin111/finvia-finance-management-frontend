@@ -6,7 +6,8 @@
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![ShadCN](https://img.shields.io/badge/ShadCN_UI-000000?style=for-the-badge)
+![ShadCN UI](https://img.shields.io/badge/ShadCN_UI-000000?style=for-the-badge&logo=shadcnui&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-8884D8?style=for-the-badge)
 
 Finvia is a modern finance management platform built for freelancers and small businesses.
 
