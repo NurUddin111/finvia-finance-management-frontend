@@ -176,7 +176,7 @@ npm install
 # Create an .env file
 cp .env.example .env
 # (Add your environment variables)
-#(Make sure the backend server is running before starting the frontend!)
+# (Make sure the backend server is running before starting the frontend!)
   
 # Run database migrations
 npx prisma migrate dev
