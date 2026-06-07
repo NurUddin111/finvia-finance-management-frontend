@@ -2,6 +2,7 @@
 
 ![Live](https://img.shields.io/badge/Status-Live-success?style=for-the-badge)
 ![Version](https://img.shields.io/badge/Version-1.0-blue?style=for-the-badge)
+
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
@@ -157,30 +158,32 @@ The project focuses on:
     ├─ zod/
     └─ proxy.ts
 
-## ⚙️ Environment Variables
+---
 
-    Create a .env.local file in the root directory:
+## ⚙️ Installation & Setup
 
-    NODE_ENV=development
-    NEXT_PUBLIC_API_URL=http://localhost:1126/api/v1
-    NEXT_PUBLIC_APP_URL=https://finvia-finance-management.vercel.app
-    NEXT_PUBLIC_GA_MEASUREMENT_ID=G-**********
-    
-    Required for middleware token verification and role-based redirects
-    JWT_ACCESS_SECRET=your_access_token_secret
-
-    Make sure the backend server is running before starting the frontend!
-
-## 🚀 Getting Started
-
-    1️⃣ Install dependencies
-    npm install
-
-    2️⃣ Run the development server
-    npm run dev
-
-    Open your browser at:
-    http://localhost:3000
+```bash
+# Clone the repository
+git clone https://github.com/NurUddin111/finvia-finance-management-frontend.git
+  
+# Navigate to the project directory
+cd finvia-finance-management-frontend
+  
+# Install dependencies
+npm install
+  
+# Create an .env file
+cp .env.example .env
+# (Add your environment variables)
+#(Make sure the backend server is running before starting the frontend!)
+  
+# Run database migrations
+npx prisma migrate dev
+  
+# Run the development server
+npm run dev
+```
+---
 
 ## 🧩 ShadCN UI Setup
 
