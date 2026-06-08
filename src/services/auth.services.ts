@@ -84,6 +84,8 @@ export const signupPassword = async (
   const result = await serverFetch<null>("/auth/signup/password", {
     method: "POST",
     body: validationResult.data,
+    onResponse: (res) =>
+      forwardResponseCookies(res, ["accessToken", "refreshToken"]),
   });
 
   if (result.success) {

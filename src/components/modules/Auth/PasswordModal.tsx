@@ -23,7 +23,7 @@ export default function SignUpPasswordModal() {
     if (state.success) {
       trackEvent("signup_completed");
       toast.success("Registered account successfully!");
-      router.push("/login", { scroll: false });
+      router.push("/onboarding", { scroll: false });
       return;
     }
 
