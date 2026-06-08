@@ -8,7 +8,7 @@ import WhySection from "@/components/modules/Home/WhyUs";
 import ProblemSolutionSection from "@/components/modules/Home/problem-solution";
 
 export const metadata: Metadata = {
-  title: "Business Finance Management Platform",
+  title: "",
   description:
     "Manage invoices, clients, expenses, payments, and financial analytics from a single dashboard with Finvia.",
 };

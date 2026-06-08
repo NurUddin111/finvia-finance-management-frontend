@@ -4,7 +4,7 @@ import SignUpPasswordModal from "@/components/modules/Auth/PasswordModal";
 import HomePage from "../../page";
 
 export const metadata: Metadata = {
-  title: "Create Password",
+  title: "Create Password •",
   description:
     "Create a secure password to finish setting up your Finvia account.",
 };

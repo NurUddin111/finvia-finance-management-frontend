@@ -29,7 +29,7 @@ const APP_URL =
 export const metadata: Metadata = {
   title: {
     default: "Finvia — Invoice & Finance Management for Small Businesses",
-    template: "%s • Finvia",
+    template: "%s Finvia",
   },
 
   verification: {
