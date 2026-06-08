@@ -694,7 +694,6 @@ export function ClientGrowthChart({
 
 import { Users2 } from "lucide-react";
 import { IClientsPieChartData } from "@/types/client";
-import { IKPICardDetails } from "@/types/dashboard";
 
 export function ClientTypeChart({
   clientPieChartData,
@@ -733,7 +732,7 @@ export function ClientTypeChart({
       <CardHeader className="relative pb-2">
         <div className="space-y-1">
           <CardTitle className="text-lg font-semibold tracking-tight text-white">
-            Client Growth
+            Client Type
           </CardTitle>
 
           <p className="text-sm text-slate-400">
