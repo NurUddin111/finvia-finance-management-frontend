@@ -5,7 +5,10 @@ import Hero from "@/components/modules/Home/Hero";
 import HowItWorksSection from "@/components/modules/Home/HowItWorks";
 import TrustSection from "@/components/modules/Home/Trust";
 import WhySection from "@/components/modules/Home/WhyUs";
-import ProblemSolutionSection from "@/components/modules/Home/problem-solution";
+import BusinessChaosSection from "@/components/modules/Home/BusinessChaosSection";
+import InvoiceShowcaseSection from "@/components/modules/Home/InvoiceShowcaseSection";
+import ClientManagementSection from "@/components/modules/Home/ClientManagementSection";
+import AnalyticsShowcaseSection from "@/components/modules/Home/AnalyticsShowcaseSection";
 
 export const metadata: Metadata = {
   title: "",
@@ -17,7 +20,10 @@ export default function HomePage() {
   return (
     <main>
       <Hero />
-      <ProblemSolutionSection />
+      <BusinessChaosSection />
+      <InvoiceShowcaseSection />
+      <ClientManagementSection />
+      <AnalyticsShowcaseSection />
       <FeaturesSection />
       <WhySection />
       <HowItWorksSection />
