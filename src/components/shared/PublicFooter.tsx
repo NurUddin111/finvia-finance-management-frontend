@@ -10,12 +10,12 @@ const productLinks = [
 
   {
     label: "How it works",
-    href: "#benefits",
+    href: "#how-it-works",
   },
 
   {
     label: "Security",
-    href: "#",
+    href: "#security",
   },
 ];
 
@@ -44,11 +44,6 @@ const legalLinks = [
 
   {
     label: "Terms of Service",
-    href: "#",
-  },
-
-  {
-    label: "Cookies",
     href: "#",
   },
 ];
@@ -118,29 +113,6 @@ export default function PublicFooter() {
           <p className="text-[11px] leading-relaxed text-slate-500 sm:text-sm">
             © {new Date().getFullYear()} Finvia. All rights reserved.
           </p>
-
-          <div className="flex flex-wrap items-center gap-4 text-[11px] text-slate-500 sm:gap-5 sm:text-sm">
-            <Link
-              href="#"
-              className="transition-colors duration-300 hover:text-white"
-            >
-              Privacy
-            </Link>
-
-            <Link
-              href="#"
-              className="transition-colors duration-300 hover:text-white"
-            >
-              Terms
-            </Link>
-
-            <Link
-              href="#"
-              className="transition-colors duration-300 hover:text-white"
-            >
-              Cookies
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

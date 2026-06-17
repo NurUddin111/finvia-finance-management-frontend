@@ -3,7 +3,7 @@ import { BadgeCheck, Lock, Server, ShieldCheck, Sparkles } from "lucide-react";
 export default function TrustSection() {
   return (
     <section
-      id="trust-security"
+      id="security"
       aria-labelledby="trust-security-heading"
       className="relative overflow-hidden px-3 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16"
     >
