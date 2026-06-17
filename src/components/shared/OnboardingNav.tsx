@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { Building2, LogOut, Sparkles } from "lucide-react";
+import { Loader2, LogOut, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -21,6 +21,7 @@ import Image from "next/image";
 
 export default function OnboardingNav() {
   const [openLogout, setOpenLogout] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const router = useRouter();
 
@@ -71,7 +72,6 @@ export default function OnboardingNav() {
       {/* LOGOUT MODAL */}
       <Dialog open={openLogout} onOpenChange={setOpenLogout}>
         <DialogContent className="overflow-hidden border border-red-500/15 bg-[#050816] p-0 shadow-[0_30px_120px_rgba(0,0,0,0.65)] sm:max-w-sm">
-          {/* HEADER */}
           <div className="border-b border-red-500/10 bg-linear-to-b from-[#140809] to-[#050816] px-5 py-5">
             <DialogHeader>
               <div className="mb-3 flex justify-center">
@@ -90,7 +90,6 @@ export default function OnboardingNav() {
             </DialogHeader>
           </div>
 
-          {/* BODY */}
           <div className="px-5 py-5">
             <div className="rounded-2xl border border-red-500/15 bg-red-500/8 p-4">
               <p className="text-sm leading-relaxed text-slate-300">
@@ -99,10 +98,10 @@ export default function OnboardingNav() {
               </p>
             </div>
 
-            {/* ACTIONS */}
             <div className="mt-5 flex gap-2">
               <Button
                 variant="outline"
+                disabled={isLoggingOut}
                 onClick={() => setOpenLogout(false)}
                 className="h-10 flex-1 rounded-xl border-white/10 bg-white/3 text-sm text-slate-300 hover:border-white/20 hover:bg-white/5 hover:text-white"
               >
@@ -110,15 +109,29 @@ export default function OnboardingNav() {
               </Button>
 
               <Button
+                disabled={isLoggingOut}
                 onClick={async () => {
-                  await logoutUser();
-
-                  router.push("/");
+                  try {
+                    setIsLoggingOut(true);
+                    await logoutUser();
+                    router.push("/");
+                  } finally {
+                    setIsLoggingOut(false);
+                  }
                 }}
-                className="h-10 flex-1 rounded-xl border border-red-500/20 bg-red-500/10 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300"
+                className="h-10 flex-1 rounded-xl border border-red-500/20 bg-red-500/10 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300 disabled:opacity-60"
               >
-                <LogOut className="size-4" />
-                Logout
+                {isLoggingOut ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" />
+                    Logging out...
+                  </>
+                ) : (
+                  <>
+                    <LogOut className="size-4" />
+                    Logout
+                  </>
+                )}
               </Button>
             </div>
           </div>

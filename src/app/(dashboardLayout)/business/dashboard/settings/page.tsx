@@ -6,6 +6,7 @@ import { useState } from "react";
 import {
   Building2,
   ChevronRight,
+  Loader2,
   Lock,
   LogOut,
   Settings2,
@@ -54,6 +55,7 @@ export default function MobileSettingsIndexPage() {
   const pathname = usePathname();
   const router = useRouter();
   const [openLogout, setOpenLogout] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#050816] px-3 py-4 lg:hidden">
@@ -168,6 +170,7 @@ export default function MobileSettingsIndexPage() {
             <div className="mt-5 flex gap-2">
               <Button
                 variant="outline"
+                disabled={isLoggingOut}
                 onClick={() => setOpenLogout(false)}
                 className="h-10 flex-1 rounded-xl border-white/10 bg-white/3 text-sm text-slate-300 hover:border-white/20 hover:bg-white/5 hover:text-white"
               >
@@ -175,14 +178,29 @@ export default function MobileSettingsIndexPage() {
               </Button>
 
               <Button
+                disabled={isLoggingOut}
                 onClick={async () => {
-                  await logoutUser();
-                  router.push("/");
+                  try {
+                    setIsLoggingOut(true);
+                    await logoutUser();
+                    router.push("/");
+                  } finally {
+                    setIsLoggingOut(false);
+                  }
                 }}
-                className="h-10 flex-1 rounded-xl border border-red-500/20 bg-red-500/10 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300"
+                className="h-10 flex-1 rounded-xl border border-red-500/20 bg-red-500/10 text-sm font-medium text-red-400 transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/15 hover:text-red-300 disabled:opacity-60"
               >
-                <LogOut className="size-4" />
-                Logout
+                {isLoggingOut ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" />
+                    Logging out...
+                  </>
+                ) : (
+                  <>
+                    <LogOut className="size-4" />
+                    Logout
+                  </>
+                )}
               </Button>
             </div>
           </div>
