@@ -6,7 +6,7 @@ import DashboardPreview from "./DashboardPreview";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden px-3 pt-24 sm:px-6 sm:pt-32 lg:px-8 lg:pt-36">
+    <section className="relative overflow-hidden px-3 mb-14 pt-24 sm:px-6 sm:pt-32 lg:px-8 lg:pt-36">
       {/* BACKGROUND */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-blue-500/10 blur-3xl sm:h-128 sm:w-lg" />

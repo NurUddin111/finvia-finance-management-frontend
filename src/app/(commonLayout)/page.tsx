@@ -4,11 +4,8 @@ import FeaturesSection from "@/components/modules/Home/Features";
 import Hero from "@/components/modules/Home/Hero";
 import HowItWorksSection from "@/components/modules/Home/HowItWorks";
 import TrustSection from "@/components/modules/Home/Trust";
-import WhySection from "@/components/modules/Home/WhyUs";
 import BusinessChaosSection from "@/components/modules/Home/BusinessChaosSection";
-import InvoiceShowcaseSection from "@/components/modules/Home/InvoiceShowcaseSection";
-import ClientManagementSection from "@/components/modules/Home/ClientManagementSection";
-import AnalyticsShowcaseSection from "@/components/modules/Home/AnalyticsShowcaseSection";
+import FAQSection from "@/components/modules/Home/FAQ";
 
 export const metadata: Metadata = {
   title: "",
@@ -21,12 +18,9 @@ export default function HomePage() {
     <main>
       <Hero />
       <BusinessChaosSection />
-      <InvoiceShowcaseSection />
-      <ClientManagementSection />
-      <AnalyticsShowcaseSection />
       <FeaturesSection />
-      <WhySection />
       <HowItWorksSection />
+      <FAQSection />
       <TrustSection />
       <FinalCTASection />
     </main>

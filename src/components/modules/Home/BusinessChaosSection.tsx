@@ -21,6 +21,22 @@ export default function BusinessChaosSection() {
       <div className="relative mx-auto max-w-7xl">
         <div className="grid items-center gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
           {/* LEFT */}
+          <div className="relative lg:translate-y-2">
+            {/* GLOW */}
+            <div className="absolute inset-0 rounded-4xl bg-blue-500/10 blur-3xl" />
+
+            {/* SCREENSHOT */}
+            <div className="relative overflow-hidden rounded-4xl border border-white/10 bg-[#0B1120] shadow-[0_25px_80px_rgba(0,0,0,0.4)]">
+              <Image
+                src="/images/problem/invoice-management.png"
+                alt="Finvia Invoice Management"
+                width={1400}
+                height={900}
+                className="h-auto w-full"
+              />
+            </div>
+          </div>
+          {/* RIGHT */}
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-red-500/15 bg-red-500/5 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-red-400">
               <CircleAlert className="size-3.5" />
@@ -51,23 +67,6 @@ export default function BusinessChaosSection() {
                   </p>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* RIGHT */}
-          <div className="relative lg:translate-y-2">
-            {/* GLOW */}
-            <div className="absolute inset-0 rounded-[32px] bg-blue-500/10 blur-3xl" />
-
-            {/* SCREENSHOT */}
-            <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[#0B1120] shadow-[0_25px_80px_rgba(0,0,0,0.4)]">
-              <Image
-                src="/images/problem/invoice-management.png"
-                alt="Finvia Invoice Management"
-                width={1400}
-                height={900}
-                className="h-auto w-full"
-              />
             </div>
           </div>
         </div>

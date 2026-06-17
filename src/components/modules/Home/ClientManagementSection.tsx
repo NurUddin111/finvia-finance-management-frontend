@@ -20,9 +20,9 @@ export default function ClientManagementSection() {
         <div className="grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
           {/* LEFT - SCREENSHOT */}
           <div className="relative">
-            <div className="absolute inset-0 rounded-[32px] bg-violet-500/10 blur-3xl" />
+            <div className="absolute inset-0 rounded-4xl bg-violet-500/10 blur-3xl" />
 
-            <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[#0B1120] shadow-[0_25px_80px_rgba(0,0,0,0.4)]">
+            <div className="relative overflow-hidden rounded-4xl border border-white/10 bg-[#0B1120] shadow-[0_25px_80px_rgba(0,0,0,0.4)]">
               <Image
                 src="/images/showcase/client-management.png"
                 alt="Finvia Client Management"
