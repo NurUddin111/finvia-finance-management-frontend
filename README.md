@@ -244,13 +244,6 @@ npm run dev
 
     Mobile-first responsiveness
 
----
-
-## 🤝 Contribution
-
-    This is a private project.
-    Follow existing patterns and conventions before adding new features.
-
 --
 
 ## ☁️ Deployment
