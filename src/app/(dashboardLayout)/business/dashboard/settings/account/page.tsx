@@ -115,7 +115,7 @@ export default function AccountPage() {
             </div>
 
             <div className="min-w-0">
-              <span className="inline-flex rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-red-400 sm:text-[11px] sm:tracking-[0.18em]">
+              <span className="inline-flex rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-red-400 sm:text-[11.1px] sm:tracking-[0.18em]">
                 Danger Zone
               </span>
 
